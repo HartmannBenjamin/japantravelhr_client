@@ -2,9 +2,11 @@
   <v-app>
     <Nav v-if="$auth.check()"/>
 
-    <v-main>
+    <v-main >
       <router-view/>
     </v-main>
+
+    <Footer v-if="$auth.check()"/>
   </v-app>
 </template>
 
@@ -14,11 +16,13 @@
 
 <script>
   import Nav from '@/components/Nav'
+  import Footer from '@/components/Footer'
 
   export default {
     name: 'App',
     components: {
-      Nav
+      Nav,
+      Footer
     },
     mounted() {
 
