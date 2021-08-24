@@ -67,6 +67,9 @@
               rememberMe: true,
             })
             .then(() => {
+              this.$store.dispatch('UserInfos/setUserName', this.$auth.user().name)
+              this.$store.dispatch('UserInfos/setUserImageUrl', this.$auth.user().image_url)
+
               this.$toasted.show("Log in successfully", {
                 icon : {
                   name : 'done_outline',

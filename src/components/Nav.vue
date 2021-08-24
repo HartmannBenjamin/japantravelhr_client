@@ -9,11 +9,11 @@
     <v-list color="blue lighten-5">
       <v-list-item class="px-2">
         <v-list-item-avatar>
-          <img :src="$auth.user().image_url" alt="profile picture">
+          <img :src="image_url" alt="profile picture">
         </v-list-item-avatar>
 
         <v-list-item-content>
-          <v-list-item-title> {{ $auth.user().name }} ({{ $auth.user().role.name }}) </v-list-item-title>
+          <v-list-item-title> {{ name }} ({{ $auth.user().role.name }}) </v-list-item-title>
           <v-list-item-subtitle> {{ $auth.user().email }} </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -60,12 +60,20 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
+
   export default {
     data() {
       return {
         drawer: true,
         mini: true,
       }
+    },
+    computed: {
+      ...mapGetters('UserInfos', {
+        image_url: 'image_url',
+        name: 'name',
+      }),
     },
     methods: {
       logOut() {

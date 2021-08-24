@@ -41,6 +41,7 @@
           <v-text-field
               v-model="user.c_password"
               :rules="[passwordConfirmationRule, v => !!v || 'This field is required']"
+              :disabled="!user.password"
               onCopy="return false"
               onDrag="return false"
               onDrop="return false"

@@ -24,8 +24,18 @@
       Nav,
       Footer
     },
-    mounted() {
-
+    computed: {
+      _check() {
+        return this.$auth.check();
+      }
     },
+    watch: {
+      _check() {
+        if (this.$auth.check()) {
+          this.$store.dispatch('UserInfos/setUserName', this.$auth.user().name)
+          this.$store.dispatch('UserInfos/setUserImageUrl', this.$auth.user().image_url)
+        }
+      }
+    }
   };
 </script>

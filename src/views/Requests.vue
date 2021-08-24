@@ -11,6 +11,10 @@
             <v-icon class="pr-1"> mdi-plus </v-icon>
             Add new Request
           </Button>
+          <Button @click="downloadPdf" v-else>
+            <v-icon class="pr-1"> mdi-file-pdf </v-icon>
+            Download PDF
+          </Button>
         </v-card>
       </v-row>
 
@@ -157,12 +161,29 @@
       ...mapActions({
         setRequests: 'Requests/setRequests',
       }),
+
       getDateRequest(date) {
         if(date === null) {
           return 'None'
         }
         return moment(date).utc().format('MMMM Do YYYY, h:mm a')
       },
+
+      downloadPdf() {
+        this.$http.get(`request/pdf`, {responseType: 'blob'})
+            .then(response => {
+              const url = window.URL.createObjectURL(new Blob([response.data]));
+              const link = document.createElement('a');
+
+              link.href = url;
+              link.setAttribute('download', new Date().toLocaleDateString() + '_requests.pdf');
+              document.body.appendChild(link);
+              link.click();
+            })
+            .catch(error => {
+              console.log(error);
+            })
+      }
     },
     mounted() {
       this.setRequests().then(() => {
