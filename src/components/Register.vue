@@ -124,6 +124,16 @@
         this.$auth.register({
           params: this.user,
         }).then((response) => {
+          this.$toasted.show("Registered successfully", {
+            icon : {
+              name : 'done_outline',
+              after : true
+            },
+            theme: "outline",
+            position: "bottom-right",
+            duration : 2000
+          });
+
           let formData = new FormData();
 
           formData.append("file", this.image_file);

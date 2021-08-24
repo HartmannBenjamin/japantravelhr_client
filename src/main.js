@@ -13,11 +13,13 @@ import Toasted from 'vue-toasted';
 import 'view-design/dist/styles/iview.css';
 import '../node_modules/material-icons/iconfont/material-icons.css';
 import 'es6-promise/auto'
+import moment from 'moment'
 
 Axios.defaults.headers.version = '1.0';
 Axios.defaults.baseURL = 'http://127.0.0.1:8000/api'
 Axios.defaults.headers.post['Content-Type'] = 'application/json';
 Vue.prototype.$http = Axios;
+Vue.prototype.moment = moment
 Vue.config.productionTip = false
 
 Vue.router = router

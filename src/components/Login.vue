@@ -76,13 +76,14 @@
                 position: "bottom-right",
                 duration : 2000
               });
-            }, () => {
-              this.$toasted.show("Log in successfully", {
+            }, (error) => {
+              console.log(error)
+              this.$toasted.show("Invalid credentials", {
                 icon : {
-                  name : 'Error',
+                  name : 'error',
                   after : true
                 },
-                theme: "outline",
+                theme: "bubble",
                 position: "bottom-right",
                 duration : 2000
               });

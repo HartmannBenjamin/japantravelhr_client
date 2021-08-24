@@ -12,6 +12,7 @@
     "core-js": "^3.16.2",
     "es6-promise": "^4.2.8",
     "material-icons": "^1.2.0",
+    "moment": "^2.29.1",
     "view-design": "^4.6.1",
     "vue": "^2.6.11",
     "vue-axios": "^3.2.5",

@@ -14,5 +14,13 @@ export default {
     ],
     imageRules: [
         v => !v || (v.size / 1024 / 1024) < 2 || 'Avatar size should be less than 2 Mb.'
+    ],
+    subjectRules: [
+        v => !!v || 'Subject is required',
+        v => (v && v.length < 101 && v.length > 3) || 'Subject must be between 4 and 100 characters',
+    ],
+    descriptionRules: [
+        v => !!v || 'Description is required',
+        v => (v && v.length < 301 && v.length > 19) || 'Description must be between 20 and 301 characters',
     ]
 };

@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Requests from '../views/Requests.vue'
+import Request from '../views/Request.vue'
+import Profile from '../views/Profile.vue'
 import Auth from '../views/Auth.vue'
 
 Vue.use(VueRouter)
@@ -8,11 +10,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home,
-    meta: {
-      auth: true
-    }
+    redirect: '/requests'
   },
   {
     path: '/login',
@@ -30,6 +28,30 @@ const routes = [
     props: { isRegisterPage: true },
     meta: {
       auth: false
+    }
+  },
+  {
+    path: '/requests',
+    name: 'Requests',
+    component: Requests,
+    meta: {
+      auth: true
+    }
+  },
+  {
+    path: '/request/:id',
+    name: 'Request',
+    component: Request,
+    meta: {
+      auth: true
+    }
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile,
+    meta: {
+      auth: true
     }
   },
 ]

@@ -2,7 +2,7 @@
   <v-app>
     <Nav v-if="$auth.check()"/>
 
-    <v-main >
+    <v-main>
       <router-view/>
     </v-main>
 

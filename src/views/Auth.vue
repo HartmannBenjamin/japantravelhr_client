@@ -31,6 +31,9 @@
         type: Boolean,
         required: true,
       }
+    },
+    mounted() {
+      this.$store.dispatch('Requests/setRequestsToNull');
     }
   }
 </script>
