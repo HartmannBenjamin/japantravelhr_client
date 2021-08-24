@@ -48,6 +48,10 @@
       requestToEdit: {
         type: Object,
         required: true,
+      },
+      fromRequestPage: {
+        type: Boolean,
+        default: false
       }
     },
     data() {
@@ -58,7 +62,7 @@
     },
     methods: {
       ...mapActions({
-        updateRequestToComplete: 'Requests/updateRequestToComplete'
+        updateRequestToComplete: 'Requests/updateRequestToComplete',
       }),
 
       hideCompleteRequestDialog() {
@@ -66,7 +70,11 @@
       },
 
       submit() {
-        this.updateRequestToComplete(this.requestToEdit.id);
+        const requestId = this.requestToEdit.id;
+        const fromRequestPage = this.fromRequestPage;
+
+        this.updateRequestToComplete({requestId,  fromRequestPage});
+
         this.changeStatusDialog = false;
         this.completeRequestDialog = false;
 

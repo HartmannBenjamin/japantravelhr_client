@@ -17,7 +17,7 @@ export default {
     ],
     subjectRules: [
         v => !!v || 'Subject is required',
-        v => (v && v.length < 101 && v.length > 3) || 'Subject must be between 4 and 100 characters',
+        v => (v && v.length < 61 && v.length > 3) || 'Subject must be between 4 and 60 characters',
     ],
     descriptionRules: [
         v => !!v || 'Description is required',

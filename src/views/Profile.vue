@@ -9,7 +9,7 @@
         <h1> My Profile </h1>
       </v-col>
 
-      <v-card outlined class="mt-1" v-if="!$vuetify.breakpoint.xsOnly">
+      <v-card outlined class="mt-1">
           <v-list-item>
             <v-list-item-avatar>
               <img :src="image_url" alt="profile picture">
@@ -45,13 +45,16 @@
               disabled
           ></v-text-field>
           <v-text-field
+              :type="passwordType ? 'password' : 'text'"
+              :append-icon="passwordType ? 'mdi-eye-off' : 'mdi-eye'"
+              @click:append="passwordType = !passwordType"
               v-model="user.password"
               :rules="[passwordRule]"
               label="Password"
-              type="password"
               required
           ></v-text-field>
           <v-text-field
+              :type="passwordType ? 'password' : 'text'"
               v-model="user.c_password"
               :rules="[passwordConfirmationRule]"
               :disabled="!user.password"
@@ -60,7 +63,6 @@
               onDrop="return false"
               onPaste="return false"
               label="Confirm Password"
-              type="password"
               required
           ></v-text-field>
           <v-file-input
@@ -92,6 +94,7 @@
     name: 'Profile',
     data() {
       return {
+        passwordType: true,
         rules: rulesConfig,
         valid: true,
         loading: false,

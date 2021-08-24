@@ -41,33 +41,46 @@ const actions = {
                 console.log(error);
             });
     },
-    editRequest: (store, { requestInfosUpdated, requestId }) => {
+    editRequest: (store, { requestInfosUpdated, requestId, fromRequestPage }) => {
         axios.put(`request/edit/` + requestId, requestInfosUpdated)
             .then((response) => {
-                store.commit('editRequest', response.data.data)
+
+                if (fromRequestPage) {
+                    store.commit('editRequestSolo', response.data.data)
+                } else {
+                    store.commit('editRequest', response.data.data)
+                }
             })
             .catch((error) => {
                 console.log(error)
             });
     },
-    updateStatusRequest: (store ,{statusId, requestId}) => {
+    updateStatusRequest: (store ,{statusId, requestId, fromRequestPage}) => {
         axios.put(`request/changeStatus/` + requestId, {status_id: statusId})
             .then((response) => {
-                store.commit('editRequest', response.data.data)
+                if (fromRequestPage) {
+                    store.commit('editRequestSolo', response.data.data)
+                } else {
+                    store.commit('editRequest', response.data.data)
+                }
             })
             .catch((error) => {
                 console.log(error)
             });
     },
-    updateRequestToComplete: (store, requestId) => {
+    updateRequestToComplete: (store, {requestId,  fromRequestPage}) => {
         axios.put(`request/complete/` + requestId)
             .then((response) => {
-                store.commit('editRequest', response.data.data)
+                if (fromRequestPage) {
+                    store.commit('editRequestSolo', response.data.data)
+                } else {
+                    store.commit('editRequest', response.data.data)
+                }
             })
             .catch((error) => {
                 console.log(error)
             });
-    }
+    },
 }
 
 const mutations = {
@@ -88,6 +101,9 @@ const mutations = {
         state.requests[stateId].status = request.status;
         state.requests[stateId].logs = request.logs;
         state.requests[stateId].updated_at = request.updated_at;
+    },
+    editRequestSolo(state, request) {
+        state.request = request;
     },
 }
 

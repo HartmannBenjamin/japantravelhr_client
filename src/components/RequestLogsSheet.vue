@@ -9,7 +9,7 @@
           class="text-center"
           height="361px"
       >
-        <p class="display-1 pt-6 pb-2"> Requests logs </p>
+        <p class="display-1 pt-6 pb-2"> Request Logs </p>
 
         <v-card
             max-width="1100"

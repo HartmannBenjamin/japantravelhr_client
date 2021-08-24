@@ -7,7 +7,7 @@
       app
   >
     <v-list color="blue lighten-5">
-      <v-list-item class="px-2">
+      <v-list-item :class="avatarItemClass">
         <v-list-item-avatar>
           <img :src="image_url" alt="profile picture">
         </v-list-item-avatar>
@@ -65,6 +65,7 @@
   export default {
     data() {
       return {
+        avatarItemClass: this.$vuetify.breakpoint.xsOnly ? 'px-2' : 'px-5',
         drawer: true,
         mini: true,
       }

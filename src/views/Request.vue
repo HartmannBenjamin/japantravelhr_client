@@ -1,74 +1,138 @@
 <template>
-  <v-app>
-    <div v-if="status !==null && request !== null">
-        <v-icon
-            class="ml-3 ml-xl-9 mt-sm-9 mt-3"
-            style="position:absolute;"
-            @click="$router.replace({name: 'Requests'})"
-            size="40"
-        >
-          mdi-arrow-left-thin-circle-outline
-        </v-icon>
+  <div>
+    <div v-if="status !==null && request !== null" class="mb-5 mb-lg-0">
+      <v-icon
+          class="ml-3 ml-xl-9 mt-sm-16 mt-1"
+          style="position:absolute; top:0"
+          @click="$router.replace({name: 'Requests'})"
+          size="40"
+      >
+        mdi-arrow-left-thin-circle-outline
+      </v-icon>
+
       <v-container
           style="width: 85%;
           background-color: rgb(243,246,246);
           border-radius: 2px"
-         class="align-center mt-sm-16 mt-md-9 mt-16">
-        <div class="pa-6">
-          <h1 class="display-1 mt-2"><b>Subject :</b> {{ request.subject }}</h1>
+         class="align-center mt-13"
+      >
+        <div class="pa-6 pt-4">
+
+          <v-row class="d-flex justify-space-between">
+            <v-col class="mt-3">
+              <span style="position: relative" class="display-1"><b>Subject :</b> {{ request.subject }}</span>
+              <v-btn
+                  v-if="isUser && request.status.name === 'Open'"
+                  @click="editRequestModal = true"
+                  class="ml-3 mt-1"
+                  outlined
+                  absolute
+                  x-small
+                  fab
+                  color="indigo"
+              >
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+            </v-col>
+
+            <div class="mt-10 mt-md-0">
+              Created by
+              <v-card outlined class="mt-1" :width="$vuetify.breakpoint.xsOnly ? 255 : 300">
+                <v-list-item>
+                  <v-list-item-avatar>
+                    <img :src="request.created_by.image_url" alt="profile picture">
+                  </v-list-item-avatar>
+
+                  <v-list-item-content style="width: 200px">
+                    <v-list-item-title> {{ request.created_by.name }} ({{ request.created_by.role.name }}) </v-list-item-title>
+                    <v-list-item-subtitle> {{ request.created_by.email }} </v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-card>
+
+            </div>
+          </v-row>
 
           <divider></divider>
 
           <p style="font-size: 20px"><b>Description : </b> {{ request.description }}</p>
         </div>
       </v-container>
-      <v-container style="width: 85%; border-radius: 2px" class="align-center mt-10">
-        <v-row>
-          <v-col class="col-3">
-            <Steps :current="request.status.id - 1" direction="vertical">
-              <Step v-for="statusRow in status"
-                    :key="statusRow.id"
-                    :title="statusRow.name"
-                    :content="$vuetify.breakpoint.xsOnly ? '' :statusRow.description"
-              ></Step>
-            </Steps>
-          </v-col>
-          <v-col class="col-6">
-            <RequestLogs :logs="request.logs"/>
-          </v-col>
-          <v-col class="col-3">
-            <v-container>
-             <v-list-item class="px-2">
-              <v-list-item-avatar>
-                <img :src="$auth.user().image_url" alt="profile picture">
-              </v-list-item-avatar>
 
-              <v-list-item-content>
-                <v-list-item-title> {{ $auth.user().name }} ({{ $auth.user().role.name }}) </v-list-item-title>
-                <v-list-item-subtitle> {{ $auth.user().email }} </v-list-item-subtitle>
-              </v-list-item-content>
-              </v-list-item>
-            </v-container>
-          </v-col>
-        </v-row>
+      <v-container style="width: 85%; border-radius: 2px" class="align-center mt-10">
+        <v-layout row wrap>
+          <v-flex xs12 sm12 lg4>
+            <v-card class="mr-0 mr-lg-8">
+              <v-card-title>
+                Status
+
+                <v-spacer></v-spacer>
+
+                <v-btn
+                    v-if="isHR && request.status.name !== 'Complete'"
+                    rounded
+                    color="grey lighten-3"
+                    @click="changeStatusDialog = true"
+                >
+                  <v-icon> mdi-pencil </v-icon>
+                </v-btn>
+
+                <v-btn
+                    v-if="isManager && request.status.name === 'Hr Reviewed'"
+                    rounded
+                    color="green lighten-3"
+                    dark
+                    @click="completeRequestDialog = true"
+                >
+                  <v-icon> mdi-check </v-icon>
+                </v-btn>
+              </v-card-title>
+
+              <v-divider></v-divider>
+
+              <Steps :current="request.status.id - 1" direction="vertical" class="ma-9 pb-5">
+                <Step v-for="statusRow in status"
+                      :key="statusRow.id"
+                      :title="statusRow.name"
+                      :content="$vuetify.breakpoint.xsOnly ? '' :statusRow.description"
+                ></Step>
+              </Steps>
+            </v-card>
+          </v-flex>
+
+          <v-flex xs12 sm12 lg8 class="full-width">
+            <v-card>
+              <v-card-title>
+                Logs
+              </v-card-title>
+
+              <v-divider></v-divider>
+
+              <RequestLogs :logs="request.logs"/>
+            </v-card>
+          </v-flex>
+        </v-layout>
 
         <EditRequest
-            v-if="editRequestModal && requestToEdit !== null && isUser"
-            :requestToEdit="requestToEdit"
-            @hideEditRequestModal="editRequestModal = false; requestToEdit = null"
+            v-if="editRequestModal && isUser"
+            :requestToEdit="request"
+            fromRequestPage
+            @hideEditRequestModal="editRequestModal = false"
         />
 
         <ChangeStatusRequestDialog
-            v-if="changeStatusDialog && requestToEdit !== null && isHR"
-            :requestToEdit="requestToEdit"
+            v-if="changeStatusDialog && isHR"
+            :requestToEdit="request"
             :status="status"
-            @hideChangeStatusRequestDialog="changeStatusDialog = false; requestToEdit = null"
+            fromRequestPage
+            @hideChangeStatusRequestDialog="changeStatusDialog = false"
         />
 
         <CompleteRequestDialog
-            v-if="completeRequestDialog && requestToEdit !== null && isManager"
-            :requestToEdit="requestToEdit"
-            @hideCompleteRequestDialog="completeRequestDialog = false; requestToEdit = null"
+            v-if="completeRequestDialog && isManager"
+            :requestToEdit="request"
+            fromRequestPage
+            @hideCompleteRequestDialog="completeRequestDialog = false;"
         />
       </v-container>
     </div>
@@ -87,7 +151,7 @@
         </v-col>
         <v-col cols="6">
           <v-progress-linear
-              color="deep-purple accent-4"
+              color="cyan lighten-4"
               indeterminate
               rounded
               height="6"
@@ -95,7 +159,7 @@
         </v-col>
       </v-row>
     </v-container>
-  </v-app>
+  </div>
 </template>
 
 <script>

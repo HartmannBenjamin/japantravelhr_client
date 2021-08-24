@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <div>
     <v-container style="width: 85%; background-color: rgb(243,246,246); border-radius: 2px" class="align-center mt-10 mb-5">
       <v-row class="ma-3 mt-0 d-flex justify-space-between">
         <v-col>
@@ -72,7 +72,7 @@
               <td>
                 <v-btn
                     icon
-                    color="purple lighten-2"
+                    color="cyan lighten-3"
                     @click="$router.push({name: 'Request', params: {id: row.item.id} })"
                 >
                   <v-icon>mdi-eye</v-icon>
@@ -136,7 +136,7 @@
         :request="requestToEdit"
         @hideRequestLogsSheet="requestLogSheet = false; requestToEdit = null"
     />
-  </v-app>
+  </div>
 </template>
 
 <script>
@@ -149,6 +149,32 @@
   import moment from 'moment';
 
   export default {
+    data () {
+      return {
+        isUser: this.$auth.user().role.name ===  'User',
+        isHR: this.$auth.user().role.name ===  'HR',
+        isManager: this.$auth.user().role.name ===  'Manager',
+        loading: this.requests !== null,
+        requestToEdit: null,
+        createRequestModal: false,
+        editRequestModal:false,
+        completeRequestDialog: false,
+        requestLogSheet: false,
+        changeStatusDialog: false,
+        status: [],
+        sortBy: 'updated_at',
+        isDescending: true,
+        search: '',
+        headers: [
+          { text: 'Subject', value: 'subject' },
+          { text: 'Description', value: 'description' },
+          { text: 'Status', value: 'status.id' },
+          { text: 'Created By', value: 'created_by.name' },
+          { text: 'Date', value: 'updated_at' },
+          { text: 'Actions', sortable: false},
+        ],
+      }
+    },
     name: 'Requests',
     components: {
       CreateRequest,
@@ -198,32 +224,6 @@
       ...mapGetters('Requests', {
         requests: 'requests',
       }),
-    },
-    data () {
-      return {
-        isUser: this.$auth.user().role.name ===  'User',
-        isHR: this.$auth.user().role.name ===  'HR',
-        isManager: this.$auth.user().role.name ===  'Manager',
-        loading: this.requests !== null,
-        requestToEdit: null,
-        createRequestModal: false,
-        editRequestModal:false,
-        completeRequestDialog: false,
-        requestLogSheet: false,
-        changeStatusDialog: false,
-        status: [],
-        sortBy: 'updated_at',
-        isDescending: true,
-        search: '',
-        headers: [
-          { text: 'Subject', value: 'subject' },
-          { text: 'Description', value: 'description' },
-          { text: 'Status', value: 'status.id' },
-          { text: 'Created By', value: 'created_by.name' },
-          { text: 'Date', value: 'updated_at' },
-          { text: 'Actions', sortable: false},
-        ],
-      }
     },
   }
 </script>

@@ -6,7 +6,7 @@
       <img class="img-logo" draggable="false"  :src="'http://127.0.0.1:8000/logo/logo.png'" alt="logo">
     </v-toolbar>
     <v-container>
-      <v-form v-model="valid">
+      <v-form v-model="valid" autocomplete="off">
         <v-container>
           <v-text-field
               :rules="rules.nameRules"
@@ -30,15 +30,21 @@
               item-text="name"
               item-value="id"
               label="Role"
+              required
           ></v-select>
           <v-text-field
+              :type="passwordType ? 'password' : 'text'"
+              :append-icon="passwordType ? 'mdi-eye-off' : 'mdi-eye'"
+              @click:append="passwordType = !passwordType"
+              autocomplete="new-password"
               v-model="user.password"
               :rules="rules.passwordRules"
               label="Password"
-              type="password"
               required
           ></v-text-field>
           <v-text-field
+              :type="passwordType ? 'password' : 'text'"
+              autocomplete="new-password"
               v-model="user.c_password"
               :rules="[passwordConfirmationRule, v => !!v || 'This field is required']"
               :disabled="!user.password"
@@ -47,7 +53,6 @@
               onDrop="return false"
               onPaste="return false"
               label="Confirm Password"
-              type="password"
               required
           ></v-text-field>
           <v-file-input
@@ -87,6 +92,7 @@
   export default {
     name: 'Register',
     data: () => ({
+      passwordType: true,
       rules: rulesConfig,
       valid: false,
       loading: false,
@@ -135,14 +141,16 @@
             duration : 2000
           });
 
-          let formData = new FormData();
+          if (this.image_file !== null) {
+            let formData = new FormData();
 
-          formData.append("file", this.image_file);
-          formData.append("userEmail", response.data.data.user.email);
+            formData.append("file", this.image_file);
+            formData.append("userEmail", response.data.data.user.email);
 
-          this.$http.post('uploadImage', formData, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-          })
+            this.$http.post('uploadImage', formData, {
+              headers: {'Content-Type': 'multipart/form-data'}
+            })
+          }
         });
       },
 

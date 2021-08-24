@@ -14,6 +14,7 @@ import 'view-design/dist/styles/iview.css';
 import '../node_modules/material-icons/iconfont/material-icons.css';
 import 'es6-promise/auto'
 import moment from 'moment'
+import TurnOffAutocomplete from 'vue-turn-off-autocomplete';
 
 Axios.defaults.headers.version = '1.0';
 Axios.defaults.baseURL = 'http://127.0.0.1:8000/api'
@@ -28,6 +29,7 @@ Vue.use(ViewUI);
 Vue.use(VueAxios, Axios)
 Vue.use(VueAuth, auth);
 Vue.use(Toasted)
+Vue.use(TurnOffAutocomplete);
 
 new Vue({
   router,

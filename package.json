@@ -18,6 +18,7 @@
     "vue-axios": "^3.2.5",
     "vue-router": "^3.5.2",
     "vue-toasted": "^1.1.28",
+    "vue-turn-off-autocomplete": "^1.0.1",
     "vuetify": "^2.4.0",
     "vuex": "^3.4.0"
   },

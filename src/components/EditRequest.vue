@@ -10,14 +10,18 @@
         <v-card-title>
           <span class="text-h5">Edit the Request</span>
         </v-card-title>
-        <v-card-text>
+
+        <v-divider class="mt-1"></v-divider>
+
+        <v-card-text class="pb-0">
           <v-container>
-            <v-form v-model="valid">
+            <v-form v-model="valid" onSubmit="return false;">
               <v-col cols="12">
                 <v-text-field
                     v-model="request.subject"
                     :rules="rules.subjectRules"
                     label="Subject"
+                    clearable
                     required
                 ></v-text-field>
               </v-col>
@@ -26,6 +30,7 @@
                     v-model="request.description"
                     :rules="rules.descriptionRules"
                     label="Description"
+                    clearable
                     required
                 ></v-textarea>
               </v-col>
@@ -57,6 +62,10 @@
       requestToEdit: {
         type: Object,
         required: true,
+      },
+      fromRequestPage: {
+        type: Boolean,
+        default: false
       }
     },
     data() {
@@ -75,13 +84,24 @@
         this.$emit('hideEditRequestModal');
       },
 
+      eventMethode(event) {
+        if (event.keyCode === 13) {
+          if (this.valid && !this.wrongExtensionImage) {
+            this.submit()
+          }
+        }
+      },
+
       submit() {
         this.loading = true;
 
         const requestInfosUpdated = this.request;
         const requestId = this.requestToEdit.id;
+        const fromRequestPage = this.fromRequestPage;
 
-        this.$store.dispatch('Requests/editRequest', { requestInfosUpdated, requestId });
+        this.$store.dispatch('Requests/editRequest', { requestInfosUpdated, requestId, fromRequestPage });
+
+
         this.$toasted.show("Request updated successfully", {
           icon : {
             name : 'done_outline',
@@ -94,6 +114,12 @@
 
         this.hideEditRequestModal();
       }
+    },
+    mounted() {
+      window.addEventListener('keyup', this.eventMethode)
+    },
+    beforeDestroy() {
+      window.removeEventListener('keyup', this.eventMethode)
     }
   }
 </script>

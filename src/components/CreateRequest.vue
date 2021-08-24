@@ -10,14 +10,18 @@
         <v-card-title>
           <span class="text-h5">Add a new Request</span>
         </v-card-title>
-        <v-card-text>
+
+        <v-divider class="mt-1"></v-divider>
+
+        <v-card-text class="pb-0">
           <v-container>
-            <v-form v-model="valid">
+            <v-form v-model="valid" onSubmit="return false;">
               <v-col cols="12">
                 <v-text-field
                     v-model="request.subject"
                     :rules="rules.subjectRules"
                     label="Subject"
+                    clearable
                     required
                 ></v-text-field>
               </v-col>
@@ -26,6 +30,7 @@
                     v-model="request.description"
                     :rules="rules.descriptionRules"
                     label="Description"
+                    clearable
                     required
                 ></v-textarea>
               </v-col>
@@ -69,6 +74,14 @@
         this.$emit('hideCreateRequestModal');
       },
 
+      eventMethode(event) {
+        if (event.keyCode === 13) {
+          if (this.valid && !this.wrongExtensionImage) {
+            this.submit()
+          }
+        }
+      },
+
       submit() {
         this.loading = true;
         this.$store.dispatch('Requests/addRequest', this.request);
@@ -83,6 +96,12 @@
           duration : 2000
         });
       }
+    },
+    mounted() {
+      window.addEventListener('keyup', this.eventMethode)
+    },
+    beforeDestroy() {
+      window.removeEventListener('keyup', this.eventMethode)
     }
   }
 </script>

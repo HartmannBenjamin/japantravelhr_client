@@ -45,6 +45,10 @@
         type: Array,
         required: true,
       },
+      fromRequestPage: {
+        type: Boolean,
+        default: false
+      }
     },
     data() {
       return {
@@ -67,8 +71,9 @@
 
         const statusId = status.id;
         const requestId = this.requestToEdit.id;
+        const fromRequestPage = this.fromRequestPage;
 
-        this.updateStatusRequest({statusId, requestId});
+        this.updateStatusRequest({statusId, requestId, fromRequestPage});
         this.hideChangeStatusRequestDialog();
 
         this.$toasted.show("The status has been changed to: " + status.name, {
