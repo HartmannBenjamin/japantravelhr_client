@@ -9,6 +9,7 @@
       <v-form v-model="valid" autocomplete="off">
         <v-container>
           <v-text-field
+              autocomplete="off"
               :rules="rules.nameRules"
               v-model="user.name"
               label="Name"

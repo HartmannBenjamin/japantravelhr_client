@@ -13,7 +13,12 @@
         </v-list-item-avatar>
 
         <v-list-item-content>
-          <v-list-item-title> {{ name }} ({{ $auth.user().role.name }}) </v-list-item-title>
+          <v-list-item-title>
+            <marquee-text :duration="20" :reverse="true" :paused="name.length < 10">
+              {{ name }} ({{ $auth.user().role.name }})
+              &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+            </marquee-text>
+          </v-list-item-title>
           <v-list-item-subtitle> {{ $auth.user().email }} </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -61,8 +66,13 @@
 
 <script>
   import { mapGetters } from 'vuex'
+  import MarqueeText from 'vue-marquee-text-component'
 
   export default {
+    name: 'Nav',
+    components: {
+      MarqueeText
+    },
     data() {
       return {
         avatarItemClass: this.$vuetify.breakpoint.xsOnly ? 'px-2' : 'px-5',

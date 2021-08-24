@@ -42,9 +42,34 @@
             class="elevation-1"
         >
           <template v-slot:item="row">
-            <tr>
-              <td><b>{{ row.item.subject }}</b></td>
-              <td>{{ row.item.description }}</td>
+            <tr
+                @mouseover="mouseOn = row.item.id"
+                @mouseout="mouseOn = null"
+            >
+              <td style="max-width: 200px;">
+                <v-list-item>
+                  <v-list-item-title>
+                    <marquee-text
+                        :duration="row.item.subject.length"
+                        :paused="mouseOn !== row.item.id"
+                    >
+                      <b>{{ row.item.subject }}</b>
+                    </marquee-text>
+                    </v-list-item-title>
+                </v-list-item>
+              </td>
+              <td style="max-width: 300px;">
+                <v-list-item>
+                  <v-list-item-title>
+                    <marquee-text
+                        :duration="0.3 * row.item.description.length"
+                        :paused="mouseOn !== row.item.id"
+                    >
+                      {{ row.item.description }}
+                    </marquee-text>
+                  </v-list-item-title>
+                </v-list-item>
+              </td>
               <td>
                 <v-chip
                     v-if="isHR && row.item.status.name !== 'Complete'"
@@ -147,14 +172,17 @@
   import RequestLogsSheet from "@/components/RequestLogsSheet";
   import { mapActions, mapGetters } from 'vuex';
   import moment from 'moment';
+  import MarqueeText from 'vue-marquee-text-component'
 
   export default {
+    name: 'Requests',
     data () {
       return {
         isUser: this.$auth.user().role.name ===  'User',
         isHR: this.$auth.user().role.name ===  'HR',
         isManager: this.$auth.user().role.name ===  'Manager',
         loading: this.requests !== null,
+        mouseOn: null,
         requestToEdit: null,
         createRequestModal: false,
         editRequestModal:false,
@@ -175,13 +203,13 @@
         ],
       }
     },
-    name: 'Requests',
     components: {
       CreateRequest,
       EditRequest,
       ChangeStatusRequestDialog,
       CompleteRequestDialog,
-      RequestLogsSheet
+      RequestLogsSheet,
+      MarqueeText
     },
     methods: {
       ...mapActions({

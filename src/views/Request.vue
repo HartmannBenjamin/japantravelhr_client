@@ -55,7 +55,7 @@
 
           <divider></divider>
 
-          <p style="font-size: 20px"><b>Description : </b> {{ request.description }}</p>
+          <p style="font-size: 20px" class="text-wrap"><b>Description : </b> {{ request.description }}</p>
         </div>
       </v-container>
 
