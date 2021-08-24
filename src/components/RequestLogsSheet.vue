@@ -9,14 +9,7 @@
           class="text-center"
           height="361px"
       >
-        <v-btn
-            class="mt-6"
-            text
-            color="error"
-            @click="hideRequestLogsSheet"
-        >
-          close
-        </v-btn>
+        <p class="display-1 pt-6 pb-2"> Requests logs </p>
 
         <v-card
             max-width="1100"
