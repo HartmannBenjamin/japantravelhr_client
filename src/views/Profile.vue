@@ -105,7 +105,7 @@
         },
         roles: [],
         image_file: null,
-        acceptedExtension: ['jpg', 'png'],
+        acceptedExtension: ['jpg', 'png', 'jpeg'],
         wrongExtensionImage: false,
         image: null,
       }

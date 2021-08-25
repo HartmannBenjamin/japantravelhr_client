@@ -107,7 +107,7 @@
       roles: [],
       image_file: null,
       emailAvailable: true,
-      acceptedExtension: ['jpg', 'png'],
+      acceptedExtension: ['jpg', 'png', 'jpeg'],
       wrongExtensionImage: false,
     }),
     computed: {
