@@ -176,6 +176,14 @@
 
   export default {
     name: 'Requests',
+    components: {
+      CreateRequest,
+      EditRequest,
+      ChangeStatusRequestDialog,
+      CompleteRequestDialog,
+      RequestLogsSheet,
+      MarqueeText
+    },
     data () {
       return {
         isUser: this.$auth.user().role.name ===  'User',
@@ -202,14 +210,6 @@
           { text: 'Actions', sortable: false},
         ],
       }
-    },
-    components: {
-      CreateRequest,
-      EditRequest,
-      ChangeStatusRequestDialog,
-      CompleteRequestDialog,
-      RequestLogsSheet,
-      MarqueeText
     },
     methods: {
       ...mapActions({

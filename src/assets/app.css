@@ -2,7 +2,6 @@
     width: 100px;
     height: 40px;
     border-radius: 4px;
-    opacity: 80%;
 }
 
 @media only screen and (max-width: 1400px) {

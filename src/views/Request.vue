@@ -112,28 +112,6 @@
             </v-card>
           </v-flex>
         </v-layout>
-
-        <EditRequest
-            v-if="editRequestModal && isUser"
-            :requestToEdit="request"
-            fromRequestPage
-            @hideEditRequestModal="editRequestModal = false"
-        />
-
-        <ChangeStatusRequestDialog
-            v-if="changeStatusDialog && isHR"
-            :requestToEdit="request"
-            :status="status"
-            fromRequestPage
-            @hideChangeStatusRequestDialog="changeStatusDialog = false"
-        />
-
-        <CompleteRequestDialog
-            v-if="completeRequestDialog && isManager"
-            :requestToEdit="request"
-            fromRequestPage
-            @hideCompleteRequestDialog="completeRequestDialog = false;"
-        />
       </v-container>
     </div>
 
@@ -159,6 +137,28 @@
         </v-col>
       </v-row>
     </v-container>
+
+    <EditRequest
+        v-if="editRequestModal && isUser"
+        :requestToEdit="request"
+        fromRequestPage
+        @hideEditRequestModal="editRequestModal = false"
+    />
+
+    <ChangeStatusRequestDialog
+        v-if="changeStatusDialog && isHR"
+        :requestToEdit="request"
+        :status="status"
+        fromRequestPage
+        @hideChangeStatusRequestDialog="changeStatusDialog = false"
+    />
+
+    <CompleteRequestDialog
+        v-if="completeRequestDialog && isManager"
+        :requestToEdit="request"
+        fromRequestPage
+        @hideCompleteRequestDialog="completeRequestDialog = false;"
+    />
   </div>
 </template>
 

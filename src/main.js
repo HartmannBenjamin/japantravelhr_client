@@ -16,13 +16,15 @@ import 'es6-promise/auto'
 import moment from 'moment'
 import TurnOffAutocomplete from 'vue-turn-off-autocomplete';
 
+const appUrl = process.env.NODE_ENV === 'development'
+  ? 'http://127.0.0.1:8000/' : 'http://api.benjamin-hartmann.fr/';
+
 Axios.defaults.headers.version = '1.0';
-Axios.defaults.baseURL = 'http://127.0.0.1:8000/api'
+Axios.defaults.baseURL = appUrl + 'api';
 Axios.defaults.headers.post['Content-Type'] = 'application/json';
 Vue.prototype.$http = Axios;
 Vue.prototype.moment = moment
 Vue.config.productionTip = false
-
 Vue.router = router
 Vue.use(VueRouter)
 Vue.use(ViewUI);
@@ -30,6 +32,7 @@ Vue.use(VueAxios, Axios)
 Vue.use(VueAuth, auth);
 Vue.use(Toasted)
 Vue.use(TurnOffAutocomplete);
+Vue.prototype.$appUrl = appUrl;
 
 new Vue({
   router,

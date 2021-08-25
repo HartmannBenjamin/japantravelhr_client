@@ -3,7 +3,7 @@
     <v-toolbar dark color="grey">
       <v-toolbar-title>Register form - <span style="font-weight: 100;"> Japan Travel HR </span></v-toolbar-title>
       <v-spacer></v-spacer>
-      <img class="img-logo" draggable="false"  :src="'http://127.0.0.1:8000/logo/logo.png'" alt="logo">
+      <img class="img-logo" draggable="false"  :src="appUrl + 'logo/logo.png'" alt="logo">
     </v-toolbar>
     <v-container>
       <v-form v-model="valid" autocomplete="off">
@@ -114,6 +114,9 @@
       passwordConfirmationRule() {
         return () => (this.user.password === this.user.c_password) || 'Password must match'
       },
+      appUrl() {
+        return this.$appUrl
+      }
     },
     methods: {
       checkIfEmailAvailable() {

@@ -3,7 +3,7 @@
     <v-parallax
         dark
         style="height: 100%"
-        :src="'http://127.0.0.1:8000/logo/banner.png'"
+        :src="appUrl + 'logo/banner.png'"
     >
       <v-container fluid fill-height>
         <v-layout align-center justify-center>
@@ -34,6 +34,11 @@
     },
     mounted() {
       this.$store.dispatch('Requests/setRequestsToNull');
+    },
+    computed: {
+      appUrl() {
+        return this.$appUrl
+      }
     }
   }
 </script>
