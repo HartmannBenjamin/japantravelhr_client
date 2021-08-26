@@ -58,6 +58,7 @@ const actions = {
     updateStatusRequest: (store ,{statusId, requestId, fromRequestPage}) => {
         axios.put(`request/changeStatus/` + requestId, {status_id: statusId})
             .then((response) => {
+
                 if (fromRequestPage) {
                     store.commit('editRequestSolo', response.data.data)
                 } else {
@@ -71,6 +72,7 @@ const actions = {
     updateRequestToComplete: (store, {requestId,  fromRequestPage}) => {
         axios.put(`request/complete/` + requestId)
             .then((response) => {
+
                 if (fromRequestPage) {
                     store.commit('editRequestSolo', response.data.data)
                 } else {

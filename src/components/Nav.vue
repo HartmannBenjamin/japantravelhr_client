@@ -2,9 +2,10 @@
   <v-navigation-drawer
       v-model="drawer"
       :expand-on-hover="$vuetify.breakpoint.xsOnly"
-      permanent
-      left
       app
+      left
+      permanent
+      touchless
   >
     <v-list color="blue lighten-5">
       <v-list-item :class="avatarItemClass">
@@ -19,6 +20,7 @@
               &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
             </marquee-text>
           </v-list-item-title>
+
           <v-list-item-subtitle> {{ $auth.user().email }} </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -31,7 +33,6 @@
         <v-list-item-icon>
           <v-icon> mdi-account </v-icon>
         </v-list-item-icon>
-
         <v-list-item-content>
           <v-list-item-title> My Profile </v-list-item-title>
         </v-list-item-content>
@@ -41,7 +42,6 @@
         <v-list-item-icon>
           <v-icon> mdi-form-dropdown </v-icon>
         </v-list-item-icon>
-
         <v-list-item-content>
           <v-list-item-title>
             {{ this.$auth.user().role.name ===  'User' ? 'My Requests' : 'Users Requests'}}
@@ -53,19 +53,17 @@
         <v-list-item-icon>
           <v-icon> mdi-file-powerpoint-outline </v-icon>
         </v-list-item-icon>
-
         <v-list-item-content>
           <v-list-item-title> Project Subject </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
 
-    <v-list color="grey lighten-5" class="pa-0" style="position: absolute; width: 100%; bottom: 0">
+    <v-list color="grey lighten-5" class="pa-0 disconnect-btn">
       <v-list-item link @click.prevent="logOut" color="blue">
         <v-list-item-icon>
           <v-icon> mdi-logout-variant </v-icon>
         </v-list-item-icon>
-
         <v-list-item-content>
           <v-list-item-title> Disconnect </v-list-item-title>
         </v-list-item-content>
@@ -85,9 +83,8 @@
     },
     data() {
       return {
-        avatarItemClass: this.$vuetify.breakpoint.xsOnly ? 'px-2' : 'px-5',
         drawer: true,
-        mini: true,
+        avatarItemClass: this.$vuetify.breakpoint.xsOnly ? 'px-2' : 'px-5',
       }
     },
     computed: {

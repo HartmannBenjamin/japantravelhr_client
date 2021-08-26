@@ -21,15 +21,15 @@
         <v-list-item-content>
             {{ getDate(item.created_at) }}
         </v-list-item-content>
-
       </v-list-item>
+
       <v-divider class="mt-2"></v-divider>
     </template>
   </v-virtual-scroll>
 </template>
 
 <script>
-  import moment from "moment";
+  import { formatDate } from "@/services/Functions";
 
   export default {
     props: {
@@ -39,12 +39,7 @@
       }
     },
     methods: {
-      getDate(date) {
-        if(date === null) {
-          return 'None'
-        }
-        return moment(date).utc().format('MMMM Do YYYY, h:mm a')
-      }
+      getDate: formatDate
     }
   }
 </script>

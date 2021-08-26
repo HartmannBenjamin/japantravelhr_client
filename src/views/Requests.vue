@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container style="width: 85%; background-color: rgb(243,246,246); border-radius: 2px" class="align-center mt-10 mb-5">
+    <v-container class="background-container align-center mt-10 mb-5">
       <v-row class="ma-3 mt-0 d-flex justify-space-between">
         <v-col>
           <h1> {{ isUser ? 'My Requests' : 'Users Requests'}} </h1>
@@ -11,6 +11,7 @@
             <v-icon class="pr-1"> mdi-plus </v-icon>
             Add new Request
           </Button>
+
           <Button @click="downloadPdf" v-else>
             <v-icon class="pr-1"> mdi-file-pdf </v-icon>
             Download PDF
@@ -27,10 +28,10 @@
             v-model="search"
             append-icon="search"
             label="Search for a specific request"
-            outlined
-            dense
             single-line
             hide-details
+            outlined
+            dense
         ></v-text-field>
         <v-data-table
             :headers="headers"
@@ -44,9 +45,11 @@
           <template v-slot:item="row">
             <tr
                 @mouseover="mouseOn = row.item.id"
-                @mouseout="mouseOn = null"
-            >
-              <td style="max-width: 200px;">
+                @mouseout="mouseOn = null">
+              <td
+                  style="max-width: 200px; cursor: pointer"
+                  @click="showRequest(row.item.id)"
+              >
                 <v-list-item>
                   <v-list-item-title>
                     <marquee-text
@@ -58,7 +61,10 @@
                     </v-list-item-title>
                 </v-list-item>
               </td>
-              <td style="max-width: 300px;">
+              <td
+                  style="max-width: 300px; cursor: pointer"
+                  @click="showRequest(row.item.id)"
+              >
                 <v-list-item>
                   <v-list-item-title>
                     <marquee-text
@@ -72,13 +78,14 @@
               </td>
               <td>
                 <v-chip
-                    v-if="isHR && row.item.status.name !== 'Complete'"
+                    v-if="isHR && !isComplete(row.item.status)"
                     :color="row.item.status.color_code"
                     @click="changeStatusDialog = true; requestToEdit = row.item"
                 >
                   {{ row.item.status.name }}
                   <v-icon class="ml-2">mdi-pencil</v-icon>
                 </v-chip>
+
                 <v-chip :color="row.item.status.color_code" v-else>
                   {{ row.item.status.name }}
                 </v-chip>
@@ -95,36 +102,68 @@
                 </v-chip>
               </td>
               <td>
-                <v-btn
-                    icon
-                    color="cyan lighten-3"
-                    @click="$router.push({name: 'Request', params: {id: row.item.id} })"
-                >
-                  <v-icon>mdi-eye</v-icon>
-                </v-btn>
-                <v-btn
-                    icon
-                    color="green"
-                    @click="requestLogSheet = true; requestToEdit = row.item;"
-                >
-                  <v-icon> mdi-text-box-outline </v-icon>
-                </v-btn>
-                <v-btn
-                    icon
-                    v-if="isUser && row.item.status.name === 'Open'"
-                    color="blue"
-                    @click="requestToEdit = row.item; editRequestModal = true"
-                >
-                  <v-icon>mdi-pencil</v-icon>
-                </v-btn>
-                <v-btn
-                    icon
-                    v-if="isManager && row.item.status.name === 'Hr Reviewed'"
-                    color="blue"
-                    @click="completeRequestDialog = true; requestToEdit = row.item;"
-                >
-                  <v-icon>mdi-check</v-icon>
-                </v-btn>
+                <v-tooltip right>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                        icon
+                        color="cyan lighten-3"
+                        @click="showRequest(row.item.id)"
+                        v-bind="attrs"
+                        v-on="on"
+                    >
+                      <v-icon>mdi-eye</v-icon>
+                    </v-btn>
+                  </template>
+                  <span> View request </span>
+                </v-tooltip>
+
+                <v-tooltip right>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                        icon
+                        color="green"
+                        @click="requestLogSheet = true; requestToEdit = row.item;"
+                        v-bind="attrs"
+                        v-on="on"
+                    >
+                      <v-icon> mdi-text-box-outline </v-icon>
+                    </v-btn>
+                  </template>
+                  <span> Logs </span>
+                </v-tooltip>
+
+                <v-tooltip right>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                        icon
+                        v-if="isUser && isOpen(row.item.status)"
+                        color="blue"
+                        @click="requestToEdit = row.item; editRequestModal = true"
+                        v-bind="attrs"
+                        v-on="on"
+                    >
+                      <v-icon>mdi-pencil</v-icon>
+                    </v-btn>
+                  </template>
+                  <span> Edit </span>
+                </v-tooltip>
+
+
+                <v-tooltip right>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                        icon
+                        v-if="isManager && isHRReviewed(row.item.status)"
+                        color="blue"
+                        @click="completeRequestDialog = true; requestToEdit = row.item;"
+                        v-bind="attrs"
+                        v-on="on"
+                    >
+                      <v-icon>mdi-check</v-icon>
+                    </v-btn>
+                  </template>
+                  <span> Complete </span>
+                </v-tooltip>
               </td>
             </tr>
           </template>
@@ -165,14 +204,16 @@
 </template>
 
 <script>
+  import { mapActions, mapGetters } from 'vuex';
+  import moment from 'moment';
+  import MarqueeText from 'vue-marquee-text-component'
   import CreateRequest from "@/components/CreateRequest";
   import EditRequest from "@/components/EditRequest";
   import ChangeStatusRequestDialog from "@/components/ChangeStatusRequestDialog";
   import CompleteRequestDialog from "@/components/CompleteRequestDialog";
   import RequestLogsSheet from "@/components/RequestLogsSheet";
-  import { mapActions, mapGetters } from 'vuex';
-  import moment from 'moment';
-  import MarqueeText from 'vue-marquee-text-component'
+  import { isUser, isHR, isManager } from '@/services/UserService';
+  import { isOpen, isHRReviewed, isComplete } from '@/services/RequestService';
 
   export default {
     name: 'Requests',
@@ -186,9 +227,9 @@
     },
     data () {
       return {
-        isUser: this.$auth.user().role.name ===  'User',
-        isHR: this.$auth.user().role.name ===  'HR',
-        isManager: this.$auth.user().role.name ===  'Manager',
+        isUser: isUser(),
+        isHR: isHR(),
+        isManager: isManager(),
         loading: this.requests !== null,
         mouseOn: null,
         requestToEdit: null,
@@ -212,9 +253,15 @@
       }
     },
     methods: {
+      isOpen, isHRReviewed, isComplete,
+
       ...mapActions({
         setRequests: 'Requests/setRequests',
       }),
+
+      showRequest(id) {
+        this.$router.push({name: 'Request', params: {id: id} })
+      },
 
       getDateRequest(date) {
         if(date === null) {

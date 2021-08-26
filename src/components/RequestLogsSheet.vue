@@ -7,7 +7,7 @@
     >
       <v-sheet
           class="text-center"
-          height="361px"
+          height="361"
       >
         <p class="display-1 pt-6 pb-2"> Request Logs </p>
 
@@ -35,14 +35,14 @@
         required: true
       }
     },
-    methods: {
-      hideRequestLogsSheet() {
-        this.$emit('hideRequestLogsSheet');
-      }
-    },
     data() {
       return {
         sheet: true
+      }
+    },
+    methods: {
+      hideRequestLogsSheet() {
+        this.$emit('hideRequestLogsSheet');
       }
     }
   }

@@ -2,9 +2,9 @@
   <v-row justify="center">
     <v-dialog
         v-model="dialog"
-        persistent
-        max-width="600px"
         @click:outside="hideCreateRequestModal"
+        persistent
+        max-width="600"
     >
       <v-card>
         <v-card-title>
@@ -20,8 +20,9 @@
                 <v-text-field
                     v-model="request.subject"
                     :rules="rules.subjectRules"
+                    @input="validSubject = getMaxLengthWord(request.subject) < 25"
+                    :error-messages="validSubject ? '' : errorMessageWord"
                     label="Subject"
-                    clearable
                     required
                 ></v-text-field>
               </v-col>
@@ -30,7 +31,8 @@
                     v-model="request.description"
                     :rules="rules.descriptionRules"
                     label="Description"
-                    clearable
+                    @input="validDescription = getMaxLengthWord(request.description) < 25"
+                    :error-messages="validDescription ? '' : errorMessageWord"
                     required
                 ></v-textarea>
               </v-col>
@@ -40,7 +42,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
-              :disabled="!valid"
+              :disabled="!valid || !validDescription|| !validSubject"
               color="blue darken-1"
               text
               @click="submit"
@@ -55,6 +57,7 @@
 
 <script>
   import rulesConfig from '../config/FormRules'
+  import { calculateLongestWord } from '@/services/Functions'
 
   export default {
     name: 'CreateRequest',
@@ -62,7 +65,10 @@
       return {
         dialog: true,
         valid: false,
+        validDescription: true,
+        validSubject: true,
         rules: rulesConfig,
+        errorMessageWord: 'All words need to be less than 25 characters.',
         request: {
           subject: '',
           description: '',
@@ -70,16 +76,10 @@
       }
     },
     methods: {
+      getMaxLengthWord: calculateLongestWord,
+
       hideCreateRequestModal() {
         this.$emit('hideCreateRequestModal');
-      },
-
-      eventMethode(event) {
-        if (event.keyCode === 13) {
-          if (this.valid && !this.wrongExtensionImage) {
-            this.submit()
-          }
-        }
       },
 
       submit() {
@@ -97,11 +97,5 @@
         });
       }
     },
-    mounted() {
-      window.addEventListener('keyup', this.eventMethode)
-    },
-    beforeDestroy() {
-      window.removeEventListener('keyup', this.eventMethode)
-    }
   }
 </script>

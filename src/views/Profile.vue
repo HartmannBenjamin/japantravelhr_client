@@ -1,9 +1,5 @@
 <template>
-  <v-container
-    style="width: 85%; background-color: rgb(243,246,246);
-    border-radius: 2px"
-    class="align-center mt-10 mb-5"
-  >
+  <v-container class="align-center mt-10 mb-5 background-container">
     <v-row class="ma-3 mt-0 d-flex justify-space-between">
       <v-col>
         <h1> My Profile </h1>
@@ -76,6 +72,7 @@
 
           <v-card-actions class="mt-8">
             <v-spacer></v-spacer>
+
             <v-btn @click="submit" outlined elevation="5" :loading="loading" :disabled="!valid">
               Update information
             </v-btn>
@@ -88,29 +85,34 @@
 
 <script>
   import rulesConfig from '../config/FormRules'
-  import {mapGetters} from "vuex";
+  import { mapGetters } from 'vuex'
+  import { fileHasValidExtension } from '@/services/Functions'
 
   export default {
     name: 'Profile',
     data() {
       return {
-        passwordType: true,
-        rules: rulesConfig,
         valid: true,
         loading: false,
+        rules: rulesConfig,
         user: {
           name: this.$auth.user().name,
           password: '',
           c_password: '',
         },
         roles: [],
+        passwordType: true,
         image_file: null,
-        acceptedExtension: ['jpg', 'png', 'jpeg'],
         wrongExtensionImage: false,
         image: null,
       }
     },
     computed: {
+      ...mapGetters('UserInfos', {
+        image_url: 'image_url',
+        name: 'name',
+      }),
+
       passwordRule() {
         if (this.user.password) {
           return (v) => (v && v.length < 21 && v.length > 3) || 'Password must be between 4 and 20 characters'
@@ -124,10 +126,6 @@
         }
         return true;
       },
-      ...mapGetters('UserInfos', {
-        image_url: 'image_url',
-        name: 'name',
-      }),
     },
     methods: {
       submit() {
@@ -139,7 +137,8 @@
 
         this.$http.put('update', this.user)
             .then((response) => {
-              const user = response.data.data.user;
+              this.loading = false
+              const user = response.data.data;
 
               this.$toasted.show("Information updated successfully", {
                 icon : {
@@ -151,12 +150,13 @@
                 duration : 2000
               });
 
-              this.loading = false
               this.user.password = ''
               this.user.c_password = ''
               this.$store.dispatch('UserInfos/setUserName', user.name)
 
               if (this.image_file !== null) {
+                this.image = null;
+
                 let formData = new FormData();
 
                 formData.append("file", this.image_file);
@@ -166,7 +166,16 @@
                   headers: { 'Content-Type': 'multipart/form-data' }
                 }).then((res) => {
                   this.$store.dispatch('UserInfos/setUserImageUrl', res.data.data.user.image_url)
-                  this.image = null;
+
+                  this.$toasted.show("Image updated", {
+                    icon : {
+                      name : 'done_outline',
+                      after : true
+                    },
+                    theme: "outline",
+                    position: "bottom-right",
+                    duration : 2000
+                  });
                 })
               }
         })
@@ -187,12 +196,10 @@
 
       selectFile(file) {
         if (!file) {
-          return
+          return;
         }
 
-        const extension = file.name.split('.').pop();
-
-        if (this.acceptedExtension.some(x => x.toLowerCase() === extension.toLowerCase())) {
+        if (fileHasValidExtension(file)) {
           this.image_file = file;
           this.wrongExtensionImage = false;
         } else {

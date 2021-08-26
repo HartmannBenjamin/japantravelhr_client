@@ -2,8 +2,8 @@
   <v-dialog
       v-model="dialog"
       v-if="requestToEdit"
-      max-width="500"
       @click:outside="hideChangeStatusRequestDialog"
+      max-width="500"
   >
     <v-card>
       <v-card-title class="text-h5 justify-center">
@@ -20,7 +20,7 @@
                 :small="$vuetify.breakpoint.xsOnly"
                 :color="statusRow.color_code"
                 @click="submit(statusRow)"
-                v-if="statusRow.name !== 'Complete'"
+                v-if="!isComplete(statusRow)"
                 :disabled="requestToEdit.status.id === statusRow.id"
             >
               {{ statusRow.name }}
@@ -32,7 +32,8 @@
 </template>
 
 <script>
-  import { mapActions } from "vuex";
+  import { mapActions } from 'vuex';
+  import { isComplete } from '@/services/RequestService';
 
   export default {
     name: 'ChangeStatusRequestDialog',
@@ -56,6 +57,8 @@
       }
     },
     methods: {
+      isComplete,
+
       ...mapActions({
         updateStatusRequest: 'Requests/updateStatusRequest',
       }),
@@ -65,7 +68,7 @@
       },
 
       submit(status) {
-        if (status.name === 'Complete') {
+        if (this.isComplete(status)) {
           return;
         }
 
@@ -76,7 +79,7 @@
         this.updateStatusRequest({statusId, requestId, fromRequestPage});
         this.hideChangeStatusRequestDialog();
 
-        this.$toasted.show("The status has been changed to: " + status.name, {
+        this.$toasted.show("The request status has been changed to: " + status.name, {
           icon : {
             name : 'done_outline',
             after : true

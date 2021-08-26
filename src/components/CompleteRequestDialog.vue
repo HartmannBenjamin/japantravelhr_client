@@ -2,8 +2,8 @@
   <v-dialog
       v-model="dialog"
       v-if="requestToEdit"
-      max-width="600"
       @click:outside="hideCompleteRequestDialog"
+      max-width="600"
   >
     <v-card>
       <v-card-title class="text-h5 pb-7">
@@ -41,6 +41,7 @@
 
 <script>
   import { mapActions } from "vuex";
+  import { isHRReviewed } from "@/services/RequestService";
 
   export default {
     name: 'CompleteRequestDialog',
@@ -70,14 +71,14 @@
       },
 
       submit() {
+        if (!isHRReviewed(this.requestToEdit.status)) {
+          return;
+        }
+
         const requestId = this.requestToEdit.id;
         const fromRequestPage = this.fromRequestPage;
 
         this.updateRequestToComplete({requestId,  fromRequestPage});
-
-        this.changeStatusDialog = false;
-        this.completeRequestDialog = false;
-
         this.hideCompleteRequestDialog();
 
         this.$toasted.show("Request has been completed", {

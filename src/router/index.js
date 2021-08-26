@@ -5,6 +5,7 @@ import Request from '../views/Request.vue'
 import Profile from '../views/Profile.vue'
 import Project from '../views/Project.vue'
 import Auth from '../views/Auth.vue'
+import PageNotFound from '../views/PageNotFound.vue'
 
 Vue.use(VueRouter)
 
@@ -63,6 +64,14 @@ const routes = [
       auth: true
     }
   },
+  {
+    path: "*",
+    name: 'Page Not Found',
+    component: PageNotFound,
+    meta: {
+      auth: true
+    }
+  }
 ]
 
 const router = new VueRouter({
@@ -73,7 +82,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   document.title = to.name;
-  next()
+  next();
 })
 
 export default router

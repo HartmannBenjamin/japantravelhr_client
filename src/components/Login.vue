@@ -5,6 +5,7 @@
       <v-spacer></v-spacer>
       <img class="img-logo" draggable="false" :src="appUrl + 'logo/logo.png'" alt="logo">
     </v-toolbar>
+
     <v-container>
       <v-form v-model="valid">
         <v-container>
@@ -31,9 +32,11 @@
           <v-icon class="pr-1"> mdi-account-plus  </v-icon>
           Register Page
         </Button>
+
         <v-spacer></v-spacer>
-        <Button style="width: 100px" type="primary" :disabled="!valid" :loading="loading" @click="submit">
-          <div v-if="!loading">
+
+        <Button style="width: 100px" type="primary" :disabled="!valid" :loading="loading && !$vuetify.breakpoint.xsOnly" @click="submit">
+          <div v-if="!loading || $vuetify.breakpoint.xsOnly">
             <v-icon color="white"> mdi-account-arrow-right  </v-icon>
             Login
           </div>
@@ -48,15 +51,17 @@
 
   export default {
     name: 'Login',
-    data: () => ({
-      valid: false,
-      loading: false,
-      user: {
-        email: '',
-        password: '',
-      },
-      rules: rulesConfig
-    }),
+    data() {
+      return {
+        valid: false,
+        loading: false,
+        user: {
+          email: '',
+          password: '',
+        },
+        rules: rulesConfig
+      }
+    },
     methods: {
       submit () {
         this.loading = true;
@@ -81,6 +86,7 @@
               });
             }, (error) => {
               console.log(error)
+
               this.$toasted.show("Invalid credentials", {
                 icon : {
                   name : 'error',

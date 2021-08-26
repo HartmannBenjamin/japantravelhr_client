@@ -1,41 +1,43 @@
 <template>
   <div>
-    <div v-if="status !==null && request !== null" class="mb-5 mb-lg-0">
+    <div v-if="status && request" class="mb-5 mb-lg-0">
       <v-icon
-          class="ml-3 ml-xl-9 mt-sm-16 mt-1"
-          style="position:absolute; top:0"
+          class="ml-3 ml-lg-7 ml-xl-9 mt-md-16 mt-1"
+          style="position:absolute; top:0;"
           @click="$router.replace({name: 'Requests'})"
           size="40"
       >
         mdi-arrow-left-thin-circle-outline
       </v-icon>
 
-      <v-container
-          style="width: 85%;
-          background-color: rgb(243,246,246);
-          border-radius: 2px"
-         class="align-center mt-13"
-      >
+      <v-container class="align-center mt-13 background-container">
         <div class="pa-6 pt-4">
-
           <v-row class="d-flex justify-space-between">
             <v-col class="mt-3">
               <span style="position: relative" class="display-1"><b>Subject :</b> {{ request.subject }}</span>
-              <v-btn
-                  v-if="isUser && request.status.name === 'Open'"
-                  @click="editRequestModal = true"
-                  class="ml-3 mt-1"
-                  outlined
-                  absolute
-                  x-small
-                  fab
-                  color="indigo"
-              >
-                <v-icon>mdi-pencil</v-icon>
-              </v-btn>
+
+              <v-tooltip right>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                      v-if="isUser && isOpen(request.status)"
+                      @click="editRequestModal = true"
+                      class="ml-3 mt-1"
+                      color="indigo"
+                      outlined
+                      absolute
+                      x-small
+                      fab
+                      v-bind="attrs"
+                      v-on="on"
+                  >
+                    <v-icon>mdi-pencil</v-icon>
+                  </v-btn>
+                </template>
+                <span> Edit </span>
+              </v-tooltip>
             </v-col>
 
-            <div class="mt-10 mt-md-0">
+            <div class="mt-10 mt-md-0 ml-0 ml-md-9">
               Created by
               <v-card outlined class="mt-1" :width="$vuetify.breakpoint.xsOnly ? 255 : 300">
                 <v-list-item>
@@ -49,7 +51,6 @@
                   </v-list-item-content>
                 </v-list-item>
               </v-card>
-
             </div>
           </v-row>
 
@@ -59,7 +60,7 @@
         </div>
       </v-container>
 
-      <v-container style="width: 85%; border-radius: 2px" class="align-center mt-10">
+      <v-container class="background-container--no-color align-center mt-10">
         <v-layout row wrap>
           <v-flex xs12 sm12 lg4>
             <v-card class="mr-0 mr-lg-8">
@@ -68,24 +69,38 @@
 
                 <v-spacer></v-spacer>
 
-                <v-btn
-                    v-if="isHR && request.status.name !== 'Complete'"
-                    rounded
-                    color="grey lighten-3"
-                    @click="changeStatusDialog = true"
-                >
-                  <v-icon> mdi-pencil </v-icon>
-                </v-btn>
+                <v-tooltip right>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                        v-if="isHR && !isComplete(request.status)"
+                        rounded
+                        color="grey lighten-3"
+                        @click="changeStatusDialog = true"
+                        v-bind="attrs"
+                        v-on="on"
+                    >
+                      <v-icon> mdi-pencil </v-icon>
+                    </v-btn>
+                  </template>
+                  <span> Change status </span>
+                </v-tooltip>
 
-                <v-btn
-                    v-if="isManager && request.status.name === 'Hr Reviewed'"
-                    rounded
-                    color="green lighten-3"
-                    dark
-                    @click="completeRequestDialog = true"
-                >
-                  <v-icon> mdi-check </v-icon>
-                </v-btn>
+                <v-tooltip right>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                        v-if="isManager && isHRReviewed(request.status)"
+                        rounded
+                        color="green lighten-3"
+                        dark
+                        @click="completeRequestDialog = true"
+                        v-bind="attrs"
+                        v-on="on"
+                    >
+                      <v-icon> mdi-check </v-icon>
+                    </v-btn>
+                  </template>
+                  <span> Complete </span>
+                </v-tooltip>
               </v-card-title>
 
               <v-divider></v-divider>
@@ -115,28 +130,7 @@
       </v-container>
     </div>
 
-    <v-container v-else style="height: 400px;">
-      <v-row
-          class="fill-height"
-          align-content="center"
-          justify="center"
-      >
-        <v-col
-            class="text-subtitle-1 text-center"
-            cols="12"
-        >
-          Getting request info...
-        </v-col>
-        <v-col cols="6">
-          <v-progress-linear
-              color="cyan lighten-4"
-              indeterminate
-              rounded
-              height="6"
-          ></v-progress-linear>
-        </v-col>
-      </v-row>
-    </v-container>
+    <LoadingBar v-else message="Getting request info..."></LoadingBar>
 
     <EditRequest
         v-if="editRequestModal && isUser"
@@ -163,11 +157,14 @@
 </template>
 
 <script>
+  import { mapActions, mapGetters } from 'vuex';
   import EditRequest from "@/components/EditRequest";
   import ChangeStatusRequestDialog from "@/components/ChangeStatusRequestDialog";
   import CompleteRequestDialog from "@/components/CompleteRequestDialog";
   import RequestLogs from "@/components/RequestLogs";
-  import { mapActions, mapGetters } from 'vuex';
+  import LoadingBar from "@/components/LoadingBar";
+  import { isUser, isHR, isManager } from '@/services/UserService';
+  import { isOpen, isHRReviewed, isComplete } from '@/services/RequestService';
 
   export default {
     name: 'Request',
@@ -175,9 +172,25 @@
       EditRequest,
       ChangeStatusRequestDialog,
       CompleteRequestDialog,
-      RequestLogs
+      RequestLogs,
+      LoadingBar
+    },
+    data () {
+      return {
+        isUser: isUser(),
+        isHR: isHR(),
+        isManager: isManager(),
+        status: null,
+        editRequest: false,
+        requestToEdit: null,
+        editRequestModal:false,
+        completeRequestDialog: false,
+        changeStatusDialog: false,
+      }
     },
     methods: {
+      isOpen, isHRReviewed, isComplete,
+
       ...mapActions({
         setRequest: 'Requests/setRequest'
       }),
@@ -193,19 +206,6 @@
       ...mapGetters('Requests', {
         request: 'request',
       }),
-    },
-    data () {
-      return {
-        isUser: this.$auth.user().role.name ===  'User',
-        isHR: this.$auth.user().role.name ===  'HR',
-        isManager: this.$auth.user().role.name ===  'Manager',
-        status: null,
-        editRequest: false,
-        requestToEdit: null,
-        editRequestModal:false,
-        completeRequestDialog: false,
-        changeStatusDialog: false,
-      }
     },
   }
 </script>

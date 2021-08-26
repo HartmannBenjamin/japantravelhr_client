@@ -5,18 +5,17 @@
       <v-spacer></v-spacer>
       <img class="img-logo" draggable="false"  :src="appUrl + 'logo/logo.png'" alt="logo">
     </v-toolbar>
+
     <v-container>
-      <v-form v-model="valid" autocomplete="off">
+      <v-form v-model="valid">
         <v-container>
           <v-text-field
-              autocomplete="off"
               :rules="rules.nameRules"
               v-model="user.name"
               label="Name"
               required
           ></v-text-field>
           <v-text-field
-              autocomplete="off"
               :rules="rules.emailRules"
               v-model="user.email"
               label="E-mail"
@@ -37,7 +36,6 @@
               :type="passwordType ? 'password' : 'text'"
               :append-icon="passwordType ? 'mdi-eye-off' : 'mdi-eye'"
               @click:append="passwordType = !passwordType"
-              autocomplete="new-password"
               v-model="user.password"
               :rules="rules.passwordRules"
               label="Password"
@@ -45,7 +43,6 @@
           ></v-text-field>
           <v-text-field
               :type="passwordType ? 'password' : 'text'"
-              autocomplete="new-password"
               v-model="user.c_password"
               :rules="[passwordConfirmationRule, v => !!v || 'This field is required']"
               :disabled="!user.password"
@@ -76,8 +73,8 @@
 
         <v-spacer></v-spacer>
 
-        <Button style="width: 130px" type="primary" :disabled="!valid" :loading="loading" @click="submit">
-          <div v-if="!loading">
+        <Button style="width: 130px" type="primary" :disabled="!valid" :loading="loading && !$vuetify.breakpoint.xsOnly" @click="submit">
+          <div v-if="!loading || $vuetify.breakpoint.xsOnly">
             <v-icon color="white" class="pr-1"> mdi-account-plus  </v-icon>
             Register
           </div>
@@ -89,14 +86,14 @@
 
 <script>
   import rulesConfig from '../config/FormRules'
+  import { fileHasValidExtension } from "@/services/Functions";
 
   export default {
     name: 'Register',
     data: () => ({
-      passwordType: true,
-      rules: rulesConfig,
       valid: false,
       loading: false,
+      rules: rulesConfig,
       user: {
         name: '',
         email: '',
@@ -107,7 +104,7 @@
       roles: [],
       image_file: null,
       emailAvailable: true,
-      acceptedExtension: ['jpg', 'png', 'jpeg'],
+      passwordType: true,
       wrongExtensionImage: false,
     }),
     computed: {
@@ -160,12 +157,10 @@
 
       selectFile(file) {
         if (!file) {
-          return
+          return;
         }
 
-        const extension = file.name.split('.').pop();
-
-        if (this.acceptedExtension.some(x => x.toLowerCase() === extension.toLowerCase())) {
+        if (fileHasValidExtension(file)) {
           this.image_file = file;
           this.wrongExtensionImage = false;
         } else {

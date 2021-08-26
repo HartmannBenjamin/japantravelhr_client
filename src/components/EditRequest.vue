@@ -20,8 +20,9 @@
                 <v-text-field
                     v-model="request.subject"
                     :rules="rules.subjectRules"
+                    @input="validSubject = getMaxLengthWord(request.subject) < 25"
+                    :error-messages="validSubject ? '' : errorMessageWord"
                     label="Subject"
-                    clearable
                     required
                 ></v-text-field>
               </v-col>
@@ -29,8 +30,9 @@
                 <v-textarea
                     v-model="request.description"
                     :rules="rules.descriptionRules"
+                    @input="validDescription = getMaxLengthWord(request.description) < 25"
+                    :error-messages="validDescription ? '' : errorMessageWord"
                     label="Description"
-                    clearable
                     required
                 ></v-textarea>
               </v-col>
@@ -40,7 +42,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
-              :disabled="!valid"
+              :disabled="!valid || !validDescription|| !validSubject"
               color="blue darken-1"
               text
               @click="submit"
@@ -55,6 +57,7 @@
 
 <script>
   import rulesConfig from '../config/FormRules'
+  import { calculateLongestWord } from '@/services/Functions'
 
   export default {
     name: 'EditRequest',
@@ -72,7 +75,10 @@
       return {
         dialog: true,
         valid: false,
+        validSubject: true,
+        validDescription: true,
         rules: rulesConfig,
+        errorMessageWord: 'All words need to be less than 25 characters.',
         request: {
           subject: this.requestToEdit.subject,
           description: this.requestToEdit.description,
@@ -80,16 +86,10 @@
       }
     },
     methods: {
+      getMaxLengthWord: calculateLongestWord,
+
       hideEditRequestModal() {
         this.$emit('hideEditRequestModal');
-      },
-
-      eventMethode(event) {
-        if (event.keyCode === 13) {
-          if (this.valid && !this.wrongExtensionImage) {
-            this.submit()
-          }
-        }
       },
 
       submit() {
@@ -100,7 +100,6 @@
         const fromRequestPage = this.fromRequestPage;
 
         this.$store.dispatch('Requests/editRequest', { requestInfosUpdated, requestId, fromRequestPage });
-
 
         this.$toasted.show("Request updated successfully", {
           icon : {
@@ -114,12 +113,6 @@
 
         this.hideEditRequestModal();
       }
-    },
-    mounted() {
-      window.addEventListener('keyup', this.eventMethode)
-    },
-    beforeDestroy() {
-      window.removeEventListener('keyup', this.eventMethode)
     }
   }
 </script>
