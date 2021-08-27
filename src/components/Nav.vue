@@ -60,7 +60,62 @@
     </v-list>
 
     <v-list color="grey lighten-5" class="pa-0 disconnect-btn">
-      <v-list-item link @click.prevent="logOut" color="blue">
+      <v-list class="pa-0" elevation="3">
+        <v-list-item
+            link
+            dense style="background-color: #ffe7b1"
+            href="https://www.postman.com/benjaminhartmann/workspace/japantravelhr/overview"
+            target="_blank">
+          <v-list-item-icon>
+            <v-icon> mdi-account-group </v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title> Postman workspace </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item
+            link
+            dense style="background-color: #e5e1dc"
+            href="https://documenter.getpostman.com/view/17271595/TzzHksRe"
+            target="_blank">
+          <v-list-item-icon>
+            <v-icon> mdi-api </v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title> API Documentation </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item
+            link
+            dense style="background-color: #fdfdfd"
+            href="https://github.com/HartmannBenjamin/japantravelhr_client"
+            target="_blank">
+          <v-list-item-icon>
+            <v-icon> mdi-github </v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title> Front-end repository </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item
+            link
+            dark
+            dense style="background-color: #707070"
+            href="https://github.com/HartmannBenjamin/japantravelhr_backend"
+            target="_blank">
+          <v-list-item-icon>
+            <v-icon> mdi-github </v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title> Back-end repository </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+
+      <v-list-item link @click.prevent="logOut" style="background-color: #e7e7e7">
         <v-list-item-icon>
           <v-icon> mdi-logout-variant </v-icon>
         </v-list-item-icon>
