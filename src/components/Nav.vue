@@ -60,7 +60,7 @@
     </v-list>
 
     <v-list color="grey lighten-5" class="pa-0 disconnect-btn">
-      <v-list class="pa-0" elevation="3">
+      <v-list class="pa-0 pb-10">
         <v-list-item
             link
             dense style="background-color: #ffe7b1"

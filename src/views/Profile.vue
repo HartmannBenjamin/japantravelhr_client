@@ -137,21 +137,8 @@
 
         this.$http.put('update', this.user)
             .then((response) => {
-              this.loading = false
               const user = response.data.data;
 
-              this.$toasted.show("Information updated successfully", {
-                icon : {
-                  name : 'done_outline',
-                  after : true
-                },
-                theme: "outline",
-                position: "bottom-right",
-                duration : 2000
-              });
-
-              this.user.password = ''
-              this.user.c_password = ''
               this.$store.dispatch('UserInfos/setUserName', user.name)
 
               if (this.image_file !== null) {
@@ -165,18 +152,13 @@
                 this.$http.post('uploadImage', formData, {
                   headers: { 'Content-Type': 'multipart/form-data' }
                 }).then((res) => {
+                  this.loading = false
+                  this.resetForm()
                   this.$store.dispatch('UserInfos/setUserImageUrl', res.data.data.image_url)
-
-                  this.$toasted.show("Image updated", {
-                    icon : {
-                      name : 'done_outline',
-                      after : true
-                    },
-                    theme: "outline",
-                    position: "bottom-right",
-                    duration : 2000
-                  });
                 })
+              } else {
+                this.loading = false
+                this.resetForm()
               }
         })
         .catch((error) => {
@@ -205,6 +187,20 @@
         } else {
           this.wrongExtensionImage = true;
         }
+      },
+
+      resetForm() {
+        this.$toasted.show("Information updated successfully", {
+          icon : {
+            name : 'done_outline',
+            after : true
+          },
+          theme: "outline",
+          position: "bottom-right",
+          duration : 2000
+        });
+        this.user.password = ''
+        this.user.c_password = ''
       },
 
       eventMethode(event) {
