@@ -1,11 +1,13 @@
 <template>
   <v-virtual-scroll
       :items="logs"
-      max-height="242"
+      height="242"
       item-height="64"
   >
     <template v-slot:default="{ item }">
-      <v-list-item :key="item.id" class="logs-content mb-1">
+
+      <v-divider></v-divider>
+      <v-list-item :key="item.id" class="logs-content mt-0 mt-xl-2">
         <v-list-item-avatar size="27" class="mr-3">
           <img :src="item.user.image_url" alt="profile picture">
         </v-list-item-avatar>
@@ -22,8 +24,6 @@
             {{ getDate(item.created_at) }}
         </v-list-item-content>
       </v-list-item>
-
-      <v-divider></v-divider>
     </template>
   </v-virtual-scroll>
 </template>
