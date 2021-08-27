@@ -6,8 +6,8 @@ function isHRReviewed (status) {
     return status.name === 'Hr Reviewed'
 }
 
-function isComplete(status) {
-    return status.name === 'Complete'
+function isProcessed (status) {
+    return status.name === 'Processed'
 }
 
-export { isOpen, isHRReviewed, isComplete }
+export { isOpen, isHRReviewed, isProcessed }

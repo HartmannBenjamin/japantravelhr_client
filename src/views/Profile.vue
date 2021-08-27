@@ -165,7 +165,7 @@
                 this.$http.post('uploadImage', formData, {
                   headers: { 'Content-Type': 'multipart/form-data' }
                 }).then((res) => {
-                  this.$store.dispatch('UserInfos/setUserImageUrl', res.data.data.user.image_url)
+                  this.$store.dispatch('UserInfos/setUserImageUrl', res.data.data.image_url)
 
                   this.$toasted.show("Image updated", {
                     icon : {

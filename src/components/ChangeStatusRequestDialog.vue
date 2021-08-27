@@ -20,7 +20,6 @@
                 :small="$vuetify.breakpoint.xsOnly"
                 :color="statusRow.color_code"
                 @click="submit(statusRow)"
-                v-if="!isComplete(statusRow)"
                 :disabled="requestToEdit.status.id === statusRow.id"
             >
               {{ statusRow.name }}
@@ -33,7 +32,6 @@
 
 <script>
   import { mapActions } from 'vuex';
-  import { isComplete } from '@/services/RequestService';
 
   export default {
     name: 'ChangeStatusRequestDialog',
@@ -57,8 +55,6 @@
       }
     },
     methods: {
-      isComplete,
-
       ...mapActions({
         updateStatusRequest: 'Requests/updateStatusRequest',
       }),
@@ -68,10 +64,6 @@
       },
 
       submit(status) {
-        if (this.isComplete(status)) {
-          return;
-        }
-
         const statusId = status.id;
         const requestId = this.requestToEdit.id;
         const fromRequestPage = this.fromRequestPage;

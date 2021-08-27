@@ -1,11 +1,11 @@
 <template>
   <v-virtual-scroll
       :items="logs"
-      height="305"
+      max-height="242"
       item-height="64"
   >
     <template v-slot:default="{ item }">
-      <v-list-item :key="item.id" class="logs-content mt-2">
+      <v-list-item :key="item.id" class="logs-content mb-1">
         <v-list-item-avatar size="27" class="mr-3">
           <img :src="item.user.image_url" alt="profile picture">
         </v-list-item-avatar>
@@ -23,7 +23,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-divider class="mt-2"></v-divider>
+      <v-divider></v-divider>
     </template>
   </v-virtual-scroll>
 </template>

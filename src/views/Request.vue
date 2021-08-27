@@ -72,7 +72,7 @@
                 <v-tooltip right>
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
-                        v-if="isHR && !isComplete(request.status)"
+                        v-if="isHR"
                         rounded
                         color="grey lighten-3"
                         @click="changeStatusDialog = true"
@@ -164,7 +164,7 @@
   import RequestLogs from "@/components/RequestLogs";
   import LoadingBar from "@/components/LoadingBar";
   import { isUser, isHR, isManager } from '@/services/UserService';
-  import { isOpen, isHRReviewed, isComplete } from '@/services/RequestService';
+  import { isOpen, isHRReviewed } from '@/services/RequestService';
 
   export default {
     name: 'Request',
@@ -189,7 +189,7 @@
       }
     },
     methods: {
-      isOpen, isHRReviewed, isComplete,
+      isOpen, isHRReviewed,
 
       ...mapActions({
         setRequest: 'Requests/setRequest'

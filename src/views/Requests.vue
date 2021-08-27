@@ -78,7 +78,7 @@
               </td>
               <td>
                 <v-chip
-                    v-if="isHR && !isComplete(row.item.status)"
+                    v-if="isHR"
                     :color="row.item.status.color_code"
                     @click="changeStatusDialog = true; requestToEdit = row.item"
                 >
@@ -213,7 +213,7 @@
   import CompleteRequestDialog from "@/components/CompleteRequestDialog";
   import RequestLogsSheet from "@/components/RequestLogsSheet";
   import { isUser, isHR, isManager } from '@/services/UserService';
-  import { isOpen, isHRReviewed, isComplete } from '@/services/RequestService';
+  import { isOpen, isHRReviewed } from '@/services/RequestService';
 
   export default {
     name: 'Requests',
@@ -253,7 +253,7 @@
       }
     },
     methods: {
-      isOpen, isHRReviewed, isComplete,
+      isOpen, isHRReviewed,
 
       ...mapActions({
         setRequests: 'Requests/setRequests',
