@@ -6,9 +6,11 @@
       max-width="600"
   >
     <v-card>
-      <v-card-title class="text-h5 pb-7">
+      <v-card-title class="text-h5 pb-4">
         Do you want to complete this request ?
       </v-card-title>
+
+      <v-divider class="mb-10"></v-divider>
 
       <v-card-text>
         <b> Subject: </b> {{ requestToEdit.subject }}

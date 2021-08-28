@@ -149,7 +149,10 @@
             formData.append("userEmail", response.data.data.user.email);
 
             this.$http.post('uploadImage', formData, {
-              headers: {'Content-Type': 'multipart/form-data'}
+              headers: {
+                'Authorization' : 'bearer ' + response.data.data.token,
+                'Content-Type' : 'multipart/form-data'
+              }
             })
           }
         });

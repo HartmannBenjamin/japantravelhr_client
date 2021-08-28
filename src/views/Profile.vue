@@ -142,8 +142,6 @@
               this.$store.dispatch('UserInfos/setUserName', user.name)
 
               if (this.image_file !== null) {
-                this.image = null;
-
                 let formData = new FormData();
 
                 formData.append("file", this.image_file);
@@ -201,6 +199,7 @@
         });
         this.user.password = ''
         this.user.c_password = ''
+        this.image = null
       },
 
       eventMethode(event) {
