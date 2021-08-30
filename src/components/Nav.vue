@@ -115,7 +115,7 @@
         </v-list-item>
       </v-list>
 
-      <v-list-item link @click.prevent="logOut" style="background-color: #e7e7e7">
+      <v-list-item link @click.prevent="logOut" data-test="disconnect" style="background-color: #e7e7e7">
         <v-list-item-icon>
           <v-icon> mdi-logout-variant </v-icon>
         </v-list-item-icon>
@@ -128,40 +128,40 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-  import MarqueeText from 'vue-marquee-text-component'
+import {mapGetters} from 'vuex';
+import MarqueeText from 'vue-marquee-text-component';
 
-  export default {
-    name: 'Nav',
-    components: {
-      MarqueeText
-    },
-    data() {
-      return {
-        drawer: true,
-        avatarItemClass: this.$vuetify.breakpoint.xsOnly ? 'px-2' : 'px-5',
-      }
-    },
-    computed: {
-      ...mapGetters('UserInfos', {
-        image_url: 'image_url',
-        name: 'name',
-      }),
-    },
-    methods: {
-      logOut() {
-        this.$auth.logout()
+export default {
+  name: 'Nav',
+  components: {
+    MarqueeText,
+  },
+  data() {
+    return {
+      drawer: true,
+      avatarItemClass: this.$vuetify.breakpoint.xsOnly ? 'px-2' : 'px-5',
+    };
+  },
+  computed: {
+    ...mapGetters('UserInfos', {
+      image_url: 'image_url',
+      name: 'name',
+    }),
+  },
+  methods: {
+    logOut() {
+      this.$auth.logout();
 
-        this.$toasted.show("Log out successful", {
-          icon : {
-            name : 'exit_to_app',
-            after : true
-          },
-          theme: "outline",
-          position: "bottom-right",
-          duration : 2000,
-        });
-      }
-    }
-  }
+      this.$toasted.show('Log out successful', {
+        icon: {
+          name: 'exit_to_app',
+          after: true,
+        },
+        theme: 'outline',
+        position: 'bottom-right',
+        duration: 2000,
+      });
+    },
+  },
+};
 </script>

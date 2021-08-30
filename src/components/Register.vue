@@ -1,7 +1,9 @@
 <template>
   <v-card class="elevation-12">
     <v-toolbar dark color="grey">
-      <v-toolbar-title>Register form - <span style="font-weight: 100;"> Japan Travel HR </span></v-toolbar-title>
+      <v-toolbar-title>
+        Register form - <span style="font-weight: 100;">Japan Travel HR </span>
+      </v-toolbar-title>
       <v-spacer></v-spacer>
       <img class="img-logo" draggable="false"  :src="appUrl + 'logo/logo.png'" alt="logo">
     </v-toolbar>
@@ -19,8 +21,8 @@
               :rules="rules.emailRules"
               v-model="user.email"
               label="E-mail"
-              :error-messages="emailAvailable ? '' : 'This email is not available.'"
-              @input="checkIfEmailAvailable"
+              :error-messages="emailAvailable ? '' : 'This E-mail is not available'"
+              @change="checkIfEmailAvailable"
               required
           ></v-text-field>
           <v-select
@@ -30,6 +32,7 @@
               item-text="name"
               item-value="id"
               label="Role"
+              data-cy="select-role"
               required
           ></v-select>
           <v-text-field
@@ -73,7 +76,13 @@
 
         <v-spacer></v-spacer>
 
-        <Button style="width: 130px" type="primary" :disabled="!valid" :loading="loading && !$vuetify.breakpoint.xsOnly" @click="submit">
+        <Button
+            style="width: 130px"
+            type="primary"
+            :disabled="!valid"
+            :loading="loading && !$vuetify.breakpoint.xsOnly"
+            @click="submit"
+        >
           <div v-if="!loading || $vuetify.breakpoint.xsOnly">
             <v-icon color="white" class="pr-1"> mdi-account-plus  </v-icon>
             Register
@@ -85,109 +94,109 @@
 </template>
 
 <script>
-  import rulesConfig from '../config/FormRules'
-  import { fileHasValidExtension } from "@/services/Functions";
+import rulesConfig from '../config/FormRules';
+import {fileHasValidExtension} from '@/services/Functions';
 
-  export default {
-    name: 'Register',
-    data: () => ({
-      valid: false,
-      loading: false,
-      rules: rulesConfig,
-      user: {
-        name: '',
-        email: '',
-        role_id: '',
-        password: '',
-        c_password: '',
-      },
-      roles: [],
-      image_file: null,
-      emailAvailable: true,
-      passwordType: true,
-      wrongExtensionImage: false,
-    }),
-    computed: {
-      passwordConfirmationRule() {
-        return () => (this.user.password === this.user.c_password) || 'Password must match'
-      },
-      appUrl() {
-        return this.$appUrl
+export default {
+  name: 'Register',
+  data: () => ({
+    valid: false,
+    loading: false,
+    rules: rulesConfig,
+    user: {
+      name: '',
+      email: '',
+      role_id: '',
+      password: '',
+      c_password: '',
+    },
+    roles: [],
+    image_file: null,
+    emailAvailable: true,
+    passwordType: true,
+    wrongExtensionImage: false,
+  }),
+  computed: {
+    passwordConfirmationRule() {
+      return () => (this.user.password === this.user.c_password) || 'Password must match';
+    },
+    appUrl() {
+      return this.$appUrl;
+    },
+  },
+  methods: {
+    checkIfEmailAvailable() {
+      this.$http.post('emailAvailable', {email: this.user.email}).then((response) => {
+        this.emailAvailable = response.data.data;
+      });
+    },
+
+    submit() {
+      if (!this.emailAvailable || this.wrongExtensionImage) {
+        return;
+      }
+
+      this.loading = true;
+
+      this.$auth.register({
+        params: this.user,
+      }).then((response) => {
+        this.$toasted.show('Registered successfully', {
+          icon: {
+            name: 'done_outline',
+            after: true,
+          },
+          theme: 'outline',
+          position: 'bottom-right',
+          duration: 2000,
+        });
+
+        if (this.image_file !== null) {
+          const formData = new FormData();
+
+          formData.append('file', this.image_file);
+          formData.append('userEmail', response.data.data.user.email);
+
+          this.$http.post('uploadImage', formData, {
+            headers: {
+              'Authorization': 'bearer ' + response.data.data.token,
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+        }
+      });
+    },
+
+    selectFile(file) {
+      if (!file) {
+        return;
+      }
+
+      if (fileHasValidExtension(file)) {
+        this.image_file = file;
+        this.wrongExtensionImage = false;
+      } else {
+        this.wrongExtensionImage = true;
       }
     },
-    methods: {
-      checkIfEmailAvailable() {
-        this.$http.post('emailAvailable', {email: this.user.email}).then((response) => {
-          this.emailAvailable = response.data.data;
-        })
-      },
 
-      submit() {
-        if (!this.emailAvailable || this.wrongExtensionImage) {
-          return
+    eventMethode(event) {
+      if (event.keyCode === 13) {
+        if (this.valid && !this.wrongExtensionImage) {
+          this.submit();
         }
-
-        this.loading = true;
-
-        this.$auth.register({
-          params: this.user,
-        }).then((response) => {
-          this.$toasted.show("Registered successfully", {
-            icon : {
-              name : 'done_outline',
-              after : true
-            },
-            theme: "outline",
-            position: "bottom-right",
-            duration : 2000
-          });
-
-          if (this.image_file !== null) {
-            let formData = new FormData();
-
-            formData.append("file", this.image_file);
-            formData.append("userEmail", response.data.data.user.email);
-
-            this.$http.post('uploadImage', formData, {
-              headers: {
-                'Authorization' : 'bearer ' + response.data.data.token,
-                'Content-Type' : 'multipart/form-data'
-              }
-            })
-          }
-        });
-      },
-
-      selectFile(file) {
-        if (!file) {
-          return;
-        }
-
-        if (fileHasValidExtension(file)) {
-          this.image_file = file;
-          this.wrongExtensionImage = false;
-        } else {
-          this.wrongExtensionImage = true;
-        }
-      },
-
-      eventMethode(event) {
-        if (event.keyCode === 13) {
-          if (this.valid && !this.wrongExtensionImage) {
-            this.submit()
-          }
-        }
-      },
+      }
     },
-    mounted() {
-      this.$http.get('roles').then((response) => {
-        this.roles = response.data.data
-      });
+  },
+  mounted() {
+    this.$http.get('roles').then((response) => {
+      this.roles = response.data.data;
+    });
 
-      window.addEventListener('keyup', this.eventMethode)
-    },
-    beforeDestroy() {
-      window.removeEventListener('keyup', this.eventMethode)
-    }
-  }
+    window.addEventListener('keyup', this.eventMethode);
+  },
+  beforeDestroy() {
+    window.removeEventListener('keyup', this.eventMethode);
+  },
+};
 </script>

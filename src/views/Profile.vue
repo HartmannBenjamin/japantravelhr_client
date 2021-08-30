@@ -12,7 +12,7 @@
             </v-list-item-avatar>
 
               <v-list-item-content style="width: 200px">
-              <v-list-item-title> {{ name }} ({{ $auth.user().role.name }}) </v-list-item-title>
+              <v-list-item-title data-test="name"> {{ name }} ({{ $auth.user().role.name }}) </v-list-item-title>
               <v-list-item-subtitle> {{ $auth.user().email }} </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
@@ -84,141 +84,141 @@
 </template>
 
 <script>
-  import rulesConfig from '../config/FormRules'
-  import { mapGetters } from 'vuex'
-  import { fileHasValidExtension } from '@/services/Functions'
+import rulesConfig from '../config/FormRules';
+import {mapGetters} from 'vuex';
+import {fileHasValidExtension} from '@/services/Functions';
 
-  export default {
-    name: 'Profile',
-    data() {
-      return {
-        valid: true,
-        loading: false,
-        rules: rulesConfig,
-        user: {
-          name: this.$auth.user().name,
-          password: '',
-          c_password: '',
-        },
-        roles: [],
-        passwordType: true,
-        image_file: null,
-        wrongExtensionImage: false,
-        image: null,
+export default {
+  name: 'Profile',
+  data() {
+    return {
+      valid: true,
+      loading: false,
+      rules: rulesConfig,
+      user: {
+        name: this.$auth.user().name,
+        password: '',
+        c_password: '',
+      },
+      roles: [],
+      passwordType: true,
+      image_file: null,
+      wrongExtensionImage: false,
+      image: null,
+    };
+  },
+  computed: {
+    ...mapGetters('UserInfos', {
+      image_url: 'image_url',
+      name: 'name',
+    }),
+
+    passwordRule() {
+      if (this.user.password) {
+        return (v) => (v && v.length < 21 && v.length > 3) || 'Password must be between 4 and 20 characters';
       }
+      return true;
     },
-    computed: {
-      ...mapGetters('UserInfos', {
-        image_url: 'image_url',
-        name: 'name',
-      }),
 
-      passwordRule() {
-        if (this.user.password) {
-          return (v) => (v && v.length < 21 && v.length > 3) || 'Password must be between 4 and 20 characters'
-        }
-        return true;
-      },
-
-      passwordConfirmationRule() {
-        if (this.user.password) {
-          return () => (this.user.password === this.user.c_password) || 'Password must match'
-        }
-        return true;
-      },
+    passwordConfirmationRule() {
+      if (this.user.password) {
+        return () => (this.user.password === this.user.c_password) || 'Password must match';
+      }
+      return true;
     },
-    methods: {
-      submit() {
-        if (!this.valid || this.wrongExtensionImage) {
-          return
-        }
+  },
+  methods: {
+    submit() {
+      if (!this.valid || this.wrongExtensionImage) {
+        return;
+      }
 
-        this.loading = true;
+      this.loading = true;
 
-        this.$http.put('update', this.user)
-            .then((response) => {
-              const user = response.data.data;
+      this.$http.put('update', this.user)
+          .then((response) => {
+            const user = response.data.data;
 
-              this.$store.dispatch('UserInfos/setUserName', user.name)
+            this.$store.dispatch('UserInfos/setUserName', user.name);
 
-              if (this.image_file !== null) {
-                let formData = new FormData();
+            if (this.image_file !== null) {
+              const formData = new FormData();
 
-                formData.append("file", this.image_file);
-                formData.append("userEmail", user.email);
+              formData.append('file', this.image_file);
+              formData.append('userEmail', user.email);
 
-                this.$http.post('uploadImage', formData, {
-                  headers: { 'Content-Type': 'multipart/form-data' }
-                }).then((res) => {
-                  this.loading = false
-                  this.resetForm()
-                  this.$store.dispatch('UserInfos/setUserImageUrl', res.data.data.image_url)
-                })
-              } else {
-                this.loading = false
-                this.resetForm()
-              }
-        })
-        .catch((error) => {
-          this.loading = false;
+              this.$http.post('uploadImage', formData, {
+                headers: {'Content-Type': 'multipart/form-data'},
+              }).then((res) => {
+                this.loading = false;
+                this.resetForm();
+                this.$store.dispatch('UserInfos/setUserImageUrl', res.data.data.image_url);
+              });
+            } else {
+              this.loading = false;
+              this.resetForm();
+            }
+          })
+          .catch((error) => {
+            this.loading = false;
 
-          this.$toasted.show(error, {
-            icon : {
-              name : 'error',
-              after : true
-            },
-            theme: "bubble",
-            position: "bottom-right",
-            duration : 2000
+            this.$toasted.show(error, {
+              icon: {
+                name: 'error',
+                after: true,
+              },
+              theme: 'bubble',
+              position: 'bottom-right',
+              duration: 2000,
+            });
           });
-        });
-      },
+    },
 
-      selectFile(file) {
-        if (!file) {
-          return;
-        }
+    selectFile(file) {
+      if (!file) {
+        return;
+      }
 
-        if (fileHasValidExtension(file)) {
-          this.image_file = file;
-          this.wrongExtensionImage = false;
-        } else {
-          this.wrongExtensionImage = true;
-        }
-      },
+      if (fileHasValidExtension(file)) {
+        this.image_file = file;
+        this.wrongExtensionImage = false;
+      } else {
+        this.wrongExtensionImage = true;
+      }
+    },
 
-      resetForm() {
-        this.$toasted.show("Information updated successfully", {
-          icon : {
-            name : 'done_outline',
-            after : true
-          },
-          theme: "outline",
-          position: "bottom-right",
-          duration : 2000
-        });
-        this.user.password = ''
-        this.user.c_password = ''
-        this.image = null
-      },
+    resetForm() {
+      this.$toasted.show('Information updated successfully', {
+        icon: {
+          name: 'done_outline',
+          after: true,
+        },
+        theme: 'outline',
+        position: 'bottom-right',
+        duration: 2000,
+      });
+      this.user.password = '';
+      this.user.c_password = '';
+      this.image = null;
+    },
 
-      eventMethode(event) {
-        if (event.keyCode === 13) {
-          if (this.valid) {
-            this.submit()
-          }
+    eventMethode(event) {
+      if (event.keyCode === 13) {
+        if (this.valid) {
+          this.submit();
         }
       }
     },
-    mounted() {
-      window.addEventListener('keyup', this.eventMethode)
+  },
+  mounted() {
+    window.addEventListener('keyup', this.eventMethode);
 
-      this.$http.get('roles').then((response) => {
-        this.roles = response.data.data
-      });
-    },
-    beforeDestroy() {
-      window.removeEventListener('keyup', this.eventMethode)
-    },
-  }
+    this.$http.get('roles').then((response) => {
+      this.roles = response.data.data;
+    });
+  },
+  beforeDestroy() {
+    window.removeEventListener('keyup', this.eventMethode);
+  },
+};
 </script>

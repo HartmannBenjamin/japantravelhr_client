@@ -24,13 +24,13 @@
 </template>
 
 <script>
-  export default {
-    name: 'LoadingBar',
-    props: {
-      message: {
-        type: String,
-        required: true,
-      }
-    }
-  }
+export default {
+  name: 'LoadingBar',
+  props: {
+    message: {
+      type: String,
+      required: true,
+    },
+  },
+};
 </script>

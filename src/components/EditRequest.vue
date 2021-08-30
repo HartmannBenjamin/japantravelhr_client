@@ -56,63 +56,63 @@
 </template>
 
 <script>
-  import rulesConfig from '../config/FormRules'
-  import { calculateLongestWord } from '@/services/Functions'
+import rulesConfig from '../config/FormRules';
+import {calculateLongestWord} from '@/services/Functions';
 
-  export default {
-    name: 'EditRequest',
-    props: {
-      requestToEdit: {
-        type: Object,
-        required: true,
-      },
-      fromRequestPage: {
-        type: Boolean,
-        default: false
-      }
+export default {
+  name: 'EditRequest',
+  props: {
+    requestToEdit: {
+      type: Object,
+      required: true,
     },
-    data() {
-      return {
-        dialog: true,
-        valid: false,
-        validSubject: true,
-        validDescription: true,
-        rules: rulesConfig,
-        errorMessageWord: 'All words need to be less than 25 characters.',
-        request: {
-          subject: this.requestToEdit.subject,
-          description: this.requestToEdit.description,
-        }
-      }
+    fromRequestPage: {
+      type: Boolean,
+      default: false,
     },
-    methods: {
-      getMaxLengthWord: calculateLongestWord,
-
-      hideEditRequestModal() {
-        this.$emit('hideEditRequestModal');
+  },
+  data() {
+    return {
+      dialog: true,
+      valid: false,
+      validSubject: true,
+      validDescription: true,
+      rules: rulesConfig,
+      errorMessageWord: 'All words need to be less than 25 characters.',
+      request: {
+        subject: this.requestToEdit.subject,
+        description: this.requestToEdit.description,
       },
+    };
+  },
+  methods: {
+    getMaxLengthWord: calculateLongestWord,
 
-      submit() {
-        this.loading = true;
+    hideEditRequestModal() {
+      this.$emit('hideEditRequestModal');
+    },
 
-        const requestInfosUpdated = this.request;
-        const requestId = this.requestToEdit.id;
-        const fromRequestPage = this.fromRequestPage;
+    submit() {
+      this.loading = true;
 
-        this.$store.dispatch('Requests/editRequest', { requestInfosUpdated, requestId, fromRequestPage });
+      const requestInfosUpdated = this.request;
+      const requestId = this.requestToEdit.id;
+      const fromRequestPage = this.fromRequestPage;
 
-        this.$toasted.show("Request updated successfully", {
-          icon : {
-            name : 'done_outline',
-            after : true
-          },
-          theme: "outline",
-          position: "bottom-right",
-          duration : 2000
-        });
+      this.$store.dispatch('Requests/editRequest', {requestInfosUpdated, requestId, fromRequestPage});
 
-        this.hideEditRequestModal();
-      }
-    }
-  }
+      this.$toasted.show('Request updated successfully', {
+        icon: {
+          name: 'done_outline',
+          after: true,
+        },
+        theme: 'outline',
+        position: 'bottom-right',
+        duration: 2000,
+      });
+
+      this.hideEditRequestModal();
+    },
+  },
+};
 </script>

@@ -1,13 +1,13 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import Requests from "./modules/requests";
-import UserInfos from "./modules/userInfos";
+import Vue from 'vue';
+import Vuex from 'vuex';
+import Requests from './modules/requests';
+import UserInfos from './modules/userInfos';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
     Requests,
-    UserInfos
-  }
-})
+    UserInfos,
+  },
+});

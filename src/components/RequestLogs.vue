@@ -31,17 +31,17 @@
 </template>
 
 <script>
-  import { formatDate } from "@/services/Functions";
+import {formatDate} from '@/services/Functions';
 
-  export default {
-    props: {
-      logs: {
-        type: Array,
-        required: true,
-      }
+export default {
+  props: {
+    logs: {
+      type: Array,
+      required: true,
     },
-    methods: {
-      getDate: formatDate
-    }
-  }
+  },
+  methods: {
+    getDate: formatDate,
+  },
+};
 </script>

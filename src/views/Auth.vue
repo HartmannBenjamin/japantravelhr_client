@@ -17,28 +17,28 @@
 </template>
 
 <script>
-  import Login from '@/components/Login';
-  import Register from '@/components/Register';
+import Login from '@/components/Login';
+import Register from '@/components/Register';
 
-  export default {
-    name: 'Auth',
-    components: {
-      Login,
-      Register
+export default {
+  name: 'Auth',
+  components: {
+    Login,
+    Register,
+  },
+  props: {
+    isRegisterPage: {
+      type: Boolean,
+      required: true,
     },
-    props: {
-      isRegisterPage: {
-        type: Boolean,
-        required: true,
-      }
+  },
+  mounted() {
+    this.$store.dispatch('Requests/setRequestsToNull');
+  },
+  computed: {
+    appUrl() {
+      return this.$appUrl;
     },
-    mounted() {
-      this.$store.dispatch('Requests/setRequestsToNull');
-    },
-    computed: {
-      appUrl() {
-        return this.$appUrl
-      }
-    }
-  }
+  },
+};
 </script>

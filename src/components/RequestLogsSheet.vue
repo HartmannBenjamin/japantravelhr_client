@@ -23,27 +23,27 @@
 </template>
 
 <script>
-  import RequestLogs from "@/components/RequestLogs";
+import RequestLogs from '@/components/RequestLogs';
 
-  export default {
-    components: {
-      RequestLogs
+export default {
+  components: {
+    RequestLogs,
+  },
+  props: {
+    request: {
+      type: Object,
+      required: true,
     },
-    props: {
-      request: {
-        type: Object,
-        required: true
-      }
+  },
+  data() {
+    return {
+      sheet: true,
+    };
+  },
+  methods: {
+    hideRequestLogsSheet() {
+      this.$emit('hideRequestLogsSheet');
     },
-    data() {
-      return {
-        sheet: true
-      }
-    },
-    methods: {
-      hideRequestLogsSheet() {
-        this.$emit('hideRequestLogsSheet');
-      }
-    }
-  }
+  },
+};
 </script>

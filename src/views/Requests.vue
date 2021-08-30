@@ -7,7 +7,7 @@
         </v-col>
 
         <v-card outlined color="transparent" class="mt-4">
-          <Button @click="createRequestModal = true" v-if="isUser">
+          <Button data-test="create-request" @click="createRequestModal = true" v-if="isUser">
             <v-icon class="pr-1"> mdi-plus </v-icon>
             Add new Request
           </Button>
@@ -79,6 +79,7 @@
               <td>
                 <v-chip
                     v-if="isHR"
+                    data-test="change-status"
                     :color="row.item.status.color_code"
                     @click="changeStatusDialog = true; requestToEdit = row.item"
                 >
@@ -204,101 +205,101 @@
 </template>
 
 <script>
-  import { mapActions, mapGetters } from 'vuex';
-  import moment from 'moment';
-  import MarqueeText from 'vue-marquee-text-component'
-  import CreateRequest from "@/components/CreateRequest";
-  import EditRequest from "@/components/EditRequest";
-  import ChangeStatusRequestDialog from "@/components/ChangeStatusRequestDialog";
-  import CompleteRequestDialog from "@/components/CompleteRequestDialog";
-  import RequestLogsSheet from "@/components/RequestLogsSheet";
-  import { isUser, isHR, isManager } from '@/services/UserService';
-  import { isOpen, isHRReviewed } from '@/services/RequestService';
+import {mapActions, mapGetters} from 'vuex';
+import moment from 'moment';
+import MarqueeText from 'vue-marquee-text-component';
+import CreateRequest from '@/components/CreateRequest';
+import EditRequest from '@/components/EditRequest';
+import ChangeStatusRequestDialog from '@/components/ChangeStatusRequestDialog';
+import CompleteRequestDialog from '@/components/CompleteRequestDialog';
+import RequestLogsSheet from '@/components/RequestLogsSheet';
+import {isUser, isHR, isManager} from '@/services/UserService';
+import {isOpen, isHRReviewed} from '@/services/RequestService';
 
-  export default {
-    name: 'Requests',
-    components: {
-      CreateRequest,
-      EditRequest,
-      ChangeStatusRequestDialog,
-      CompleteRequestDialog,
-      RequestLogsSheet,
-      MarqueeText
+export default {
+  name: 'Requests',
+  components: {
+    CreateRequest,
+    EditRequest,
+    ChangeStatusRequestDialog,
+    CompleteRequestDialog,
+    RequestLogsSheet,
+    MarqueeText,
+  },
+  data() {
+    return {
+      isUser: isUser(),
+      isHR: isHR(),
+      isManager: isManager(),
+      loading: this.requests !== null,
+      mouseOn: null,
+      requestToEdit: null,
+      createRequestModal: false,
+      editRequestModal: false,
+      completeRequestDialog: false,
+      requestLogSheet: false,
+      changeStatusDialog: false,
+      status: [],
+      sortBy: 'updated_at',
+      isDescending: true,
+      search: '',
+      headers: [
+        {text: 'Subject', value: 'subject'},
+        {text: 'Description', value: 'description'},
+        {text: 'Status', value: 'status.id'},
+        {text: 'Created By', value: 'created_by.name'},
+        {text: 'Date', value: 'updated_at'},
+        {text: 'Actions', sortable: false},
+      ],
+    };
+  },
+  methods: {
+    isOpen, isHRReviewed,
+
+    ...mapActions({
+      setRequests: 'Requests/setRequests',
+    }),
+
+    showRequest(id) {
+      this.$router.push({name: 'Request', params: {id: id}});
     },
-    data () {
-      return {
-        isUser: isUser(),
-        isHR: isHR(),
-        isManager: isManager(),
-        loading: this.requests !== null,
-        mouseOn: null,
-        requestToEdit: null,
-        createRequestModal: false,
-        editRequestModal:false,
-        completeRequestDialog: false,
-        requestLogSheet: false,
-        changeStatusDialog: false,
-        status: [],
-        sortBy: 'updated_at',
-        isDescending: true,
-        search: '',
-        headers: [
-          { text: 'Subject', value: 'subject' },
-          { text: 'Description', value: 'description' },
-          { text: 'Status', value: 'status.id' },
-          { text: 'Created By', value: 'created_by.name' },
-          { text: 'Date', value: 'updated_at' },
-          { text: 'Actions', sortable: false},
-        ],
+
+    getDateRequest(date) {
+      if (date === null) {
+        return 'None';
       }
+      return moment(date).utc().format('MMMM Do YYYY, h:mm a');
     },
-    methods: {
-      isOpen, isHRReviewed,
 
-      ...mapActions({
-        setRequests: 'Requests/setRequests',
-      }),
+    downloadPdf() {
+      this.$http.get(`request/pdf`, {responseType: 'blob'})
+          .then((response) => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
 
-      showRequest(id) {
-        this.$router.push({name: 'Request', params: {id: id} })
-      },
-
-      getDateRequest(date) {
-        if(date === null) {
-          return 'None'
-        }
-        return moment(date).utc().format('MMMM Do YYYY, h:mm a')
-      },
-
-      downloadPdf() {
-        this.$http.get(`request/pdf`, {responseType: 'blob'})
-            .then(response => {
-              const url = window.URL.createObjectURL(new Blob([response.data]));
-              const link = document.createElement('a');
-
-              link.href = url;
-              link.setAttribute('download', new Date().toLocaleDateString() + '_requests.pdf');
-              document.body.appendChild(link);
-              link.click();
-            })
-            .catch(error => {
-              console.log(error);
-            })
-      }
+            link.href = url;
+            link.setAttribute('download', new Date().toLocaleDateString() + '_requests.pdf');
+            document.body.appendChild(link);
+            link.click();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
     },
-    mounted() {
-      this.setRequests().then(() => {
-        this.loading = false;
-      });
+  },
+  mounted() {
+    this.setRequests().then(() => {
+      this.loading = false;
+    });
 
-      this.$http.get('request/status').then((response) => {
-        this.status = response.data.data;
-      })
-    },
-    computed: {
-      ...mapGetters('Requests', {
-        requests: 'requests',
-      }),
-    },
-  }
+    this.$http.get('request/status').then((response) => {
+      this.status = response.data.data;
+    });
+  },
+  computed: {
+    ...mapGetters('Requests', {
+      requests: 'requests',
+    }),
+  },
+};
 </script>

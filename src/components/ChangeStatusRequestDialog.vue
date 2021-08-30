@@ -15,6 +15,7 @@
               class="ma-3"
               v-for="statusRow in status"
               :key="statusRow.id"
+              :data-test="statusRow.name"
           >
             <v-chip
                 :small="$vuetify.breakpoint.xsOnly"
@@ -31,56 +32,56 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex';
+import {mapActions} from 'vuex';
 
-  export default {
-    name: 'ChangeStatusRequestDialog',
-    props: {
-      requestToEdit: {
-        type: Object,
-        required: true,
-      },
-      status: {
-        type: Array,
-        required: true,
-      },
-      fromRequestPage: {
-        type: Boolean,
-        default: false
-      }
+export default {
+  name: 'ChangeStatusRequestDialog',
+  props: {
+    requestToEdit: {
+      type: Object,
+      required: true,
     },
-    data() {
-      return {
-        dialog: true,
-      }
+    status: {
+      type: Array,
+      required: true,
     },
-    methods: {
-      ...mapActions({
-        updateStatusRequest: 'Requests/updateStatusRequest',
-      }),
+    fromRequestPage: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  data() {
+    return {
+      dialog: true,
+    };
+  },
+  methods: {
+    ...mapActions({
+      updateStatusRequest: 'Requests/updateStatusRequest',
+    }),
 
-      hideChangeStatusRequestDialog() {
-        this.$emit('hideChangeStatusRequestDialog');
-      },
+    hideChangeStatusRequestDialog() {
+      this.$emit('hideChangeStatusRequestDialog');
+    },
 
-      submit(status) {
-        const statusId = status.id;
-        const requestId = this.requestToEdit.id;
-        const fromRequestPage = this.fromRequestPage;
+    submit(status) {
+      const statusId = status.id;
+      const requestId = this.requestToEdit.id;
+      const fromRequestPage = this.fromRequestPage;
 
-        this.updateStatusRequest({statusId, requestId, fromRequestPage});
-        this.hideChangeStatusRequestDialog();
+      this.updateStatusRequest({statusId, requestId, fromRequestPage});
+      this.hideChangeStatusRequestDialog();
 
-        this.$toasted.show("The request status has been changed to: " + status.name, {
-          icon : {
-            name : 'done_outline',
-            after : true
-          },
-          theme: "outline",
-          position: "bottom-right",
-          duration : 2000
-        });
-      }
-    }
-  }
+      this.$toasted.show('The request status has been changed to: ' + status.name, {
+        icon: {
+          name: 'done_outline',
+          after: true,
+        },
+        theme: 'outline',
+        position: 'bottom-right',
+        duration: 2000,
+      });
+    },
+  },
+};
 </script>

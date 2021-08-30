@@ -15,27 +15,27 @@
 </style>
 
 <script>
-  import Nav from '@/components/Nav'
-  import Footer from '@/components/Footer'
+import Nav from '@/components/Nav';
+import Footer from '@/components/Footer';
 
-  export default {
-    name: 'App',
-    components: {
-      Nav,
-      Footer
+export default {
+  name: 'App',
+  components: {
+    Nav,
+    Footer,
+  },
+  computed: {
+    _check() {
+      return this.$auth.check();
     },
-    computed: {
-      _check() {
-        return this.$auth.check();
+  },
+  watch: {
+    _check() {
+      if (this.$auth.check()) {
+        this.$store.dispatch('UserInfos/setUserName', this.$auth.user().name);
+        this.$store.dispatch('UserInfos/setUserImageUrl', this.$auth.user().image_url);
       }
     },
-    watch: {
-      _check() {
-        if (this.$auth.check()) {
-          this.$store.dispatch('UserInfos/setUserName', this.$auth.user().name)
-          this.$store.dispatch('UserInfos/setUserImageUrl', this.$auth.user().image_url)
-        }
-      }
-    }
-  };
+  },
+};
 </script>

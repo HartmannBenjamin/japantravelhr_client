@@ -56,46 +56,46 @@
 </template>
 
 <script>
-  import rulesConfig from '../config/FormRules'
-  import { calculateLongestWord } from '@/services/Functions'
+import rulesConfig from '../config/FormRules';
+import {calculateLongestWord} from '@/services/Functions';
 
-  export default {
-    name: 'CreateRequest',
-    data() {
-      return {
-        dialog: true,
-        valid: false,
-        validDescription: true,
-        validSubject: true,
-        rules: rulesConfig,
-        errorMessageWord: 'All words need to be less than 25 characters.',
-        request: {
-          subject: '',
-          description: '',
-        }
-      }
-    },
-    methods: {
-      getMaxLengthWord: calculateLongestWord,
-
-      hideCreateRequestModal() {
-        this.$emit('hideCreateRequestModal');
+export default {
+  name: 'CreateRequest',
+  data() {
+    return {
+      dialog: true,
+      valid: false,
+      validDescription: true,
+      validSubject: true,
+      rules: rulesConfig,
+      errorMessageWord: 'All words need to be less than 25 characters.',
+      request: {
+        subject: '',
+        description: '',
       },
+    };
+  },
+  methods: {
+    getMaxLengthWord: calculateLongestWord,
 
-      submit() {
-        this.loading = true;
-        this.$store.dispatch('Requests/addRequest', this.request);
-        this.hideCreateRequestModal();
-        this.$toasted.show("New request added successfully", {
-          icon : {
-            name : 'done_outline',
-            after : true
-          },
-          theme: "outline",
-          position: "bottom-right",
-          duration : 2000
-        });
-      }
+    hideCreateRequestModal() {
+      this.$emit('hideCreateRequestModal');
     },
-  }
+
+    submit() {
+      this.loading = true;
+      this.$store.dispatch('Requests/addRequest', this.request);
+      this.hideCreateRequestModal();
+      this.$toasted.show('New request added successfully', {
+        icon: {
+          name: 'done_outline',
+          after: true,
+        },
+        theme: 'outline',
+        position: 'bottom-right',
+        duration: 2000,
+      });
+    },
+  },
+};
 </script>

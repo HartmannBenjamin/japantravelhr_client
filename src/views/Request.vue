@@ -14,7 +14,9 @@
         <div class="pa-6 pt-4">
           <v-row class="d-flex justify-space-between">
             <v-col class="mt-3">
-              <span style="position: relative" class="display-1"><b>Subject :</b> {{ request.subject }}</span>
+              <span style="position: relative" class="display-1">
+                <b>Subject :</b> {{ request.subject }}
+              </span>
 
               <v-tooltip right>
                 <template v-slot:activator="{ on, attrs }">
@@ -46,7 +48,9 @@
                   </v-list-item-avatar>
 
                   <v-list-item-content style="width: 200px">
-                    <v-list-item-title> {{ request.created_by.name }} ({{ request.created_by.role.name }}) </v-list-item-title>
+                    <v-list-item-title>
+                      {{ request.created_by.name }} ({{ request.created_by.role.name }})
+                    </v-list-item-title>
                     <v-list-item-subtitle> {{ request.created_by.email }} </v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
@@ -157,55 +161,55 @@
 </template>
 
 <script>
-  import { mapActions, mapGetters } from 'vuex';
-  import EditRequest from "@/components/EditRequest";
-  import ChangeStatusRequestDialog from "@/components/ChangeStatusRequestDialog";
-  import CompleteRequestDialog from "@/components/CompleteRequestDialog";
-  import RequestLogs from "@/components/RequestLogs";
-  import LoadingBar from "@/components/LoadingBar";
-  import { isUser, isHR, isManager } from '@/services/UserService';
-  import { isOpen, isHRReviewed } from '@/services/RequestService';
+import {mapActions, mapGetters} from 'vuex';
+import EditRequest from '@/components/EditRequest';
+import ChangeStatusRequestDialog from '@/components/ChangeStatusRequestDialog';
+import CompleteRequestDialog from '@/components/CompleteRequestDialog';
+import RequestLogs from '@/components/RequestLogs';
+import LoadingBar from '@/components/LoadingBar';
+import {isUser, isHR, isManager} from '@/services/UserService';
+import {isOpen, isHRReviewed} from '@/services/RequestService';
 
-  export default {
-    name: 'Request',
-    components: {
-      EditRequest,
-      ChangeStatusRequestDialog,
-      CompleteRequestDialog,
-      RequestLogs,
-      LoadingBar
-    },
-    data () {
-      return {
-        isUser: isUser(),
-        isHR: isHR(),
-        isManager: isManager(),
-        status: null,
-        editRequest: false,
-        requestToEdit: null,
-        editRequestModal:false,
-        completeRequestDialog: false,
-        changeStatusDialog: false,
-      }
-    },
-    methods: {
-      isOpen, isHRReviewed,
+export default {
+  name: 'Request',
+  components: {
+    EditRequest,
+    ChangeStatusRequestDialog,
+    CompleteRequestDialog,
+    RequestLogs,
+    LoadingBar,
+  },
+  data() {
+    return {
+      isUser: isUser(),
+      isHR: isHR(),
+      isManager: isManager(),
+      status: null,
+      editRequest: false,
+      requestToEdit: null,
+      editRequestModal: false,
+      completeRequestDialog: false,
+      changeStatusDialog: false,
+    };
+  },
+  methods: {
+    isOpen, isHRReviewed,
 
-      ...mapActions({
-        setRequest: 'Requests/setRequest'
-      }),
-    },
-    mounted() {
-      this.setRequest(this.$route.params.id);
+    ...mapActions({
+      setRequest: 'Requests/setRequest',
+    }),
+  },
+  mounted() {
+    this.setRequest(this.$route.params.id);
 
-      this.$http.get('request/status').then((response) => {
-        this.status = response.data.data;
-      })
-    },
-    computed: {
-      ...mapGetters('Requests', {
-        request: 'request',
-      }),
-    },
-  }
+    this.$http.get('request/status').then((response) => {
+      this.status = response.data.data;
+    });
+  },
+  computed: {
+    ...mapGetters('Requests', {
+      request: 'request',
+    }),
+  },
+};
 </script>

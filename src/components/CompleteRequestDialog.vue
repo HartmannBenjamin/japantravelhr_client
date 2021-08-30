@@ -33,6 +33,7 @@
             color="green darken-1"
             text
             @click="submit()"
+            data-test="complete-request"
         >
           Yes
         </v-btn>
@@ -42,57 +43,57 @@
 </template>
 
 <script>
-  import { mapActions } from "vuex";
-  import { isHRReviewed } from "@/services/RequestService";
+import {mapActions} from 'vuex';
+import {isHRReviewed} from '@/services/RequestService';
 
-  export default {
-    name: 'CompleteRequestDialog',
-    props: {
-      requestToEdit: {
-        type: Object,
-        required: true,
-      },
-      fromRequestPage: {
-        type: Boolean,
-        default: false
-      }
+export default {
+  name: 'CompleteRequestDialog',
+  props: {
+    requestToEdit: {
+      type: Object,
+      required: true,
     },
-    data() {
-      return {
-        dialog: true,
-        status: [],
-      }
+    fromRequestPage: {
+      type: Boolean,
+      default: false,
     },
-    methods: {
-      ...mapActions({
-        updateRequestToComplete: 'Requests/updateRequestToComplete',
-      }),
+  },
+  data() {
+    return {
+      dialog: true,
+      status: [],
+    };
+  },
+  methods: {
+    ...mapActions({
+      updateRequestToComplete: 'Requests/updateRequestToComplete',
+    }),
 
-      hideCompleteRequestDialog() {
-        this.$emit('hideCompleteRequestDialog');
-      },
+    hideCompleteRequestDialog() {
+      this.$emit('hideCompleteRequestDialog');
+    },
 
-      submit() {
-        if (!isHRReviewed(this.requestToEdit.status)) {
-          return;
-        }
-
-        const requestId = this.requestToEdit.id;
-        const fromRequestPage = this.fromRequestPage;
-
-        this.updateRequestToComplete({requestId,  fromRequestPage});
-        this.hideCompleteRequestDialog();
-
-        this.$toasted.show("Request has been completed", {
-          icon : {
-            name : 'done_outline',
-            after : true
-          },
-          theme: "outline",
-          position: "bottom-right",
-          duration : 2000
-        });
+    submit() {
+      if (!isHRReviewed(this.requestToEdit.status)) {
+        return;
       }
-    }
-  }
+
+      const requestId = this.requestToEdit.id;
+      const fromRequestPage = this.fromRequestPage;
+
+      this.updateRequestToComplete({requestId, fromRequestPage});
+      this.hideCompleteRequestDialog();
+
+      this.$toasted.show('Request has been completed', {
+        icon: {
+          name: 'done_outline',
+          after: true,
+        },
+        theme: 'outline',
+        position: 'bottom-right',
+        duration: 2000,
+      });
+    },
+  },
+};
 </script>
