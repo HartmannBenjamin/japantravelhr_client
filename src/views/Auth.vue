@@ -1,16 +1,12 @@
 <template>
   <v-app id="inspire">
-    <v-parallax
-        dark
-        style="height: 100%"
-        :src="appUrl + 'logo/banner.png'"
-    >
+    <v-parallax dark style="height: 100%" :src="appUrl + 'logo/banner.png'">
       <v-container fluid fill-height>
         <v-layout align-center justify-center>
           <v-flex xs12 sm8 md4>
-            <Register v-if="isRegisterPage"/>
-            <Login v-else/>
-          </v-flex></v-layout>
+            <Register v-if="isRegisterPage" />
+            <Login v-else /> </v-flex
+        ></v-layout>
       </v-container>
     </v-parallax>
   </v-app>

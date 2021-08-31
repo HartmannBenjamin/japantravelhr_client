@@ -1,10 +1,10 @@
 <template>
   <v-row justify="center">
     <v-dialog
-        v-model="dialog"
-        persistent
-        max-width="600px"
-        @click:outside="hideEditRequestModal"
+      v-model="dialog"
+      persistent
+      max-width="600px"
+      @click:outside="hideEditRequestModal"
     >
       <v-card>
         <v-card-title>
@@ -18,22 +18,25 @@
             <v-form v-model="valid" onSubmit="return false;">
               <v-col cols="12">
                 <v-text-field
-                    v-model="request.subject"
-                    :rules="rules.subjectRules"
-                    @input="validSubject = getMaxLengthWord(request.subject) < 25"
-                    :error-messages="validSubject ? '' : errorMessageWord"
-                    label="Subject"
-                    required
+                  v-model="request.subject"
+                  :rules="rules.subjectRules"
+                  @input="validSubject = getMaxLengthWord(request.subject) < 25"
+                  :error-messages="validSubject ? '' : errorMessageWord"
+                  label="Subject"
+                  required
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-textarea
-                    v-model="request.description"
-                    :rules="rules.descriptionRules"
-                    @input="validDescription = getMaxLengthWord(request.description) < 25"
-                    :error-messages="validDescription ? '' : errorMessageWord"
-                    label="Description"
-                    required
+                  v-model="request.description"
+                  :rules="rules.descriptionRules"
+                  @input="
+                    validDescription =
+                      getMaxLengthWord(request.description) < 25
+                  "
+                  :error-messages="validDescription ? '' : errorMessageWord"
+                  label="Description"
+                  required
                 ></v-textarea>
               </v-col>
             </v-form>
@@ -42,10 +45,10 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
-              :disabled="!valid || !validDescription|| !validSubject"
-              color="blue darken-1"
-              text
-              @click="submit"
+            :disabled="!valid || !validDescription || !validSubject"
+            color="blue darken-1"
+            text
+            @click="submit"
           >
             Submit
           </v-btn>
@@ -99,7 +102,11 @@ export default {
       const requestId = this.requestToEdit.id;
       const fromRequestPage = this.fromRequestPage;
 
-      this.$store.dispatch('Requests/editRequest', {requestInfosUpdated, requestId, fromRequestPage});
+      this.$store.dispatch('Requests/editRequest', {
+        requestInfosUpdated,
+        requestId,
+        fromRequestPage,
+      });
 
       this.$toasted.show('Request updated successfully', {
         icon: {

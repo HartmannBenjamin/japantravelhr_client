@@ -2,10 +2,10 @@
   <div>
     <div v-if="status && request" class="mb-5 mb-lg-0">
       <v-icon
-          class="ml-3 ml-lg-7 ml-xl-9 mt-md-16 mt-1"
-          style="position:absolute; top:0;"
-          @click="$router.replace({name: 'Requests'})"
-          size="40"
+        class="ml-3 ml-lg-7 ml-xl-9 mt-md-16 mt-1"
+        style="position: absolute; top: 0"
+        @click="$router.replace({ name: 'Requests' })"
+        size="40"
       >
         mdi-arrow-left-thin-circle-outline
       </v-icon>
@@ -21,16 +21,16 @@
               <v-tooltip right>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
-                      v-if="isUser && isOpen(request.status)"
-                      @click="editRequestModal = true"
-                      class="ml-3 mt-1"
-                      color="indigo"
-                      outlined
-                      absolute
-                      x-small
-                      fab
-                      v-bind="attrs"
-                      v-on="on"
+                    v-if="isUser && isOpen(request.status)"
+                    @click="editRequestModal = true"
+                    class="ml-3 mt-1"
+                    color="indigo"
+                    outlined
+                    absolute
+                    x-small
+                    fab
+                    v-bind="attrs"
+                    v-on="on"
                   >
                     <v-icon>mdi-pencil</v-icon>
                   </v-btn>
@@ -41,17 +41,28 @@
 
             <div class="mt-10 mt-md-0 ml-0 ml-md-9">
               Created by
-              <v-card outlined class="mt-1" :width="$vuetify.breakpoint.xsOnly ? 255 : 300">
+              <v-card
+                outlined
+                class="mt-1"
+                :width="$vuetify.breakpoint.xsOnly ? 255 : 300"
+              >
                 <v-list-item>
                   <v-list-item-avatar>
-                    <img :src="request.created_by.image_url" alt="profile picture">
+                    <img
+                      :src="request.created_by.image_url"
+                      alt="profile picture"
+                    />
                   </v-list-item-avatar>
 
                   <v-list-item-content style="width: 200px">
                     <v-list-item-title>
-                      {{ request.created_by.name }} ({{ request.created_by.role.name }})
+                      {{ request.created_by.name }} ({{
+                        request.created_by.role.name
+                      }})
                     </v-list-item-title>
-                    <v-list-item-subtitle> {{ request.created_by.email }} </v-list-item-subtitle>
+                    <v-list-item-subtitle>
+                      {{ request.created_by.email }}
+                    </v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
               </v-card>
@@ -60,7 +71,9 @@
 
           <divider></divider>
 
-          <p style="font-size: 20px" class="text-wrap"><b>Description : </b> {{ request.description }}</p>
+          <p style="font-size: 20px" class="text-wrap">
+            <b>Description : </b> {{ request.description }}
+          </p>
         </div>
       </v-container>
 
@@ -76,12 +89,12 @@
                 <v-tooltip right>
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
-                        v-if="isHR"
-                        rounded
-                        color="grey lighten-3"
-                        @click="changeStatusDialog = true"
-                        v-bind="attrs"
-                        v-on="on"
+                      v-if="isHR"
+                      rounded
+                      color="grey lighten-3"
+                      @click="changeStatusDialog = true"
+                      v-bind="attrs"
+                      v-on="on"
                     >
                       <v-icon> mdi-pencil </v-icon>
                     </v-btn>
@@ -92,13 +105,13 @@
                 <v-tooltip right>
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
-                        v-if="isManager && isHRReviewed(request.status)"
-                        rounded
-                        color="green lighten-3"
-                        dark
-                        @click="completeRequestDialog = true"
-                        v-bind="attrs"
-                        v-on="on"
+                      v-if="isManager && isHRReviewed(request.status)"
+                      rounded
+                      color="green lighten-3"
+                      dark
+                      @click="completeRequestDialog = true"
+                      v-bind="attrs"
+                      v-on="on"
                     >
                       <v-icon> mdi-check </v-icon>
                     </v-btn>
@@ -109,11 +122,18 @@
 
               <v-divider></v-divider>
 
-              <Steps :current="request.status.id - 1" direction="vertical" class="ma-9 pb-5">
-                <Step v-for="statusRow in status"
-                      :key="statusRow.id"
-                      :title="statusRow.name"
-                      :content="$vuetify.breakpoint.xsOnly ? '' :statusRow.description"
+              <Steps
+                :current="request.status.id - 1"
+                direction="vertical"
+                class="ma-9 pb-5"
+              >
+                <Step
+                  v-for="statusRow in status"
+                  :key="statusRow.id"
+                  :title="statusRow.name"
+                  :content="
+                    $vuetify.breakpoint.xsOnly ? '' : statusRow.description
+                  "
                 ></Step>
               </Steps>
             </v-card>
@@ -121,13 +141,11 @@
 
           <v-flex xs12 sm12 lg8 class="full-width">
             <v-card>
-              <v-card-title>
-                Logs
-              </v-card-title>
+              <v-card-title> Logs </v-card-title>
 
               <v-divider></v-divider>
 
-              <RequestLogs :logs="request.logs"/>
+              <RequestLogs :logs="request.logs" />
             </v-card>
           </v-flex>
         </v-layout>
@@ -137,25 +155,25 @@
     <LoadingBar v-else message="Getting request info..."></LoadingBar>
 
     <EditRequest
-        v-if="editRequestModal && isUser"
-        :requestToEdit="request"
-        fromRequestPage
-        @hideEditRequestModal="editRequestModal = false"
+      v-if="editRequestModal && isUser"
+      :requestToEdit="request"
+      fromRequestPage
+      @hideEditRequestModal="editRequestModal = false"
     />
 
     <ChangeStatusRequestDialog
-        v-if="changeStatusDialog && isHR"
-        :requestToEdit="request"
-        :status="status"
-        fromRequestPage
-        @hideChangeStatusRequestDialog="changeStatusDialog = false"
+      v-if="changeStatusDialog && isHR"
+      :requestToEdit="request"
+      :status="status"
+      fromRequestPage
+      @hideChangeStatusRequestDialog="changeStatusDialog = false"
     />
 
     <CompleteRequestDialog
-        v-if="completeRequestDialog && isManager"
-        :requestToEdit="request"
-        fromRequestPage
-        @hideCompleteRequestDialog="completeRequestDialog = false;"
+      v-if="completeRequestDialog && isManager"
+      :requestToEdit="request"
+      fromRequestPage
+      @hideCompleteRequestDialog="completeRequestDialog = false"
     />
   </div>
 </template>
@@ -193,7 +211,8 @@ export default {
     };
   },
   methods: {
-    isOpen, isHRReviewed,
+    isOpen,
+    isHRReviewed,
 
     ...mapActions({
       setRequest: 'Requests/setRequest',

@@ -2,66 +2,78 @@
   <v-card class="elevation-12">
     <v-toolbar dark color="grey">
       <v-toolbar-title>
-        Register form - <span style="font-weight: 100;">Japan Travel HR </span>
+        Register form - <span style="font-weight: 100">Japan Travel HR </span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <img class="img-logo" draggable="false"  :src="appUrl + 'logo/logo.png'" alt="logo">
+      <img
+        class="img-logo"
+        draggable="false"
+        :src="appUrl + 'logo/logo.png'"
+        alt="logo"
+      />
     </v-toolbar>
 
     <v-container>
       <v-form v-model="valid">
         <v-container>
           <v-text-field
-              :rules="rules.nameRules"
-              v-model="user.name"
-              label="Name"
-              required
+            :rules="rules.nameRules"
+            v-model="user.name"
+            label="Name"
+            required
           ></v-text-field>
           <v-text-field
-              :rules="rules.emailRules"
-              v-model="user.email"
-              label="E-mail"
-              :error-messages="emailAvailable ? '' : 'This E-mail is not available'"
-              @change="checkIfEmailAvailable"
-              required
+            :rules="rules.emailRules"
+            v-model="user.email"
+            label="E-mail"
+            :error-messages="
+              emailAvailable ? '' : 'This E-mail is not available'
+            "
+            @change="checkIfEmailAvailable"
+            required
           ></v-text-field>
           <v-select
-              v-model="user.role_id"
-              :rules="[v => !!v || 'Role is required']"
-              :items="roles"
-              item-text="name"
-              item-value="id"
-              label="Role"
-              data-cy="select-role"
-              required
+            v-model="user.role_id"
+            :rules="[(v) => !!v || 'Role is required']"
+            :items="roles"
+            item-text="name"
+            item-value="id"
+            label="Role"
+            data-cy="select-role"
+            required
           ></v-select>
           <v-text-field
-              :type="passwordType ? 'password' : 'text'"
-              :append-icon="passwordType ? 'mdi-eye-off' : 'mdi-eye'"
-              @click:append="passwordType = !passwordType"
-              v-model="user.password"
-              :rules="rules.passwordRules"
-              label="Password"
-              required
+            :type="passwordType ? 'password' : 'text'"
+            :append-icon="passwordType ? 'mdi-eye-off' : 'mdi-eye'"
+            @click:append="passwordType = !passwordType"
+            v-model="user.password"
+            :rules="rules.passwordRules"
+            label="Password"
+            required
           ></v-text-field>
           <v-text-field
-              :type="passwordType ? 'password' : 'text'"
-              v-model="user.c_password"
-              :rules="[passwordConfirmationRule, v => !!v || 'This field is required']"
-              :disabled="!user.password"
-              onCopy="return false"
-              onDrag="return false"
-              onDrop="return false"
-              onPaste="return false"
-              label="Confirm Password"
-              required
+            :type="passwordType ? 'password' : 'text'"
+            v-model="user.c_password"
+            :rules="[
+              passwordConfirmationRule,
+              (v) => !!v || 'This field is required',
+            ]"
+            :disabled="!user.password"
+            onCopy="return false"
+            onDrag="return false"
+            onDrop="return false"
+            onPaste="return false"
+            label="Confirm Password"
+            required
           ></v-text-field>
           <v-file-input
-              :rules="rules.imageRules"
-              @change="selectFile"
-              :error-messages="wrongExtensionImage ? 'This extension is not supported' : ''"
-              label="Choose your profile picture"
-              prepend-icon="mdi-camera"
+            :rules="rules.imageRules"
+            @change="selectFile"
+            :error-messages="
+              wrongExtensionImage ? 'This extension is not supported' : ''
+            "
+            label="Choose your profile picture"
+            prepend-icon="mdi-camera"
           ></v-file-input>
         </v-container>
       </v-form>
@@ -69,22 +81,22 @@
       <v-divider></v-divider>
 
       <v-card-actions class="pt-6">
-        <Button @click="$router.replace({name: 'Login'})">
-          <v-icon> mdi-account-arrow-right  </v-icon>
+        <Button @click="$router.replace({ name: 'Login' })">
+          <v-icon> mdi-account-arrow-right </v-icon>
           Login Page
         </Button>
 
         <v-spacer></v-spacer>
 
         <Button
-            style="width: 130px"
-            type="primary"
-            :disabled="!valid"
-            :loading="loading && !$vuetify.breakpoint.xsOnly"
-            @click="submit"
+          style="width: 130px"
+          type="primary"
+          :disabled="!valid"
+          :loading="loading && !$vuetify.breakpoint.xsOnly"
+          @click="submit"
         >
           <div v-if="!loading || $vuetify.breakpoint.xsOnly">
-            <v-icon color="white" class="pr-1"> mdi-account-plus  </v-icon>
+            <v-icon color="white" class="pr-1"> mdi-account-plus </v-icon>
             Register
           </div>
         </Button>
@@ -118,7 +130,8 @@ export default {
   }),
   computed: {
     passwordConfirmationRule() {
-      return () => (this.user.password === this.user.c_password) || 'Password must match';
+      return () =>
+        this.user.password === this.user.c_password || 'Password must match';
     },
     appUrl() {
       return this.$appUrl;
@@ -126,9 +139,11 @@ export default {
   },
   methods: {
     checkIfEmailAvailable() {
-      this.$http.post('emailAvailable', {email: this.user.email}).then((response) => {
-        this.emailAvailable = response.data.data;
-      });
+      this.$http
+          .post('emailAvailable', {email: this.user.email})
+          .then((response) => {
+            this.emailAvailable = response.data.data;
+          });
     },
 
     submit() {
@@ -138,33 +153,35 @@ export default {
 
       this.loading = true;
 
-      this.$auth.register({
-        params: this.user,
-      }).then((response) => {
-        this.$toasted.show('Registered successfully', {
-          icon: {
-            name: 'done_outline',
-            after: true,
-          },
-          theme: 'outline',
-          position: 'bottom-right',
-          duration: 2000,
-        });
+      this.$auth
+          .register({
+            params: this.user,
+          })
+          .then((response) => {
+            this.$toasted.show('Registered successfully', {
+              icon: {
+                name: 'done_outline',
+                after: true,
+              },
+              theme: 'outline',
+              position: 'bottom-right',
+              duration: 2000,
+            });
 
-        if (this.image_file !== null) {
-          const formData = new FormData();
+            if (this.image_file !== null) {
+              const formData = new FormData();
 
-          formData.append('file', this.image_file);
-          formData.append('userEmail', response.data.data.user.email);
+              formData.append('file', this.image_file);
+              formData.append('userEmail', response.data.data.user.email);
 
-          this.$http.post('uploadImage', formData, {
-            headers: {
-              'Authorization': 'bearer ' + response.data.data.token,
-              'Content-Type': 'multipart/form-data',
-            },
+              this.$http.post('uploadImage', formData, {
+                headers: {
+                  'Authorization': 'bearer ' + response.data.data.token,
+                  'Content-Type': 'multipart/form-data',
+                },
+              });
+            }
           });
-        }
-      });
     },
 
     selectFile(file) {

@@ -34,7 +34,9 @@ function formatDate(date) {
  * @return {boolean}
  */
 function fileHasValidExtension(file) {
-  return ['jpg', 'png', 'jpeg'].some((x) => x.toLowerCase() === file.name.split('.').pop().toLowerCase());
+  return ['jpg', 'png', 'jpeg'].some(
+      (x) => x.toLowerCase() === file.name.split('.').pop().toLowerCase(),
+  );
 }
 
 export {calculateLongestWord, formatDate, fileHasValidExtension};

@@ -1,7 +1,7 @@
 <template>
   <div>
     <pdf v-if="projectFile" :src="projectFile"></pdf>
-    <LoadingBar v-else message="Getting project file..."/>
+    <LoadingBar v-else message="Getting project file..." />
   </div>
 </template>
 

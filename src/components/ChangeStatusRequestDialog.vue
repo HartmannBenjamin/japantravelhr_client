@@ -1,9 +1,9 @@
 <template>
   <v-dialog
-      v-model="dialog"
-      v-if="requestToEdit"
-      @click:outside="hideChangeStatusRequestDialog"
-      max-width="500"
+    v-model="dialog"
+    v-if="requestToEdit"
+    @click:outside="hideChangeStatusRequestDialog"
+    max-width="500"
   >
     <v-card>
       <v-card-title class="text-h5 justify-center">
@@ -11,21 +11,21 @@
       </v-card-title>
 
       <v-card-actions class="justify-center">
-          <span
-              class="ma-3"
-              v-for="statusRow in status"
-              :key="statusRow.id"
-              :data-test="statusRow.name"
+        <span
+          class="ma-3"
+          v-for="statusRow in status"
+          :key="statusRow.id"
+          :data-test="statusRow.name"
+        >
+          <v-chip
+            :small="$vuetify.breakpoint.xsOnly"
+            :color="statusRow.color_code"
+            @click="submit(statusRow)"
+            :disabled="requestToEdit.status.id === statusRow.id"
           >
-            <v-chip
-                :small="$vuetify.breakpoint.xsOnly"
-                :color="statusRow.color_code"
-                @click="submit(statusRow)"
-                :disabled="requestToEdit.status.id === statusRow.id"
-            >
-              {{ statusRow.name }}
-            </v-chip>
-          </span>
+            {{ statusRow.name }}
+          </v-chip>
+        </span>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -72,15 +72,18 @@ export default {
       this.updateStatusRequest({statusId, requestId, fromRequestPage});
       this.hideChangeStatusRequestDialog();
 
-      this.$toasted.show('The request status has been changed to: ' + status.name, {
-        icon: {
-          name: 'done_outline',
-          after: true,
-        },
-        theme: 'outline',
-        position: 'bottom-right',
-        duration: 2000,
-      });
+      this.$toasted.show(
+          'The request status has been changed to: ' + status.name,
+          {
+            icon: {
+              name: 'done_outline',
+              after: true,
+            },
+            theme: 'outline',
+            position: 'bottom-right',
+            duration: 2000,
+          },
+      );
     },
   },
 };

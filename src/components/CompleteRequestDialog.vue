@@ -1,9 +1,9 @@
 <template>
   <v-dialog
-      v-model="dialog"
-      v-if="requestToEdit"
-      @click:outside="hideCompleteRequestDialog"
-      max-width="600"
+    v-model="dialog"
+    v-if="requestToEdit"
+    @click:outside="hideCompleteRequestDialog"
+    max-width="600"
   >
     <v-card>
       <v-card-title class="text-h5 pb-4">
@@ -14,26 +14,22 @@
 
       <v-card-text>
         <b> Subject: </b> {{ requestToEdit.subject }}
-        <br>
+        <br />
         <b> Description: </b> {{ requestToEdit.description }}
       </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>
 
-        <v-btn
-            color="green darken-1"
-            text
-            @click="hideCompleteRequestDialog"
-        >
+        <v-btn color="green darken-1" text @click="hideCompleteRequestDialog">
           No
         </v-btn>
 
         <v-btn
-            color="green darken-1"
-            text
-            @click="submit()"
-            data-test="complete-request"
+          color="green darken-1"
+          text
+          @click="submit()"
+          data-test="complete-request"
         >
           Yes
         </v-btn>

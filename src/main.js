@@ -15,8 +15,10 @@ import '../node_modules/material-icons/iconfont/material-icons.css';
 import 'es6-promise/auto';
 import moment from 'moment';
 
-const appUrl = process.env.NODE_ENV === 'development' ?
-  'http://127.0.0.1:8000/' : 'https://api.benjamin-hartmann.fr/';
+const appUrl =
+  process.env.NODE_ENV === 'development' ?
+    'http://127.0.0.1:8000/' :
+    'https://api.benjamin-hartmann.fr/';
 
 Axios.defaults.headers.version = '1.0';
 Axios.defaults.baseURL = appUrl + 'api';

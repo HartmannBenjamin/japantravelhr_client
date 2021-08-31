@@ -1,34 +1,34 @@
 .img-logo {
-    width: 100px;
-    height: 40px;
-    border-radius: 4px;
+  width: 100px;
+  height: 40px;
+  border-radius: 4px;
 }
 
 @media only screen and (max-width: 1400px) {
-    .logs-content {
-        font-size: 10px;
-    }
+  .logs-content {
+    font-size: 10px;
+  }
 }
 
 @media only screen and (max-width: 850px) {
-    .logs-content {
-        font-size: 9px;
-    }
+  .logs-content {
+    font-size: 9px;
+  }
 }
 
 .disconnect-btn {
-    position: absolute;
-    width: 100%;
-    bottom: 0;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
 }
 
 .background-container {
-    width: 85%;
-    background-color: rgb(243,246,246);
-    border-radius: 2px;
+  width: 85%;
+  background-color: rgb(243, 246, 246);
+  border-radius: 2px;
 }
 
 .background-container--no-color {
-    width: 85%;
-    border-radius: 2px;
+  width: 85%;
+  border-radius: 2px;
 }

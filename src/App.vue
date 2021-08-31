@@ -1,17 +1,17 @@
 <template>
   <v-app>
-    <Nav v-if="$auth.check()"/>
+    <Nav v-if="$auth.check()" />
 
     <v-main>
-      <router-view/>
+      <router-view />
     </v-main>
 
-    <Footer v-if="$auth.check()"/>
+    <Footer v-if="$auth.check()" />
   </v-app>
 </template>
 
 <style>
-  @import './assets/app.css';
+@import "./assets/app.css";
 </style>
 
 <script>
@@ -33,7 +33,10 @@ export default {
     _check() {
       if (this.$auth.check()) {
         this.$store.dispatch('UserInfos/setUserName', this.$auth.user().name);
-        this.$store.dispatch('UserInfos/setUserImageUrl', this.$auth.user().image_url);
+        this.$store.dispatch(
+            'UserInfos/setUserImageUrl',
+            this.$auth.user().image_url,
+        );
       }
     },
   },

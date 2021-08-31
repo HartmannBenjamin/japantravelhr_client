@@ -12,7 +12,8 @@ const getters = {
 
 const actions = {
   setRequest(store, requestId) {
-    axios.get(`request/get/` + requestId)
+    axios
+        .get('request/get/' + requestId)
         .then((response) => {
           store.commit('setRequest', response.data.data);
         })
@@ -22,7 +23,7 @@ const actions = {
   },
   async setRequests(store) {
     try {
-      const response = await axios.get(`request/all`);
+      const response = await axios.get('request/all');
       store.commit('setRequests', response.data.data);
     } catch (e) {
       console.log(e);
@@ -33,7 +34,7 @@ const actions = {
   },
   addRequest(store, request) {
     axios
-        .post(`request/create`, request)
+        .post('request/create', request)
         .then((response) => {
           store.commit('addRequest', response.data.data);
         })
@@ -42,7 +43,8 @@ const actions = {
         });
   },
   editRequest: (store, {requestInfosUpdated, requestId, fromRequestPage}) => {
-    axios.put(`request/edit/` + requestId, requestInfosUpdated)
+    axios
+        .put('request/edit/' + requestId, requestInfosUpdated)
         .then((response) => {
           if (fromRequestPage) {
             store.commit('editRequestSolo', response.data.data);
@@ -55,7 +57,8 @@ const actions = {
         });
   },
   updateStatusRequest: (store, {statusId, requestId, fromRequestPage}) => {
-    axios.put(`request/changeStatus/` + requestId, {status_id: statusId})
+    axios
+        .put('request/changeStatus/' + requestId, {status_id: statusId})
         .then((response) => {
           if (fromRequestPage) {
             store.commit('editRequestSolo', response.data.data);
@@ -68,7 +71,8 @@ const actions = {
         });
   },
   updateRequestToComplete: (store, {requestId, fromRequestPage}) => {
-    axios.put(`request/complete/` + requestId)
+    axios
+        .put('request/complete/' + requestId)
         .then((response) => {
           if (fromRequestPage) {
             store.commit('editRequestSolo', response.data.data);

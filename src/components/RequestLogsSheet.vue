@@ -1,21 +1,11 @@
 <template>
   <v-col>
-    <v-bottom-sheet
-        v-model="sheet"
-        inset
-        @click:outside="hideRequestLogsSheet"
-    >
-      <v-sheet
-          class="text-center"
-          height="361"
-      >
-        <p class="display-1 pt-6 pb-2"> Request Logs </p>
+    <v-bottom-sheet v-model="sheet" inset @click:outside="hideRequestLogsSheet">
+      <v-sheet class="text-center" height="361">
+        <p class="display-1 pt-6 pb-2">Request Logs</p>
 
-        <v-card
-            max-width="1100"
-            class="mx-auto mt-4"
-        >
-          <RequestLogs :logs="request.logs"/>
+        <v-card max-width="1100" class="mx-auto mt-4">
+          <RequestLogs :logs="request.logs" />
         </v-card>
       </v-sheet>
     </v-bottom-sheet>
