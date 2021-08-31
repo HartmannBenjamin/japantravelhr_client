@@ -31,6 +31,7 @@
                     fab
                     v-bind="attrs"
                     v-on="on"
+                    data-test="edit-request"
                   >
                     <v-icon>mdi-pencil</v-icon>
                   </v-btn>
@@ -95,6 +96,7 @@
                       @click="changeStatusDialog = true"
                       v-bind="attrs"
                       v-on="on"
+                      data-test="change-status-request"
                     >
                       <v-icon> mdi-pencil </v-icon>
                     </v-btn>
@@ -112,6 +114,7 @@
                       @click="completeRequestDialog = true"
                       v-bind="attrs"
                       v-on="on"
+                      data-test="show-complete-request"
                     >
                       <v-icon> mdi-check </v-icon>
                     </v-btn>

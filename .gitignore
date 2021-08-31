@@ -1,7 +1,10 @@
 .DS_Store
 node_modules
 /dist
-
+/cypress/screenshots
+/cypress/videos
+/cypress/integration/1-getting-started
+/cypress/integration/2-advanced-examples
 
 # local env files
 .env.local

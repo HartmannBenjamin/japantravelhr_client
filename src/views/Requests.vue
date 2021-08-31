@@ -81,7 +81,7 @@
               <td>
                 <v-chip
                   v-if="isHR"
-                  data-test="change-status"
+                  data-test="show-change-status-request"
                   :color="row.item.status.color_code"
                   @click="
                     changeStatusDialog = true;
@@ -119,6 +119,7 @@
                       @click="showRequest(row.item.id)"
                       v-bind="attrs"
                       v-on="on"
+                      data-test="show-request"
                     >
                       <v-icon>mdi-eye</v-icon>
                     </v-btn>
@@ -135,6 +136,7 @@
                         requestLogSheet = true;
                         requestToEdit = row.item;
                       "
+                      data-test="show-logs"
                       v-bind="attrs"
                       v-on="on"
                     >
@@ -144,18 +146,18 @@
                   <span> Logs </span>
                 </v-tooltip>
 
-                <v-tooltip right>
+                <v-tooltip right v-if="isUser && isOpen(row.item.status)">
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
-                      icon
-                      v-if="isUser && isOpen(row.item.status)"
-                      color="blue"
-                      @click="
+                        icon
+                        color="blue"
+                        @click="
                         requestToEdit = row.item;
                         editRequestModal = true;
                       "
-                      v-bind="attrs"
-                      v-on="on"
+                        v-bind="attrs"
+                        v-on="on"
+                        data-test="edit-request"
                     >
                       <v-icon>mdi-pencil</v-icon>
                     </v-btn>
@@ -163,11 +165,13 @@
                   <span> Edit </span>
                 </v-tooltip>
 
-                <v-tooltip right>
+                <v-tooltip
+                  right
+                  v-if="isManager && isHRReviewed(row.item.status)"
+                >
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
                       icon
-                      v-if="isManager && isHRReviewed(row.item.status)"
                       color="blue"
                       @click="
                         completeRequestDialog = true;
@@ -175,8 +179,9 @@
                       "
                       v-bind="attrs"
                       v-on="on"
+                      data-test="show-complete-request"
                     >
-                      <v-icon>mdi-check</v-icon>
+                      <v-icon> mdi-check </v-icon>
                     </v-btn>
                   </template>
                   <span> Complete </span>
