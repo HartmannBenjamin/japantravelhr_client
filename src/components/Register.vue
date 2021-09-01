@@ -26,9 +26,7 @@
             :rules="rules.emailRules"
             v-model="user.email"
             label="E-mail"
-            :error-messages="
-              emailAvailable ? '' : 'This E-mail is not available'
-            "
+            :error-messages="emailAvailable ? '' : message.emailNotAvailable"
             @change="checkIfEmailAvailable"
             required
           ></v-text-field>
@@ -56,7 +54,7 @@
             v-model="user.c_password"
             :rules="[
               passwordConfirmationRule,
-              (v) => !!v || 'This field is required',
+              (v) => !!v || message.fieldRequired,
             ]"
             :disabled="!user.password"
             onCopy="return false"
@@ -70,7 +68,7 @@
             :rules="rules.imageRules"
             @change="selectFile"
             :error-messages="
-              wrongExtensionImage ? 'This extension is not supported' : ''
+              wrongExtensionImage ? message.imageExtensionNotSupported : ''
             "
             label="Choose your profile picture"
             prepend-icon="mdi-camera"
@@ -106,12 +104,15 @@
 </template>
 
 <script>
+import notifications from '../config/Notifications';
 import rulesConfig from '../config/FormRules';
+import message from '../config/Messages';
 import {fileHasValidExtension} from '@/services/Functions';
 
 export default {
   name: 'Register',
   data: () => ({
+    message: message,
     valid: false,
     loading: false,
     rules: rulesConfig,
@@ -157,31 +158,47 @@ export default {
           .register({
             params: this.user,
           })
-          .then((response) => {
-            this.$toasted.show('Registered successfully', {
-              icon: {
-                name: 'done_outline',
-                after: true,
+          .then(
+              (response) => {
+                this.$toasted.show(notifications.userRegistered, {
+                  icon: {
+                    name: 'done_outline',
+                    after: true,
+                  },
+                  theme: 'outline',
+                  position: 'bottom-right',
+                  duration: 2000,
+                });
+
+                if (this.image_file !== null) {
+                  const formData = new FormData();
+
+                  formData.append('file', this.image_file);
+                  formData.append('userEmail', response.data.data.user.email);
+
+                  this.$http.post('uploadImage', formData, {
+                    headers: {
+                      'Authorization': 'bearer ' + response.data.data.token,
+                      'Content-Type': 'multipart/form-data',
+                    },
+                  });
+                }
               },
-              theme: 'outline',
-              position: 'bottom-right',
-              duration: 2000,
-            });
+              (error) => {
+                console.log(error);
 
-            if (this.image_file !== null) {
-              const formData = new FormData();
-
-              formData.append('file', this.image_file);
-              formData.append('userEmail', response.data.data.user.email);
-
-              this.$http.post('uploadImage', formData, {
-                headers: {
-                  'Authorization': 'bearer ' + response.data.data.token,
-                  'Content-Type': 'multipart/form-data',
-                },
-              });
-            }
-          });
+                this.$toasted.show(error, {
+                  icon: {
+                    name: 'error',
+                    after: true,
+                  },
+                  theme: 'bubble',
+                  position: 'bottom-right',
+                  duration: 2000,
+                });
+                this.loading = false;
+              },
+          );
     },
 
     selectFile(file) {

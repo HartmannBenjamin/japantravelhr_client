@@ -60,6 +60,7 @@
 
 <script>
 import rulesConfig from '../config/FormRules';
+import message from '../config/Messages';
 import {calculateLongestWord} from '@/services/Functions';
 
 export default {
@@ -71,7 +72,7 @@ export default {
       validDescription: true,
       validSubject: true,
       rules: rulesConfig,
-      errorMessageWord: 'All words need to be less than 25 characters.',
+      errorMessageWord: message.wordsTooLong,
       request: {
         subject: '',
         description: '',
@@ -89,15 +90,6 @@ export default {
       this.loading = true;
       this.$store.dispatch('Requests/addRequest', this.request);
       this.hideCreateRequestModal();
-      this.$toasted.show('New request added successfully', {
-        icon: {
-          name: 'done_outline',
-          after: true,
-        },
-        theme: 'outline',
-        position: 'bottom-right',
-        duration: 2000,
-      });
     },
   },
 };

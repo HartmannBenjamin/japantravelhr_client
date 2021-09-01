@@ -60,6 +60,7 @@
 
 <script>
 import rulesConfig from '../config/FormRules';
+import message from '@/config/Messages';
 import {calculateLongestWord} from '@/services/Functions';
 
 export default {
@@ -81,7 +82,7 @@ export default {
       validSubject: true,
       validDescription: true,
       rules: rulesConfig,
-      errorMessageWord: 'All words need to be less than 25 characters.',
+      errorMessageWord: message.wordsTooLong,
       request: {
         subject: this.requestToEdit.subject,
         description: this.requestToEdit.description,
@@ -106,16 +107,6 @@ export default {
         requestInfosUpdated,
         requestId,
         fromRequestPage,
-      });
-
-      this.$toasted.show('Request updated successfully', {
-        icon: {
-          name: 'done_outline',
-          after: true,
-        },
-        theme: 'outline',
-        position: 'bottom-right',
-        duration: 2000,
       });
 
       this.hideEditRequestModal();

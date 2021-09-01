@@ -7,7 +7,7 @@ import VueRouter from 'vue-router';
 import Axios from 'axios';
 import VueAxios from 'vue-axios';
 import VueAuth from '@websanova/vue-auth';
-import auth from './resources/auth';
+import auth from './config/Auth';
 import ViewUI from 'view-design';
 import Toasted from 'vue-toasted';
 import 'view-design/dist/styles/iview.css';

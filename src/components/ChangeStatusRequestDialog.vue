@@ -65,25 +65,11 @@ export default {
     },
 
     submit(status) {
-      const statusId = status.id;
       const requestId = this.requestToEdit.id;
       const fromRequestPage = this.fromRequestPage;
 
-      this.updateStatusRequest({statusId, requestId, fromRequestPage});
+      this.updateStatusRequest({status, requestId, fromRequestPage});
       this.hideChangeStatusRequestDialog();
-
-      this.$toasted.show(
-          'The request status has been changed to: ' + status.name,
-          {
-            icon: {
-              name: 'done_outline',
-              after: true,
-            },
-            theme: 'outline',
-            position: 'bottom-right',
-            duration: 2000,
-          },
-      );
     },
   },
 };

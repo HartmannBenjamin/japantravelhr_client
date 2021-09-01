@@ -15,7 +15,7 @@
           <v-row class="d-flex justify-space-between">
             <v-col class="mt-3">
               <span style="position: relative" class="display-1">
-                <b>Subject :</b> {{ request.subject }}
+                <strong>Subject :</strong> {{ request.subject }}
               </span>
 
               <v-tooltip right>
@@ -73,7 +73,7 @@
           <divider></divider>
 
           <p style="font-size: 20px" class="text-wrap">
-            <b>Description : </b> {{ request.description }}
+            <strong>Description : </strong> {{ request.description }}
           </p>
         </div>
       </v-container>

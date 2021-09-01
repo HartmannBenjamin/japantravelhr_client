@@ -58,7 +58,7 @@
                       :duration="row.item.subject.length"
                       :paused="mouseOn !== row.item.id"
                     >
-                      <b>{{ row.item.subject }}</b>
+                      <strong>{{ row.item.subject }}</strong>
                     </marquee-text>
                   </v-list-item-title>
                 </v-list-item>
@@ -149,15 +149,15 @@
                 <v-tooltip right v-if="isUser && isOpen(row.item.status)">
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
-                        icon
-                        color="blue"
-                        @click="
+                      icon
+                      color="blue"
+                      @click="
                         requestToEdit = row.item;
                         editRequestModal = true;
                       "
-                        v-bind="attrs"
-                        v-on="on"
-                        data-test="edit-request"
+                      v-bind="attrs"
+                      v-on="on"
+                      data-test="edit-request"
                     >
                       <v-icon>mdi-pencil</v-icon>
                     </v-btn>
@@ -282,7 +282,7 @@ export default {
         {text: 'Status', value: 'status.id'},
         {text: 'Created By', value: 'created_by.name'},
         {text: 'Date', value: 'updated_at'},
-        {text: 'Actions', sortable: false},
+        {text: '', sortable: false},
       ],
     };
   },

@@ -1,0 +1,18 @@
+export default {
+  nameRequired: 'Name is required',
+  nameBetween: 'Name must be between 4 and 20 characters',
+  emailRequired: 'E-mail is required',
+  emailBetween: 'Email must be between 4 and 20 characters',
+  emailValid: 'E-mail must be valid',
+  passwordRequired: 'Password is required',
+  passwordBetween: 'Password must be between 4 and 20 characters',
+  imageSize: 'Avatar size should be less than 2 Mb',
+  subjectRequired: 'Subject is required',
+  subjectBetween: 'Subject must be between 4 and 60 characters',
+  descriptionRequired: 'Description is required',
+  descriptionBetween: 'Description must be between 20 and 500 characters',
+  wordsTooLong: 'All words need to be less than 25 characters',
+  emailNotAvailable: 'This E-mail is not available',
+  imageExtensionNotSupported: 'This extension is not supported',
+  fieldRequired: 'This field is required',
+};

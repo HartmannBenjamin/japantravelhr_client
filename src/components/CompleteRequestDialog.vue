@@ -13,9 +13,9 @@
       <v-divider class="mb-10"></v-divider>
 
       <v-card-text>
-        <b> Subject: </b> {{ requestToEdit.subject }}
+        <strong> Subject: </strong> {{ requestToEdit.subject }}
         <br />
-        <b> Description: </b> {{ requestToEdit.description }}
+        <strong> Description: </strong> {{ requestToEdit.description }}
       </v-card-text>
 
       <v-card-actions>
@@ -79,16 +79,6 @@ export default {
 
       this.updateRequestToComplete({requestId, fromRequestPage});
       this.hideCompleteRequestDialog();
-
-      this.$toasted.show('Request has been completed', {
-        icon: {
-          name: 'done_outline',
-          after: true,
-        },
-        theme: 'outline',
-        position: 'bottom-right',
-        duration: 2000,
-      });
     },
   },
 };

@@ -151,6 +151,7 @@
 </template>
 
 <script>
+import notifications from '../config/Notifications';
 import {mapGetters} from 'vuex';
 import MarqueeText from 'vue-marquee-text-component';
 
@@ -173,17 +174,30 @@ export default {
   },
   methods: {
     logOut() {
-      this.$auth.logout();
-
-      this.$toasted.show('Log out successful', {
-        icon: {
-          name: 'exit_to_app',
-          after: true,
-        },
-        theme: 'outline',
-        position: 'bottom-right',
-        duration: 2000,
-      });
+      this.$auth
+          .logout({})
+          .then(() => {
+            this.$toasted.show(notifications.userLogout, {
+              icon: {
+                name: 'exit_to_app',
+                after: true,
+              },
+              theme: 'outline',
+              position: 'bottom-right',
+              duration: 2000,
+            });
+          })
+          .catch((error) => {
+            this.$toasted.show(error, {
+              icon: {
+                name: 'error',
+                after: true,
+              },
+              theme: 'bubble',
+              position: 'bottom-right',
+              duration: 2000,
+            });
+          });
     },
   },
 };

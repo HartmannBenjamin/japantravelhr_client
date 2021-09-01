@@ -70,7 +70,7 @@
             :rules="rules.imageRules"
             @change="selectFile"
             :error-messages="
-              wrongExtensionImage ? 'This extension is not supported' : ''
+              wrongExtensionImage ? message.imageExtensionNotSupported : ''
             "
             label="Change your profile picture"
             prepend-icon="mdi-camera"
@@ -96,7 +96,9 @@
 </template>
 
 <script>
+import notifications from '../config/Notifications';
 import rulesConfig from '../config/FormRules';
+import message from '../config/Messages';
 import {mapGetters} from 'vuex';
 import {fileHasValidExtension} from '@/services/Functions';
 
@@ -104,6 +106,7 @@ export default {
   name: 'Profile',
   data() {
     return {
+      message: message,
       valid: true,
       loading: false,
       rules: rulesConfig,
@@ -128,8 +131,7 @@ export default {
     passwordRule() {
       if (this.user.password) {
         return (v) =>
-          (v && v.length < 21 && v.length > 3) ||
-          'Password must be between 4 and 20 characters';
+          (v && v.length < 21 && v.length > 3) || message.passwordBetween;
       }
       return true;
     },
@@ -209,7 +211,7 @@ export default {
     },
 
     resetForm() {
-      this.$toasted.show('Information updated successfully', {
+      this.$toasted.show(notifications.userInformationUpdated, {
         icon: {
           name: 'done_outline',
           after: true,

@@ -1,4 +1,7 @@
 import axios from 'axios';
+import notifications from '@/config/Notifications';
+import {sendErrorNotification} from '@/services/NotificationService';
+import Vue from 'vue';
 
 const state = () => ({
   requests: [],
@@ -37,10 +40,18 @@ const actions = {
         .post('request/create', request)
         .then((response) => {
           store.commit('addRequest', response.data.data);
+
+          Vue.prototype.$toasted.show(notifications.requestCreated, {
+            icon: {
+              name: 'done_outline',
+              after: true,
+            },
+            theme: 'outline',
+            position: 'bottom-right',
+            duration: 2000,
+          });
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch(sendErrorNotification);
   },
   editRequest: (store, {requestInfosUpdated, requestId, fromRequestPage}) => {
     axios
@@ -51,24 +62,43 @@ const actions = {
           } else {
             store.commit('editRequest', response.data.data);
           }
+
+          Vue.prototype.$toasted.show(notifications.requestUpdated, {
+            icon: {
+              name: 'done_outline',
+              after: true,
+            },
+            theme: 'outline',
+            position: 'bottom-right',
+            duration: 2000,
+          });
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch(sendErrorNotification);
   },
-  updateStatusRequest: (store, {statusId, requestId, fromRequestPage}) => {
+  updateStatusRequest: (store, {status, requestId, fromRequestPage}) => {
     axios
-        .put('request/changeStatus/' + requestId, {status_id: statusId})
+        .put('request/changeStatus/' + requestId, {status_id: status.id})
         .then((response) => {
           if (fromRequestPage) {
             store.commit('editRequestSolo', response.data.data);
           } else {
             store.commit('editRequest', response.data.data);
           }
+
+          Vue.prototype.$toasted.show(
+              notifications.requestChangeStatus + status.name,
+              {
+                icon: {
+                  name: 'done_outline',
+                  after: true,
+                },
+                theme: 'outline',
+                position: 'bottom-right',
+                duration: 2000,
+              },
+          );
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch(sendErrorNotification);
   },
   updateRequestToComplete: (store, {requestId, fromRequestPage}) => {
     axios
@@ -79,10 +109,18 @@ const actions = {
           } else {
             store.commit('editRequest', response.data.data);
           }
+
+          Vue.prototype.$toasted.show(notifications.requestCompleted, {
+            icon: {
+              name: 'done_outline',
+              after: true,
+            },
+            theme: 'outline',
+            position: 'bottom-right',
+            duration: 2000,
+          });
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch(sendErrorNotification);
   },
 };
 

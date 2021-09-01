@@ -1,3 +1,5 @@
+const { redirectRequestsPage } = require("./utils");
+
 Cypress.Commands.add("loginAsUser", () => {
   loginAndSetToken("user");
 });
@@ -6,6 +8,15 @@ Cypress.Commands.add("loginAsHR", () => {
 });
 Cypress.Commands.add("loginAsManager", () => {
   loginAndSetToken("manager");
+  redirectRequestsPage();
+});
+Cypress.Commands.add("resetDatabase", () => {
+  cy.request({
+    method: "GET",
+    url: "http://127.0.0.1:8000/api/resetDatabase",
+  }).then((res) => {
+    console.log(res);
+  });
 });
 
 function loginAndSetToken(role) {

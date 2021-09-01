@@ -60,6 +60,7 @@
 </template>
 
 <script>
+import notifications from '../config/Notifications';
 import rulesConfig from '../config/FormRules';
 
 export default {
@@ -94,7 +95,7 @@ export default {
                     this.$auth.user().image_url,
                 );
 
-                this.$toasted.show('Log in successfully', {
+                this.$toasted.show(notifications.userLogin, {
                   icon: {
                     name: 'done_outline',
                     after: true,
@@ -107,7 +108,7 @@ export default {
               (error) => {
                 console.log(error);
 
-                this.$toasted.show('Invalid credentials', {
+                this.$toasted.show(notifications.invalidCredentials, {
                   icon: {
                     name: 'error',
                     after: true,

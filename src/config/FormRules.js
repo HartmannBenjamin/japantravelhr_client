@@ -1,40 +1,29 @@
+import message from './Messages';
+
 export default {
   nameRules: [
-    (v) => !!v || 'Name is required',
-    (v) =>
-      (v && v.length < 21 && v.length > 3) ||
-      'Name must be between 4 and 20 characters',
+    (v) => !!v || message.nameRequired,
+    (v) => (v && v.length < 21 && v.length > 3) || message.nameBetween,
   ],
   emailRules: [
-    (v) => !!v || 'E-mail is required',
-    (v) =>
-      (v && v.length < 100 && v.length > 3) ||
-      'Email must be between 4 and 20 characters',
+    (v) => !!v || message.emailRequired,
+    (v) => (v && v.length < 100 && v.length > 3) || message.emailBetween,
     (v) =>
       !v ||
       /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
-      'E-mail must be valid',
+      message.emailValid,
   ],
   passwordRules: [
-    (v) => !!v || 'Password is required',
-    (v) =>
-      (v && v.length < 21 && v.length > 3) ||
-      'Password must be between 4 and 20 characters',
+    (v) => !!v || message.passwordRequired,
+    (v) => (v && v.length < 21 && v.length > 3) || message.passwordBetween,
   ],
-  imageRules: [
-    (v) =>
-      !v || v.size / 1024 / 1024 < 2 || 'Avatar size should be less than 2 Mb.',
-  ],
+  imageRules: [(v) => !v || v.size / 1024 / 1024 < 2 || message.imageSize],
   subjectRules: [
-    (v) => !!v || 'Subject is required',
-    (v) =>
-      (v && v.length < 61 && v.length > 3) ||
-      'Subject must be between 4 and 60 characters',
+    (v) => !!v || message.subjectRequired,
+    (v) => (v && v.length < 61 && v.length > 3) || message.subjectBetween,
   ],
   descriptionRules: [
-    (v) => !!v || 'Description is required',
-    (v) =>
-      (v && v.length < 501 && v.length > 19) ||
-      'Description must be between 20 and 500 characters',
+    (v) => !!v || message.descriptionRequired,
+    (v) => (v && v.length < 501 && v.length > 19) || message.descriptionBetween,
   ],
 };
