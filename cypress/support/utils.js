@@ -2,6 +2,14 @@ import message from "../../src/config/Messages";
 
 function redirectRequestsPage() {
   cy.visit("");
+
+  // TODO Better to not mock API responses for this test project (maybe)
+  // cy.intercept(
+  //     {method: 'GET', url: '/api/request/all',},
+  //     {fixture: 'requests.json'}
+  // ).as('getRequests')
+  // cy.wait('@getRequests');
+
   cy.url().should("include", "/requests");
 }
 

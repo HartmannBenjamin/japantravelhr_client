@@ -225,7 +225,7 @@ export default {
       this.image = null;
     },
 
-    eventMethode(event) {
+    eventMethod(event) {
       if (event.keyCode === 13) {
         if (this.valid) {
           this.submit();
@@ -234,14 +234,14 @@ export default {
     },
   },
   mounted() {
-    window.addEventListener('keyup', this.eventMethode);
+    window.addEventListener('keyup', this.eventMethod);
 
     this.$http.get('roles').then((response) => {
       this.roles = response.data.data;
     });
   },
   beforeDestroy() {
-    window.removeEventListener('keyup', this.eventMethode);
+    window.removeEventListener('keyup', this.eventMethod);
   },
 };
 </script>

@@ -38,4 +38,9 @@ describe("Test login page", () => {
     cy.contains("button", "Login").click();
     cy.url().should("include", "/requests");
   });
+
+  it("should redirect unauthenticated user to login page", function () {
+    cy.visit("/requests");
+    cy.url().should("include", "/login");
+  });
 });

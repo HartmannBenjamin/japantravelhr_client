@@ -24,6 +24,9 @@ describe("Test request functionalities as HR staff from the main page", () => {
     // change to Hr Reviewed status
     cy.get('[data-test="Hr Reviewed"]').click();
 
+    // sort by date to get the last updated request
+    cy.get("thead").contains("Date").click().click();
+
     // check if status has been changed
     cy.get("td")
       .get('[data-test="show-change-status-request"]')

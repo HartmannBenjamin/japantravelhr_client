@@ -10,12 +10,11 @@ Cypress.Commands.add("loginAsManager", () => {
   loginAndSetToken("manager");
   redirectRequestsPage();
 });
+// Best security
 Cypress.Commands.add("resetDatabase", () => {
   cy.request({
     method: "GET",
     url: "http://127.0.0.1:8000/api/resetDatabase",
-  }).then((res) => {
-    console.log(res);
   });
 });
 

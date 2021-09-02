@@ -129,15 +129,6 @@ export default {
     passwordType: true,
     wrongExtensionImage: false,
   }),
-  computed: {
-    passwordConfirmationRule() {
-      return () =>
-        this.user.password === this.user.c_password || 'Password must match';
-    },
-    appUrl() {
-      return this.$appUrl;
-    },
-  },
   methods: {
     checkIfEmailAvailable() {
       this.$http
@@ -214,7 +205,7 @@ export default {
       }
     },
 
-    eventMethode(event) {
+    eventMethod(event) {
       if (event.keyCode === 13) {
         if (this.valid && !this.wrongExtensionImage) {
           this.submit();
@@ -222,15 +213,24 @@ export default {
       }
     },
   },
+  computed: {
+    passwordConfirmationRule() {
+      return () =>
+        this.user.password === this.user.c_password || 'Password must match';
+    },
+    appUrl() {
+      return this.$appUrl;
+    },
+  },
   mounted() {
     this.$http.get('roles').then((response) => {
       this.roles = response.data.data;
     });
 
-    window.addEventListener('keyup', this.eventMethode);
+    window.addEventListener('keyup', this.eventMethod);
   },
   beforeDestroy() {
-    window.removeEventListener('keyup', this.eventMethode);
+    window.removeEventListener('keyup', this.eventMethod);
   },
 };
 </script>

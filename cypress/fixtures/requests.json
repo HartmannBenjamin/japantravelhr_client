@@ -1,0 +1,112 @@
+{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "subject": "Problem test",
+      "description": "This is problem description.",
+      "status": {
+        "id": 1,
+        "name": "Open",
+        "description": "The request is waiting for an HR staff to review it.",
+        "color_code": "#E7E7E7"
+      },
+      "created_by": {
+        "email": "user@japantravel.com",
+        "name": "User Name Updated",
+        "image_url": "http://127.0.0.1:8000/images/1630532717_logo.png",
+        "role": {
+          "id": 1,
+          "name": "User"
+        },
+        "created_at": "2021-09-01T21:42:47.000000Z",
+        "updated_at": "2021-09-01T21:45:39.000000Z"
+      },
+      "created_at": "2021-09-01T21:42:47.000000Z",
+      "updated_at": "2021-09-01T21:42:47.000000Z",
+      "logs": [
+        {
+          "id": 1,
+          "message": "Request created by user",
+          "request_id": 1,
+          "user_id": 1,
+          "created_at": "2021-09-01 23:42:47",
+          "user": {
+            "email": "user@japantravel.com",
+            "name": "User Name Updated",
+            "image_url": "http://127.0.0.1:8000/images/1630532717_logo.png",
+            "role": {
+              "id": 1,
+              "name": "User"
+            },
+            "created_at": "2021-09-01T21:42:47.000000Z",
+            "updated_at": "2021-09-01T21:45:39.000000Z"
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "subject": "Problem Reviewed",
+      "description": "This is problem reviewed description.",
+      "status": {
+        "id": 2,
+        "name": "Hr Reviewed",
+        "description": "A manager will process your request.",
+        "color_code": "#A1F1FF"
+      },
+      "created_by": {
+        "email": "user@japantravel.com",
+        "name": "User Name Updated",
+        "image_url": "http://127.0.0.1:8000/images/1630532717_logo.png",
+        "role": {
+          "id": 1,
+          "name": "User"
+        },
+        "created_at": "2021-09-01T21:42:47.000000Z",
+        "updated_at": "2021-09-01T21:45:39.000000Z"
+      },
+      "created_at": "2021-09-01T21:42:47.000000Z",
+      "updated_at": "2021-09-01T21:42:47.000000Z",
+      "logs": [
+        {
+          "id": 2,
+          "message": "Request created by user",
+          "request_id": 2,
+          "user_id": 1,
+          "created_at": "2021-09-01 23:42:47",
+          "user": {
+            "email": "user@japantravel.com",
+            "name": "User Name Updated",
+            "image_url": "http://127.0.0.1:8000/images/1630532717_logo.png",
+            "role": {
+              "id": 1,
+              "name": "User"
+            },
+            "created_at": "2021-09-01T21:42:47.000000Z",
+            "updated_at": "2021-09-01T21:45:39.000000Z"
+          }
+        },
+        {
+          "id": 3,
+          "message": "Request status updated to \"HR Reviewed\"",
+          "request_id": 2,
+          "user_id": 2,
+          "created_at": "2021-09-01 23:42:47",
+          "user": {
+            "email": "hr@japantravel.com",
+            "name": "Franck HR",
+            "image_url": "http://127.0.0.1:8000/images/test.png",
+            "role": {
+              "id": 2,
+              "name": "HR"
+            },
+            "created_at": "2021-09-01T21:42:47.000000Z",
+            "updated_at": null
+          }
+        }
+      ]
+    }
+  ],
+  "message": "Requests retrieved successfully."
+}

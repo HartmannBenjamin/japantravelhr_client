@@ -46,6 +46,7 @@ export default {
       required: true,
     },
     fromRequestPage: {
+      // Not from main requests page
       type: Boolean,
       default: false,
     },

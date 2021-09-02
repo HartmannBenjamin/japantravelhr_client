@@ -59,6 +59,7 @@
                       :paused="mouseOn !== row.item.id"
                     >
                       <strong>{{ row.item.subject }}</strong>
+                      &nbsp;&nbsp;&nbsp;&nbsp;
                     </marquee-text>
                   </v-list-item-title>
                 </v-list-item>
@@ -74,6 +75,7 @@
                       :paused="mouseOn !== row.item.id"
                     >
                       {{ row.item.description }}
+                      &nbsp;&nbsp;&nbsp;&nbsp;
                     </marquee-text>
                   </v-list-item-title>
                 </v-list-item>
