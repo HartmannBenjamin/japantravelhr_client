@@ -70,7 +70,7 @@
     </v-list>
 
     <v-list color="grey lighten-5" class="pa-0 disconnect-btn">
-      <v-list class="pa-0 pb-10">
+      <v-list v-if="!$vuetify.breakpoint.xsOnly" class="pa-0 pb-10">
         <v-list-item
           link
           dense
@@ -154,6 +154,7 @@
 import notifications from '../config/Notifications';
 import {mapGetters} from 'vuex';
 import MarqueeText from 'vue-marquee-text-component';
+import {sendErrorNotification} from '@/services/NotificationService';
 
 export default {
   name: 'Nav',
@@ -187,17 +188,7 @@ export default {
               duration: 2000,
             });
           })
-          .catch((error) => {
-            this.$toasted.show(error, {
-              icon: {
-                name: 'error',
-                after: true,
-              },
-              theme: 'bubble',
-              position: 'bottom-right',
-              duration: 2000,
-            });
-          });
+          .catch(sendErrorNotification);
     },
   },
 };

@@ -1,11 +1,24 @@
 import Vue from 'vue';
 
 /**
+ * @param {String} msg
+ */
+function sendNotification(msg) {
+  Vue.prototype.$toasted.show(msg, {
+    icon: {
+      name: 'done_outline',
+      after: true,
+    },
+    theme: 'outline',
+    position: 'bottom-right',
+    duration: 2000,
+  });
+}
+
+/**
  * @param {String} error
  */
 function sendErrorNotification(error) {
-  console.log(error);
-
   Vue.prototype.$toasted.show(error, {
     icon: {
       name: 'error',
@@ -17,4 +30,4 @@ function sendErrorNotification(error) {
   });
 }
 
-export {sendErrorNotification};
+export {sendNotification, sendErrorNotification};

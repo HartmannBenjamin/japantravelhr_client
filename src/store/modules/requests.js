@@ -18,19 +18,25 @@ const actions = {
     axios
         .get('request/get/' + requestId)
         .then((response) => {
-          store.commit('setRequest', response.data.data);
+          if (response.data.success) {
+            store.commit('setRequest', response.data.data);
+          } else {
+            sendErrorNotification(response.data.message);
+          }
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch(sendErrorNotification);
   },
   async setRequests(store) {
-    try {
-      const response = await axios.get('request/all');
-      store.commit('setRequests', response.data.data);
-    } catch (e) {
-      console.log(e);
-    }
+    axios
+        .get('request/all')
+        .then((response) => {
+          if (response.data.success) {
+            store.commit('setRequests', response.data.data);
+          } else {
+            sendErrorNotification(response.data.message);
+          }
+        })
+        .catch(sendErrorNotification);
   },
   setRequestsToNull(store) {
     store.commit('setRequests', []);

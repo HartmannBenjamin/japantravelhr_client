@@ -5,6 +5,8 @@ node_modules
 /cypress/videos
 /cypress/integration/1-getting-started
 /cypress/integration/2-advanced-examples
+/coverage
+/.nyc_output
 
 # local env files
 .env.local

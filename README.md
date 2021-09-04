@@ -1,14 +1,16 @@
-![JapanTravelHR logo](http://api.benjamin-hartmann.fr/logo/logo.png)
+<p align="center">
+  <img src="http://api.benjamin-hartmann.fr/logo/logo.png"  alt=""/>
+</p>
 
 # JapanTravelHR Front-end client (Vuejs)
 
-## Project setup
+## ➤ Project setup
 
 ```
 npm install
 ```
 
-## Run the project
+## ➤ Run the project
 
 ```
 npm run serve
@@ -16,7 +18,7 @@ npm run serve
 
 ---
 
-## Default users informaiton
+## ➤ Default users informaiton
 
 ```
 User :
@@ -32,13 +34,13 @@ Manager :
     - password: 1234
 ```
 
-## Launch tests
+## ➤ Launch tests
 
 ```
 npx cypress run / npx cypress open
 ```
 
-## Links
+## ➤ Links
 
 - [Postman Workspace (Endpoint collection)](https://www.postman.com/benjaminhartmann/workspace/japantravelhr/overview)
 - [API Documentation](https://documenter.getpostman.com/view/17271595/TzzHksRe)

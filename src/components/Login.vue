@@ -62,6 +62,10 @@
 <script>
 import notifications from '../config/Notifications';
 import rulesConfig from '../config/FormRules';
+import {
+  sendErrorNotification,
+  sendNotification,
+} from '@/services/NotificationService';
 
 export default {
   name: 'Login',
@@ -85,7 +89,7 @@ export default {
             params: this.user,
           })
           .then(
-              () => {
+              (response) => {
                 this.$store.dispatch(
                     'UserInfos/setUserName',
                     this.$auth.user().name,
@@ -95,28 +99,14 @@ export default {
                     this.$auth.user().image_url,
                 );
 
-                this.$toasted.show(notifications.userLogin, {
-                  icon: {
-                    name: 'done_outline',
-                    after: true,
-                  },
-                  theme: 'outline',
-                  position: 'bottom-right',
-                  duration: 2000,
-                });
+                if (response.data.success) {
+                  sendNotification(notifications.userLogin);
+                } else {
+                  sendErrorNotification(notifications.invalidCredentials);
+                }
               },
-              (error) => {
-                console.log(error);
-
-                this.$toasted.show(notifications.invalidCredentials, {
-                  icon: {
-                    name: 'error',
-                    after: true,
-                  },
-                  theme: 'bubble',
-                  position: 'bottom-right',
-                  duration: 2000,
-                });
+              () => {
+                sendErrorNotification(notifications.invalidCredentials);
                 this.loading = false;
               },
           );

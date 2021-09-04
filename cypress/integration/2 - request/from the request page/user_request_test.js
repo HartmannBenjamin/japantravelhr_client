@@ -59,4 +59,9 @@ describe("Test request functionalities as User from the request page", () => {
     // show change status Request modal
     cy.get('[data-test="change-status-request"]').should("not.exist");
   });
+
+  it("try to recover a non existent request", () => {
+    cy.visit("/request/0");
+    cy.get('[data-test="div-request"]').should("not.exist");
+  });
 });

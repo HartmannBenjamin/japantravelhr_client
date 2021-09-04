@@ -101,6 +101,10 @@ import rulesConfig from '../config/FormRules';
 import message from '../config/Messages';
 import {mapGetters} from 'vuex';
 import {fileHasValidExtension} from '@/services/Functions';
+import {
+  sendErrorNotification,
+  sendNotification,
+} from '@/services/NotificationService';
 
 export default {
   name: 'Profile',
@@ -171,7 +175,7 @@ export default {
                   })
                   .then((res) => {
                     this.loading = false;
-                    this.resetForm();
+                    this.resetForm(res.data);
                     this.$store.dispatch(
                         'UserInfos/setUserImageUrl',
                         res.data.data.image_url,
@@ -179,21 +183,12 @@ export default {
                   });
             } else {
               this.loading = false;
-              this.resetForm();
+              this.resetForm(response.data);
             }
           })
           .catch((error) => {
             this.loading = false;
-
-            this.$toasted.show(error, {
-              icon: {
-                name: 'error',
-                after: true,
-              },
-              theme: 'bubble',
-              position: 'bottom-right',
-              duration: 2000,
-            });
+            sendErrorNotification(error);
           });
     },
 
@@ -210,16 +205,13 @@ export default {
       }
     },
 
-    resetForm() {
-      this.$toasted.show(notifications.userInformationUpdated, {
-        icon: {
-          name: 'done_outline',
-          after: true,
-        },
-        theme: 'outline',
-        position: 'bottom-right',
-        duration: 2000,
-      });
+    resetForm(data) {
+      if (data.success) {
+        sendNotification(notifications.userInformationUpdated);
+      } else {
+        sendErrorNotification(data.message);
+      }
+
       this.user.password = '';
       this.user.c_password = '';
       this.image = null;

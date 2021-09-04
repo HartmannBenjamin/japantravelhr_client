@@ -63,13 +63,14 @@ describe("Test request functionalities as User from the main page", () => {
 
     // edit the request
     cy.contains("button", "Submit").click();
+    cy.wait(500);
+
+    // sort by date to get the last updated request
+    cy.get("thead").contains("Date").click().click();
 
     // check if the request has been updated in the table
     cy.get("table").contains("td", subject);
     cy.get("table").contains("td", description);
-
-    // sort by date to get the last updated request
-    cy.get("thead").contains("Date").click().click();
 
     // check if log has been created
     cy.get('[data-test="show-logs"]').first().click();

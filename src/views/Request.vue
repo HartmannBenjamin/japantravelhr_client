@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="status && request" class="mb-5 mb-lg-0">
+    <div v-if="status && request" class="mb-5 mb-lg-0" data-test="div-request">
       <v-icon
         class="ml-3 ml-lg-7 ml-xl-9 mt-md-16 mt-1"
         style="position: absolute; top: 0"

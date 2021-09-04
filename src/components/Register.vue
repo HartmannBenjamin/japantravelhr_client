@@ -108,6 +108,10 @@ import notifications from '../config/Notifications';
 import rulesConfig from '../config/FormRules';
 import message from '../config/Messages';
 import {fileHasValidExtension} from '@/services/Functions';
+import {
+  sendErrorNotification,
+  sendNotification,
+} from '@/services/NotificationService';
 
 export default {
   name: 'Register',
@@ -151,42 +155,28 @@ export default {
           })
           .then(
               (response) => {
-                this.$toasted.show(notifications.userRegistered, {
-                  icon: {
-                    name: 'done_outline',
-                    after: true,
-                  },
-                  theme: 'outline',
-                  position: 'bottom-right',
-                  duration: 2000,
-                });
+                if (response.data.success) {
+                  sendNotification(notifications.userRegistered);
 
-                if (this.image_file !== null) {
-                  const formData = new FormData();
+                  if (this.image_file !== null) {
+                    const formData = new FormData();
 
-                  formData.append('file', this.image_file);
-                  formData.append('userEmail', response.data.data.user.email);
+                    formData.append('file', this.image_file);
+                    formData.append('userEmail', response.data.data.user.email);
 
-                  this.$http.post('uploadImage', formData, {
-                    headers: {
-                      'Authorization': 'bearer ' + response.data.data.token,
-                      'Content-Type': 'multipart/form-data',
-                    },
-                  });
+                    this.$http.post('uploadImage', formData, {
+                      headers: {
+                        'Authorization': 'bearer ' + response.data.data.token,
+                        'Content-Type': 'multipart/form-data',
+                      },
+                    });
+                  }
+                } else {
+                  sendErrorNotification(response.data.message);
                 }
               },
               (error) => {
-                console.log(error);
-
-                this.$toasted.show(error, {
-                  icon: {
-                    name: 'error',
-                    after: true,
-                  },
-                  theme: 'bubble',
-                  position: 'bottom-right',
-                  duration: 2000,
-                });
+                sendErrorNotification(error);
                 this.loading = false;
               },
           );
