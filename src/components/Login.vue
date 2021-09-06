@@ -73,11 +73,11 @@ export default {
     return {
       valid: false,
       loading: false,
+      rules: rulesConfig,
       user: {
         email: '',
         password: '',
       },
-      rules: rulesConfig,
     };
   },
   methods: {

@@ -15,5 +15,7 @@ module.exports = {
   plugins: ['vue'],
   rules: {
     'max-len': [2, {code: 109, tabWidth: 4, ignoreUrls: true}],
+    'global-require': 0,
+    'eslint linebreak-style': [0, 'error', 'windows'],
   },
 };

@@ -5,8 +5,8 @@
         <v-layout align-center justify-center>
           <v-flex xs12 sm8 md4>
             <Register v-if="isRegisterPage" />
-            <Login v-else /> </v-flex
-        ></v-layout>
+            <Login v-else /> </v-flex>
+        </v-layout>
       </v-container>
     </v-parallax>
   </v-app>

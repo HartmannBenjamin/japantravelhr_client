@@ -14,7 +14,7 @@
         <div class="pa-6 pt-4">
           <v-row class="d-flex justify-space-between">
             <v-col class="mt-3">
-              <span style="position: relative" class="display-1">
+              <span style="position: relative" class="display-1" data-test="request-subject">
                 <strong>Subject :</strong> {{ request.subject }}
               </span>
 
@@ -61,6 +61,7 @@
                         request.created_by.role.name
                       }})
                     </v-list-item-title>
+
                     <v-list-item-subtitle>
                       {{ request.created_by.email }}
                     </v-list-item-subtitle>
@@ -72,7 +73,7 @@
 
           <divider></divider>
 
-          <p style="font-size: 20px" class="text-wrap">
+          <p style="font-size: 20px" class="text-wrap" data-test="request-description">
             <strong>Description : </strong> {{ request.description }}
           </p>
         </div>

@@ -70,7 +70,7 @@
     </v-list>
 
     <v-list color="grey lighten-5" class="pa-0 disconnect-btn">
-      <v-list v-if="!$vuetify.breakpoint.xsOnly" class="pa-0 pb-10">
+      <v-list v-if="!$vuetify.breakpoint.smOnly" class="pa-0 pb-10">
         <v-list-item
           link
           dense

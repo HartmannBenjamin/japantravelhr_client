@@ -42,8 +42,10 @@
             </v-form>
           </v-container>
         </v-card-text>
+
         <v-card-actions>
           <v-spacer></v-spacer>
+
           <v-btn
             :disabled="!valid || !validDescription || !validSubject"
             color="blue darken-1"

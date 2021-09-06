@@ -2,9 +2,9 @@
   <v-row justify="center">
     <v-dialog
       v-model="dialog"
-      @click:outside="hideCreateRequestModal"
       persistent
       max-width="600"
+      @click:outside="hideCreateRequestModal"
     >
       <v-card>
         <v-card-title>
@@ -42,8 +42,10 @@
             </v-form>
           </v-container>
         </v-card-text>
+
         <v-card-actions>
           <v-spacer></v-spacer>
+
           <v-btn
             :disabled="!valid || !validDescription || !validSubject"
             color="blue darken-1"

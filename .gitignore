@@ -7,6 +7,7 @@ node_modules
 /cypress/integration/2-advanced-examples
 /coverage
 /.nyc_output
+/package-lock.json
 
 # local env files
 .env.local

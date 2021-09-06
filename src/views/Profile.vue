@@ -49,14 +49,14 @@
             :append-icon="passwordType ? 'mdi-eye-off' : 'mdi-eye'"
             @click:append="passwordType = !passwordType"
             v-model="user.password"
-            :rules="[passwordRule]"
+            :rules="[rules.passwordRule(user)]"
             label="Password"
             required
           ></v-text-field>
           <v-text-field
             :type="passwordType ? 'password' : 'text'"
             v-model="user.c_password"
-            :rules="[passwordConfirmationRule]"
+            :rules="[rules.passwordConfirmationRule(user)]"
             :disabled="!user.password"
             onCopy="return false"
             onDrag="return false"
@@ -110,20 +110,20 @@ export default {
   name: 'Profile',
   data() {
     return {
-      message: message,
       valid: true,
       loading: false,
+      message: message,
       rules: rulesConfig,
-      user: {
-        name: this.$auth.user().name,
-        password: '',
-        c_password: '',
-      },
       roles: [],
       passwordType: true,
       image_file: null,
       wrongExtensionImage: false,
       image: null,
+      user: {
+        name: this.$auth.user().name,
+        password: '',
+        c_password: '',
+      },
     };
   },
   computed: {
@@ -131,22 +131,6 @@ export default {
       image_url: 'image_url',
       name: 'name',
     }),
-
-    passwordRule() {
-      if (this.user.password) {
-        return (v) =>
-          (v && v.length < 21 && v.length > 3) || message.passwordBetween;
-      }
-      return true;
-    },
-
-    passwordConfirmationRule() {
-      if (this.user.password) {
-        return () =>
-          this.user.password === this.user.c_password || 'Password must match';
-      }
-      return true;
-    },
   },
   methods: {
     submit() {
@@ -174,7 +158,6 @@ export default {
                     headers: {'Content-Type': 'multipart/form-data'},
                   })
                   .then((res) => {
-                    this.loading = false;
                     this.resetForm(res.data);
                     this.$store.dispatch(
                         'UserInfos/setUserImageUrl',
@@ -182,7 +165,6 @@ export default {
                     );
                   });
             } else {
-              this.loading = false;
               this.resetForm(response.data);
             }
           })
@@ -212,6 +194,7 @@ export default {
         sendErrorNotification(data.message);
       }
 
+      this.loading = false;
       this.user.password = '';
       this.user.c_password = '';
       this.image = null;

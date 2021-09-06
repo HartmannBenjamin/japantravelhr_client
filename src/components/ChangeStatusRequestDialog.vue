@@ -2,8 +2,8 @@
   <v-dialog
     v-model="dialog"
     v-if="requestToEdit"
-    @click:outside="hideChangeStatusRequestDialog"
     max-width="500"
+    @click:outside="hideChangeStatusRequestDialog"
   >
     <v-card>
       <v-card-title class="text-h5 justify-center">

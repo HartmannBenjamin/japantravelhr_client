@@ -6,7 +6,7 @@ export default {
   emailValid: 'E-mail must be valid',
   passwordRequired: 'Password is required',
   passwordBetween: 'Password must be between 4 and 20 characters',
-  imageSize: 'Avatar size should be less than 2 Mb',
+  imageSize: 'Avatar size must be less than 2 Mb',
   subjectRequired: 'Subject is required',
   subjectBetween: 'Subject must be between 4 and 60 characters',
   descriptionRequired: 'Description is required',

@@ -47,7 +47,7 @@
           class="elevation-1"
         >
           <template v-slot:item="row">
-            <tr @mouseover="mouseOn = row.item.id" @mouseout="mouseOn = null">
+            <tr @mouseover="mouseOn = row.item.id" @mouseout="mouseOn = null" data-test="request-row">
               <td
                 style="max-width: 200px; cursor: pointer"
                 @click="showRequest(row.item.id)"
@@ -109,7 +109,7 @@
               </td>
               <td>
                 <v-chip small label>
-                  {{ getDateRequest(row.item.updated_at) }}
+                  {{ formatDate(row.item.updated_at) }}
                 </v-chip>
               </td>
               <td>
@@ -241,7 +241,6 @@
 
 <script>
 import {mapActions, mapGetters} from 'vuex';
-import moment from 'moment';
 import MarqueeText from 'vue-marquee-text-component';
 import CreateRequest from '@/components/CreateRequest';
 import EditRequest from '@/components/EditRequest';
@@ -250,6 +249,7 @@ import CompleteRequestDialog from '@/components/CompleteRequestDialog';
 import RequestLogsSheet from '@/components/RequestLogsSheet';
 import {isUser, isHR, isManager} from '@/services/UserService';
 import {isOpen, isHRReviewed} from '@/services/RequestService';
+import {formatDate} from '@/services/Functions';
 
 export default {
   name: 'Requests',
@@ -291,6 +291,7 @@ export default {
   methods: {
     isOpen,
     isHRReviewed,
+    formatDate,
 
     ...mapActions({
       setRequests: 'Requests/setRequests',
@@ -298,13 +299,6 @@ export default {
 
     showRequest(id) {
       this.$router.push({name: 'Request', params: {id: id}});
-    },
-
-    getDateRequest(date) {
-      if (date === null) {
-        return 'None';
-      }
-      return moment(date).utc().format('MMMM Do YYYY, h:mm a');
     },
 
     downloadPdf() {

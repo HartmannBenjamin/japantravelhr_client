@@ -1,10 +1,10 @@
-import "cypress-file-upload";
-import { redirectRequestsPage } from "../../../support/utils";
+import 'cypress-file-upload';
+import {redirectRequestsPage} from '../../../support/utils';
 
 /*
     From the main page
  */
-describe("Test request functionalities as HR staff from the main page", () => {
+describe('Test request functionalities as HR staff from the main page', () => {
   before(() => {
     cy.resetDatabase();
     cy.loginAsHR();
@@ -14,9 +14,9 @@ describe("Test request functionalities as HR staff from the main page", () => {
     redirectRequestsPage();
   });
 
-  it("hr staff can change opened Request to Hr Reviewed status", () => {
+  it('hr staff can change opened Request to Hr Reviewed status', () => {
     // sort datatable
-    cy.get("thead").contains("Status").click();
+    cy.get('thead').contains('Status').click();
 
     // show change status Request modal
     cy.get('[data-test="show-change-status-request"]').first().click();
@@ -25,33 +25,33 @@ describe("Test request functionalities as HR staff from the main page", () => {
     cy.get('[data-test="Hr Reviewed"]').click();
 
     // sort by date to get the last updated request
-    cy.get("thead").contains("Date").click().click();
+    cy.get('thead').contains('Date').click().click();
 
     // check if status has been changed
-    cy.get("td")
-      .get('[data-test="show-change-status-request"]')
-      .first()
-      .should("contain", "Hr Reviewed");
+    cy.get('td')
+        .get('[data-test="show-change-status-request"]')
+        .first()
+        .should('contain', 'Hr Reviewed');
 
     // check if log has been created
     cy.get('[data-test="show-logs"]').first().click();
     cy.get('[data-test="request-log"]')
-      .first()
-      .should("contain", 'Request status updated to "HR Reviewed"');
+        .first()
+        .should('contain', 'Request status updated to "HR Reviewed"');
   });
 
-  it("try to create the request as hr staff", () => {
+  it('try to create the request as hr staff', () => {
     // show create Request form
-    cy.get('[data-test="create-request"]').should("not.exist");
+    cy.get('[data-test="create-request"]').should('not.exist');
   });
 
-  it("try to complete a request as hr staff", () => {
+  it('try to complete a request as hr staff', () => {
     // show complete request modal
-    cy.get('[data-test="show-complete-request"]').should("not.exist");
+    cy.get('[data-test="show-complete-request"]').should('not.exist');
   });
 
-  it("try to edit request as hr staff", () => {
+  it('try to edit request as hr staff', () => {
     // show edit Request form
-    cy.get('[data-test="edit-request"]').should("not.exist");
+    cy.get('[data-test="edit-request"]').should('not.exist');
   });
 });

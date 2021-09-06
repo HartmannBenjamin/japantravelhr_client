@@ -53,7 +53,7 @@
             :type="passwordType ? 'password' : 'text'"
             v-model="user.c_password"
             :rules="[
-              passwordConfirmationRule,
+              rules.passwordConfirmationRule(user),
               (v) => !!v || message.fieldRequired,
             ]"
             :disabled="!user.password"
@@ -120,6 +120,11 @@ export default {
     valid: false,
     loading: false,
     rules: rulesConfig,
+    roles: [],
+    image_file: null,
+    emailAvailable: true,
+    passwordType: true,
+    wrongExtensionImage: false,
     user: {
       name: '',
       email: '',
@@ -127,11 +132,6 @@ export default {
       password: '',
       c_password: '',
     },
-    roles: [],
-    image_file: null,
-    emailAvailable: true,
-    passwordType: true,
-    wrongExtensionImage: false,
   }),
   methods: {
     checkIfEmailAvailable() {
@@ -204,10 +204,6 @@ export default {
     },
   },
   computed: {
-    passwordConfirmationRule() {
-      return () =>
-        this.user.password === this.user.c_password || 'Password must match';
-    },
     appUrl() {
       return this.$appUrl;
     },
