@@ -4,6 +4,9 @@
 
 # JapanTravelHR Front-end client (Vuejs)
 
+Requirements: 
+- NodeJS
+
 ## ➤ Project setup
 
 ```
@@ -34,7 +37,7 @@ Manager :
     - password: 1234
 ```
 
-## ➤ Launch tests
+## ➤ Run tests
 
 ```
 npx cypress run / npx cypress open
