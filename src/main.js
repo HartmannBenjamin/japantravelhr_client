@@ -11,6 +11,7 @@ import Auth from './config/Auth';
 import ViewUI from 'view-design';
 import Toasted from 'vue-toasted';
 import Moment from 'moment';
+import BrowserDetect from 'vue-browser-detect-plugin';
 import 'view-design/dist/styles/iview.css';
 import '../node_modules/material-icons/iconfont/material-icons.css';
 import 'es6-promise/auto';
@@ -35,6 +36,7 @@ Vue.use(ViewUI);
 Vue.use(VueAxios, Axios);
 Vue.use(VueAuth, Auth);
 Vue.use(Toasted);
+Vue.use(BrowserDetect);
 
 const app = new Vue({
   router: Router,
