@@ -1,5 +1,3 @@
-const {redirectRequestsPage} = require('./utils');
-
 Cypress.Commands.add('loginAsUser', () => {
   loginAndSetToken('user');
 });
@@ -10,14 +8,13 @@ Cypress.Commands.add('loginAsHR', () => {
 
 Cypress.Commands.add('loginAsManager', () => {
   loginAndSetToken('manager');
-  redirectRequestsPage();
 });
 
 // Best security
 Cypress.Commands.add('resetDatabase', () => {
   cy.request({
     method: 'GET',
-    url: 'http://127.0.0.1:8000/api/resetDatabase',
+    url: 'http://127.0.0.1:8000/resetDatabase',
   });
 });
 
@@ -27,7 +24,7 @@ Cypress.Commands.add('resetDatabase', () => {
 function loginAndSetToken(role) {
   cy.request({
     method: 'POST',
-    url: 'http://127.0.0.1:8000/api/login',
+    url: 'http://127.0.0.1:8000/login',
     body: {
       email: role + '@japantravel.com',
       password: '1234',

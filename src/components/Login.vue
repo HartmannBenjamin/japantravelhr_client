@@ -4,7 +4,9 @@
       <v-toolbar-title>
         Login form - <span style="font-weight: 100"> Japan Travel HR </span>
       </v-toolbar-title>
+
       <v-spacer></v-spacer>
+
       <img
         class="img-logo"
         draggable="false"

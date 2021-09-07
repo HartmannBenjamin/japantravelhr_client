@@ -14,7 +14,7 @@ describe('Test request functionalities as HR staff from the main page', () => {
     redirectRequestsPage();
   });
 
-  it('hr staff can change opened Request to Hr Reviewed status', () => {
+  it('hr staff can update opened Request to Hr Reviewed status', () => {
     // sort datatable
     cy.get('thead').contains('Status').click();
 

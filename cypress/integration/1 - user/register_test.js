@@ -1,4 +1,5 @@
 import 'cypress-file-upload';
+import message from '../../../src/config/Messages';
 import {
   testValidConfirmPassword,
   testValidEmail,
@@ -35,7 +36,7 @@ describe('Test register a new user', () => {
     // require a role
     cy.get('[data-cy=select-role]').parent().click();
     cy.contains('Register').click();
-    cy.get('.v-messages__message').should('contain', 'Role is required');
+    cy.get('.v-messages__message').should('contain', message.roleRequired);
 
     cy.get('[data-cy=select-role]').parent().click();
     cy.get('.v-menu__content').contains('User').click();
@@ -49,7 +50,7 @@ describe('Test register a new user', () => {
     // require same confirm password
     testValidConfirmPassword(password);
 
-    // is valid filled register form
+    // is valid and filled register form
     cy.contains('button', 'Register').should('not.be.disabled');
 
     // require valid image
@@ -65,7 +66,7 @@ describe('Test register a new user', () => {
     cy.contains('Register Page').click();
     cy.url().should('include', '/register');
 
-    // email is not available anymore
+    // email should not be available anymore
     cy.get('form').contains('div', 'E-mail').find('input').clear().type(email);
     cy.get('form').contains('div', 'Name').click();
     cy.get('.v-messages__message').should(

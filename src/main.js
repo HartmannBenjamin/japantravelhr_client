@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import App from './App.vue';
-import router from './router';
+import Router from './router';
 import Store from './store';
 import Vuetify from './plugins/vuetify';
 import VueRouter from 'vue-router';
@@ -10,7 +10,7 @@ import VueAuth from '@websanova/vue-auth';
 import Auth from './config/Auth';
 import ViewUI from 'view-design';
 import Toasted from 'vue-toasted';
-import moment from 'moment';
+import Moment from 'moment';
 import 'view-design/dist/styles/iview.css';
 import '../node_modules/material-icons/iconfont/material-icons.css';
 import 'es6-promise/auto';
@@ -21,14 +21,14 @@ const appUrl =
     'https://api.benjamin-hartmann.fr/';
 
 Axios.defaults.headers.version = '1.0';
-Axios.defaults.baseURL = appUrl + 'api';
+Axios.defaults.baseURL = appUrl;
 Axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 Vue.prototype.$http = Axios;
-Vue.prototype.moment = moment;
+Vue.prototype.moment = Moment;
 Vue.prototype.$appUrl = appUrl;
 Vue.config.productionTip = false;
-Vue.router = router;
+Vue.router = Router;
 
 Vue.use(VueRouter);
 Vue.use(ViewUI);
@@ -37,7 +37,7 @@ Vue.use(VueAuth, Auth);
 Vue.use(Toasted);
 
 const app = new Vue({
-  router,
+  router: Router,
   store: Store,
   vuetify: Vuetify,
   render: (h) => h(App),

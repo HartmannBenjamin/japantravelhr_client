@@ -2,6 +2,7 @@
   <v-virtual-scroll :items="logs" height="242" item-height="64">
     <template v-slot:default="{ item }">
       <v-divider></v-divider>
+
       <div data-test="request-log" class="mt-0 mt-xl-2">
         <v-list-item :key="item.id" class="logs-content">
           <v-list-item-avatar size="27" class="mr-3">

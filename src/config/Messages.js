@@ -11,8 +11,9 @@ export default {
   subjectBetween: 'Subject must be between 4 and 60 characters',
   descriptionRequired: 'Description is required',
   descriptionBetween: 'Description must be between 20 and 500 characters',
-  wordsTooLong: 'All words need to be less than 25 characters',
+  wordsTooLong: 'All words need to be less than 50 characters',
   emailNotAvailable: 'This E-mail is not available',
   imageExtensionNotSupported: 'This extension is not supported',
   fieldRequired: 'This field is required',
+  roleRequired: 'Role is required',
 };

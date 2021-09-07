@@ -47,9 +47,13 @@ const actions = {
     axios
         .post('request/create', request)
         .then((response) => {
-          store.commit('addRequest', response.data.data);
+          if (response.data.success) {
+            store.commit('addRequest', response.data.data);
 
-          sendNotification(notifications.requestCreated);
+            sendNotification(notifications.requestCreated);
+          } else {
+            sendErrorNotification(response.data.message);
+          }
         })
         .catch(sendErrorNotification);
   },
@@ -58,13 +62,17 @@ const actions = {
     axios
         .put('request/edit/' + requestId, requestInfosUpdated)
         .then((response) => {
-          if (fromRequestPage) {
-            store.commit('editRequestSolo', response.data.data);
-          } else {
-            store.commit('editRequest', response.data.data);
-          }
+          if (response.data.success) {
+            if (fromRequestPage) {
+              store.commit('editRequestSolo', response.data.data);
+            } else {
+              store.commit('editRequest', response.data.data);
+            }
 
-          sendNotification(notifications.requestUpdated);
+            sendNotification(notifications.requestUpdated);
+          } else {
+            sendErrorNotification(response.data.message);
+          }
         })
         .catch(sendErrorNotification);
   },
@@ -73,13 +81,17 @@ const actions = {
     axios
         .put('request/changeStatus/' + requestId, {status_id: status.id})
         .then((response) => {
-          if (fromRequestPage) {
-            store.commit('editRequestSolo', response.data.data);
-          } else {
-            store.commit('editRequest', response.data.data);
-          }
+          if (response.data.success) {
+            if (fromRequestPage) {
+              store.commit('editRequestSolo', response.data.data);
+            } else {
+              store.commit('editRequest', response.data.data);
+            }
 
-          sendNotification(notifications.requestChangeStatus + status.name);
+            sendNotification(notifications.requestChangeStatus + status.name);
+          } else {
+            sendErrorNotification(response.data.message);
+          }
         })
         .catch(sendErrorNotification);
   },
@@ -88,13 +100,17 @@ const actions = {
     axios
         .put('request/complete/' + requestId)
         .then((response) => {
-          if (fromRequestPage) {
-            store.commit('editRequestSolo', response.data.data);
-          } else {
-            store.commit('editRequest', response.data.data);
-          }
+          if (response.data.success) {
+            if (fromRequestPage) {
+              store.commit('editRequestSolo', response.data.data);
+            } else {
+              store.commit('editRequest', response.data.data);
+            }
 
-          sendNotification(notifications.requestCompleted);
+            sendNotification(notifications.requestCompleted);
+          } else {
+            sendErrorNotification(response.data.message);
+          }
         })
         .catch(sendErrorNotification);
   },

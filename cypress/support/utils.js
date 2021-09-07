@@ -14,13 +14,9 @@ function testSubjectRequestForm(subject) {
   cy.get('.v-messages__message').should('contain', message.subjectBetween);
   cy.contains('button', 'Submit').should('be.disabled');
 
-  const wordTooLong = 'hisIsAWordWayToLongToBeAcceptedInTheSubjectField';
-
+  const wordTooLong = 'hisIsAWordWayTooLongToNormallyBeAcceptedInTheSubjectField';
   cy.get('form').contains('div', 'Subject').find('input').type(wordTooLong);
-  cy.get('.v-messages__message').should(
-      'contain',
-      'All words need to be less than 25 characters',
-  );
+  cy.get('.v-messages__message').should('contain', message.wordsTooLong);
   cy.contains('button', 'Submit').should('be.disabled');
 
   cy.get('form').contains('div', 'Subject').find('input').clear().type(subject);

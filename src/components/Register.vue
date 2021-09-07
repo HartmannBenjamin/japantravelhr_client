@@ -4,7 +4,9 @@
       <v-toolbar-title>
         Register form - <span style="font-weight: 100">Japan Travel HR </span>
       </v-toolbar-title>
+
       <v-spacer></v-spacer>
+
       <img
         class="img-logo"
         draggable="false"
@@ -32,7 +34,7 @@
           ></v-text-field>
           <v-select
             v-model="user.role_id"
-            :rules="[(v) => !!v || 'Role is required']"
+            :rules="[(v) => !!v || message.roleRequired]"
             :items="roles"
             item-text="name"
             item-value="id"
@@ -156,8 +158,6 @@ export default {
           .then(
               (response) => {
                 if (response.data.success) {
-                  sendNotification(notifications.userRegistered);
-
                   if (this.image_file !== null) {
                     const formData = new FormData();
 
@@ -169,7 +169,13 @@ export default {
                         'Authorization': 'bearer ' + response.data.data.token,
                         'Content-Type': 'multipart/form-data',
                       },
-                    });
+                    }).then((res) => {
+                      if (res.data.success) {
+                        sendNotification(notifications.userRegistered);
+                      } else {
+                        sendErrorNotification(res.data.message);
+                      }
+                    }).catch(sendErrorNotification);
                   }
                 } else {
                   sendErrorNotification(response.data.message);

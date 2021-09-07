@@ -8,7 +8,7 @@ import {
 const {internet} = require('faker');
 const name = internet.userName('', '');
 
-describe('Test Profile page', () => {
+describe('Test profile page', () => {
   before(() => {
     cy.resetDatabase();
     cy.loginAsUser();

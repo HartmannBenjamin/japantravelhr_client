@@ -9,7 +9,10 @@ const config = {
   tokenDefaultName: 'token',
   tokenStore: ['localStorage'],
   rolesVar: 'role_id',
-  registerData: {url: 'register', method: 'POST'},
+  registerData: {
+    url: 'register',
+    method: 'POST',
+  },
   loginData: {
     url: 'login',
     method: 'POST',
@@ -22,7 +25,11 @@ const config = {
     redirect: '/login',
     makeRequest: true,
   },
-  fetchData: {url: 'me', method: 'GET', enable: true},
+  fetchData: {
+    url: 'me',
+    method: 'GET',
+    enable: true,
+  },
   refreshData: {
     url: 'refreshToken',
     method: 'GET',

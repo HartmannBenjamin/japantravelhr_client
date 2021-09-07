@@ -18,7 +18,9 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Auth,
-    props: {isRegisterPage: false},
+    props: {
+      isRegisterPage: false,
+    },
     meta: {
       auth: false,
     },
@@ -27,7 +29,9 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: Auth,
-    props: {isRegisterPage: true},
+    props: {
+      isRegisterPage: true,
+    },
     meta: {
       auth: false,
     },

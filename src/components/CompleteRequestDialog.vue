@@ -13,9 +13,14 @@
       <v-divider class="mb-10"></v-divider>
 
       <v-card-text>
-        <strong> Subject: </strong> {{ requestToEdit.subject }}
-        <br />
-        <strong> Description: </strong> {{ requestToEdit.description }}
+        <p>
+          <strong> Subject: </strong> {{ requestToEdit.subject }}
+        </p>
+
+        <div class="div-text-wrap" data-test="request-description">
+          <strong>Description:</strong>
+          {{ requestToEdit.description }}
+        </div>
       </v-card-text>
 
       <v-card-actions>

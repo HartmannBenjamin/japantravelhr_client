@@ -18,10 +18,9 @@
                 <strong>Subject :</strong> {{ request.subject }}
               </span>
 
-              <v-tooltip right>
+              <v-tooltip right v-if="isUser && isOpen(request.status)">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
-                    v-if="isUser && isOpen(request.status)"
                     @click="editRequestModal = true"
                     class="ml-3 mt-1"
                     color="indigo"
@@ -73,9 +72,10 @@
 
           <divider></divider>
 
-          <p style="font-size: 20px" class="text-wrap" data-test="request-description">
-            <strong>Description : </strong> {{ request.description }}
+          <p style="font-size: 20px">
+            <strong>Description : </strong>
           </p>
+          <div class="div-text-wrap" data-test="request-description">{{ request.description }}</div>
         </div>
       </v-container>
 
@@ -88,10 +88,9 @@
 
                 <v-spacer></v-spacer>
 
-                <v-tooltip right>
+                <v-tooltip right v-if="isHR">
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
-                      v-if="isHR"
                       rounded
                       color="grey lighten-3"
                       @click="changeStatusDialog = true"
@@ -105,10 +104,9 @@
                   <span> Change status </span>
                 </v-tooltip>
 
-                <v-tooltip right>
+                <v-tooltip right v-if="isManager && isHRReviewed(request.status)">
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
-                      v-if="isManager && isHRReviewed(request.status)"
                       rounded
                       color="green lighten-3"
                       dark
@@ -129,7 +127,7 @@
               <Steps
                 :current="request.status.id - 1"
                 direction="vertical"
-                class="ma-9 pb-5"
+                class="ma-9 pb-5 pr-10"
               >
                 <Step
                   v-for="statusRow in status"

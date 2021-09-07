@@ -4,6 +4,10 @@ const randomEmail = internet.email();
 const randomPassword = internet.password();
 
 describe('Test login page', () => {
+  before(() => {
+    cy.resetDatabase();
+  });
+
   beforeEach(() => {
     cy.visit('');
     cy.url().should('include', '/login');
@@ -44,7 +48,7 @@ describe('Test login page', () => {
     cy.url().should('include', '/login');
   });
 
-  it('should redirect authenticated user to requests page', function() {
+  it('should not redirect authenticated user to login page', function() {
     cy.loginAsUser();
     cy.visit('/login');
     cy.url().should('include', '/404');

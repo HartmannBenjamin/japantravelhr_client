@@ -15,6 +15,7 @@
             <v-list-item-title data-test="name">
               {{ name }} ({{ $auth.user().role.name }})
             </v-list-item-title>
+
             <v-list-item-subtitle>
               {{ $auth.user().email }}
             </v-list-item-subtitle>

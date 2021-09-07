@@ -2,8 +2,14 @@
   <v-app>
     <Nav v-if="$auth.check()" />
 
-    <v-main>
+    <v-main
+        v-if="!$auth.ready() || $auth.check() || ($route.name === 'Login' || $route.name === 'Register')"
+    >
       <router-view />
+    </v-main>
+
+    <v-main v-else>
+      <Disconnected />
     </v-main>
 
     <Footer v-if="$auth.check()" />
@@ -16,12 +22,14 @@
 
 <script>
 import Nav from '@/components/Nav';
+import Disconnected from '@/components/Disconnected';
 import Footer from '@/components/Footer';
 
 export default {
   name: 'App',
   components: {
     Nav,
+    Disconnected,
     Footer,
   },
   computed: {

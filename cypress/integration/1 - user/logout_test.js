@@ -1,7 +1,11 @@
 import {redirectRequestsPage} from '../../support/utils';
 
 describe('Test log out user', () => {
-  it('redirects to register page', () => {
+  before(() => {
+    cy.resetDatabase();
+  });
+
+  it('log out user', () => {
     cy.loginAsUser();
     redirectRequestsPage();
 

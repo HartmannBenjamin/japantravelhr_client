@@ -48,7 +48,7 @@ describe('Test request functionalities as User from the main page', () => {
   });
 
   it('user can edit his request', () => {
-    // sort table to get open request firstly
+    // sort table to get open request at the beginning
     cy.get('thead').contains('Status').click();
 
     // show edit Request form
@@ -69,8 +69,8 @@ describe('Test request functionalities as User from the main page', () => {
     cy.get('thead').contains('Date').click().click();
 
     // check if the request has been updated in the table
-    cy.get('[data-test="request-row"]').contains('td', subject);
-    cy.get('[data-test="request-row"]').contains('td', description);
+    cy.get('[data-test="request-row"]').first().contains('td', subject);
+    cy.get('[data-test="request-row"]').first().contains('td', description);
 
     // check if log has been created
     cy.get('[data-test="show-logs"]').first().click();

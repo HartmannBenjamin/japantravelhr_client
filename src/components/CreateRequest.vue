@@ -20,7 +20,7 @@
                 <v-text-field
                   v-model="request.subject"
                   :rules="rules.subjectRules"
-                  @input="validSubject = getMaxLengthWord(request.subject) < 25"
+                  @input="validSubject = getMaxLengthWord(request.subject) < 50"
                   :error-messages="validSubject ? '' : errorMessageWord"
                   label="Subject"
                   required
@@ -33,7 +33,7 @@
                   label="Description"
                   @input="
                     validDescription =
-                      getMaxLengthWord(request.description) < 25
+                      getMaxLengthWord(request.description) < 50
                   "
                   :error-messages="validDescription ? '' : errorMessageWord"
                   required

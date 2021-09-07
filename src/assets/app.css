@@ -32,3 +32,17 @@
   width: 85%;
   border-radius: 2px;
 }
+
+.td-request-subject {
+  max-width: 200px;
+  cursor: pointer;
+}
+
+.td-request-description {
+  max-width: 300px;
+  cursor: pointer;
+}
+
+.div-text-wrap {
+  white-space: pre-wrap;
+}

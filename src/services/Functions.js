@@ -25,6 +25,7 @@ function formatDate(date) {
   if (date === null) {
     return 'None';
   }
+
   return moment(date).utc().format('MMMM Do YYYY, h:mm a');
 }
 

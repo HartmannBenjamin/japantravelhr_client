@@ -37,6 +37,7 @@
           outlined
           dense
         ></v-text-field>
+
         <v-data-table
           :headers="headers"
           :items="requests"
@@ -49,7 +50,7 @@
           <template v-slot:item="row">
             <tr @mouseover="mouseOn = row.item.id" @mouseout="mouseOn = null" data-test="request-row">
               <td
-                style="max-width: 200px; cursor: pointer"
+                class="td-request-subject"
                 @click="showRequest(row.item.id)"
               >
                 <v-list-item>
@@ -65,7 +66,7 @@
                 </v-list-item>
               </td>
               <td
-                style="max-width: 300px; cursor: pointer"
+                class="td-request-description"
                 @click="showRequest(row.item.id)"
               >
                 <v-list-item>
@@ -250,6 +251,7 @@ import RequestLogsSheet from '@/components/RequestLogsSheet';
 import {isUser, isHR, isManager} from '@/services/UserService';
 import {isOpen, isHRReviewed} from '@/services/RequestService';
 import {formatDate} from '@/services/Functions';
+import {sendErrorNotification} from '@/services/NotificationService';
 
 export default {
   name: 'Requests',
@@ -316,9 +318,7 @@ export default {
             document.body.appendChild(link);
             link.click();
           })
-          .catch((error) => {
-            console.log(error);
-          });
+          .catch(sendErrorNotification);
     },
   },
   mounted() {
