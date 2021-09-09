@@ -21,7 +21,7 @@ npm run serve
 
 ---
 
-## ➤ Default users informaiton
+## ➤ Default users information
 
 ```
 User :
